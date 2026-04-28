@@ -1,97 +1,142 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ermoneyt</title>
-
-<link rel="stylesheet" href="css/style.css">
-
-<!-- ANİMASYON -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Ermoneyt | Yazılım, Web, Mobil, ERP ve Cloud Çözümleri</title>
+  <meta name="description" content="Ermoneyt; restoran QR sipariş sistemleri, stok depo yazılımları, B2B paneller, rezervasyon sistemleri, web siteleri ve mobil uygulamalar geliştirir.">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-
 <body>
 
 <header>
   <div class="container nav">
-    <h2>ERMONEYT</h2>
+    <a class="logo" href="index.html">
+      <img src="logo.png" alt="Ermoneyt Logo">
+      <span>ERMONEYT</span>
+    </a>
     <nav>
       <a href="#hizmetler">Hizmetler</a>
-      <a href="#neden">Neden Biz</a>
+      <a href="#surec">Süreç</a>
       <a href="#iletisim">İletişim</a>
     </nav>
   </div>
 </header>
 
 <section class="hero">
-  <div class="container">
-    <h1 data-aos="fade-up">
-      İşletmelere <span>dijital sistemler</span> kuruyoruz
-    </h1>
-    <p data-aos="fade-up" data-aos-delay="200">
-      Restoran QR sistemlerinden B2B panellere kadar uçtan uca yazılım çözümleri.
-    </p>
-  </div>
-</section>
+  <div class="container hero-grid">
+    <div data-aos="fade-right">
+      <div class="badge">Web • Mobil • Panel • ERP • Cloud</div>
+      <h1>İşletmelere <span>dijital sistemler</span> kuruyoruz.</h1>
+      <p>
+        Restoran QR sipariş sistemlerinden stok-depo yazılımlarına, B2B bayi panellerinden
+        mobil uygulamalara kadar işletmenize özel yazılım çözümleri geliştiriyoruz.
+      </p>
+      <div class="actions">
+        <a class="btn" href="https://wa.me/905000000000" target="_blank">WhatsApp'tan Teklif Al</a>
+        <a class="btn ghost" href="#hizmetler">Hizmetleri İncele</a>
+      </div>
+    </div>
 
-<section id="hizmetler" class="services container">
-
-  <a href="hizmetler/restoran.html" class="card" data-aos="zoom-in">
-    <h3>🍽️ Restoran Sistemleri</h3>
-    <p>QR menü + sipariş + mutfak ekranı</p>
-  </a>
-
-  <a href="hizmetler/b2b.html" class="card" data-aos="zoom-in">
-    <h3>🏢 B2B Sistemler</h3>
-    <p>Bayi sipariş ve cari yönetimi</p>
-  </a>
-
-  <a href="hizmetler/stok.html" class="card" data-aos="zoom-in">
-    <h3>📦 Stok & Depo</h3>
-    <p>Barkodlu stok takip yazılımı</p>
-  </a>
-
-  <a href="hizmetler/rezervasyon.html" class="card" data-aos="zoom-in">
-    <h3>📅 Rezervasyon</h3>
-    <p>Randevu ve masa rezervasyon sistemleri</p>
-  </a>
-
-  <a href="hizmetler/vakif.html" class="card" data-aos="zoom-in">
-    <h3>🤝 Vakıf & Dernek</h3>
-    <p>Üye ve bağış yönetim panelleri</p>
-  </a>
-
-  <a href="hizmetler/mobil-oyun.html" class="card" data-aos="zoom-in">
-    <h3>🎮 Mobil Oyun</h3>
-    <p>Markaya özel mini oyunlar</p>
-  </a>
-
-</section>
-
-<section id="neden" class="why">
-  <div class="container">
-    <h2>Neden Ermoneyt?</h2>
-    <div class="why-grid">
-
-      <div class="card">Full stack çözüm</div>
-      <div class="card">Hızlı teslim</div>
-      <div class="card">Cloud + yazılım birlikte</div>
-
+    <div class="visual" data-aos="zoom-in">
+      <div class="screen">
+        <div class="screen-row"><strong>QR Sipariş</strong><span class="dot"></span></div>
+        <div class="screen-row"><strong>Stok Takip</strong><span class="dot"></span></div>
+        <div class="screen-row"><strong>B2B Panel</strong><span class="dot"></span></div>
+        <div class="screen-row"><strong>Mobil Uygulama</strong><span class="dot"></span></div>
+        <div class="screen-row"><strong>Cloud Sunucu</strong><span class="dot"></span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="iletisim" class="contact">
-  <h2>Projeni başlatalım</h2>
-  <a href="https://wa.me/905511620693">WhatsApp Yaz</a>
+<section id="hizmetler">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Hizmetlerimiz</h2>
+      <p>Tek sayfalık site değil, işletmeye çalışan gerçek sistemler kuruyoruz.</p>
+    </div>
+
+    <div class="services">
+      <a class="card" href="hizmetler/restoran.html" data-aos="fade-up">
+        <div class="icon">🍽️</div>
+        <h3>Restoran QR Sipariş</h3>
+        <p>QR menü, masadan sipariş, mutfak ekranı, garson paneli ve satış raporları.</p>
+        <ul><li>QR menü</li><li>Mutfak ekranı</li><li>Adisyon takibi</li></ul>
+      </a>
+
+      <a class="card" href="hizmetler/stok.html" data-aos="fade-up">
+        <div class="icon">📦</div>
+        <h3>Stok & Depo Yazılımı</h3>
+        <p>Barkodlu stok giriş-çıkış, depo transferi, sayım ve raporlama sistemi.</p>
+        <ul><li>Barkod</li><li>Depo transfer</li><li>Raporlama</li></ul>
+      </a>
+
+      <a class="card" href="hizmetler/b2b.html" data-aos="fade-up">
+        <div class="icon">🏢</div>
+        <h3>B2B Bayi Paneli</h3>
+        <p>Bayilere özel fiyat, cari hesap, sipariş, sevkiyat ve ödeme takip sistemi.</p>
+        <ul><li>Bayi girişi</li><li>Cari fiyat</li><li>Sipariş takibi</li></ul>
+      </a>
+
+      <a class="card" href="hizmetler/rezervasyon.html" data-aos="fade-up">
+        <div class="icon">📅</div>
+        <h3>Rezervasyon Sistemi</h3>
+        <p>Restoran, otel, klinik, kuaför ve etkinlikler için online rezervasyon sistemi.</p>
+        <ul><li>Takvim</li><li>Randevu</li><li>Bildirim</li></ul>
+      </a>
+
+      <a class="card" href="hizmetler/vakif.html" data-aos="fade-up">
+        <div class="icon">🤝</div>
+        <h3>Vakıf & Dernek Paneli</h3>
+        <p>Üye yönetimi, bağış takibi, etkinlik, duyuru ve gönüllü yönetim paneli.</p>
+        <ul><li>Üye takip</li><li>Bağış</li><li>Duyuru</li></ul>
+      </a>
+
+      <a class="card" href="hizmetler/mobil-oyun.html" data-aos="fade-up">
+        <div class="icon">🎮</div>
+        <h3>Mini Mobil Oyunlar</h3>
+        <p>Markalara özel reklam, ödül, kampanya ve etkileşim odaklı mini oyunlar.</p>
+        <ul><li>Android</li><li>Reklam</li><li>Ödül sistemi</li></ul>
+      </a>
+    </div>
+  </div>
 </section>
 
-<script>
-AOS.init();
-</script>
+<section class="dark" id="surec">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Nasıl Çalışıyoruz?</h2>
+      <p>Fikirden yayına kadar tüm süreci planlı ilerletiyoruz.</p>
+    </div>
 
+    <div class="process">
+      <div class="step" data-aos="fade-up"><b>01</b><h3>Analiz</h3><p>İhtiyacı netleştiririz.</p></div>
+      <div class="step" data-aos="fade-up"><b>02</b><h3>Tasarım</h3><p>Ekranları hazırlarız.</p></div>
+      <div class="step" data-aos="fade-up"><b>03</b><h3>Yazılım</h3><p>Panel, web ve mobil geliştiririz.</p></div>
+      <div class="step" data-aos="fade-up"><b>04</b><h3>Yayın</h3><p>Sunucu, domain, SSL ve deploy yaparız.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="iletisim">
+  <div class="container">
+    <div class="cta" data-aos="zoom-in">
+      <div>
+        <h2>Projeni başlatalım.</h2>
+        <p>Restoran, depo, B2B, mobil uygulama veya web sitesi için hemen yaz.</p>
+      </div>
+      <a class="btn ghost" href="https://wa.me/905000000000" target="_blank">WhatsApp ile Yaz</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">© 2026 Ermoneyt. Tüm hakları saklıdır.</div>
+</footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
