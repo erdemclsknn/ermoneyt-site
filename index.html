@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ermoneyt | Yazılım, Mobil, Web, ERP ve Danışmanlık</title>
+  <meta name="description" content="Ermoneyt; mobil uygulama, web sitesi, özel yazılım, ERP entegrasyonları, sunucu ve cloud çözümleri sunar." />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f6f9fc;
+      color: #0b1b33;
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e7eef7;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav {
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-size: 24px;
+    }
+
+    .brand img {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      font-weight: 600;
+      color: #33445c;
+      font-size: 15px;
+    }
+
+    .nav-links a:hover {
+      color: #0877e8;
+    }
+
+    .hero {
+      padding: 88px 0 70px;
+      background: radial-gradient(circle at top right, #dff1ff, transparent 34%), linear-gradient(135deg, #ffffff 0%, #eef7ff 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e8f3ff;
+      color: #0969c8;
+      border: 1px solid #cce6ff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 66px);
+      line-height: 1.05;
+      margin-bottom: 22px;
+      letter-spacing: -2px;
+    }
+
+    .gradient-text {
+      color: #0877e8;
+    }
+
+    .hero p {
+      font-size: 19px;
+      color: #42536b;
+      max-width: 650px;
+      margin-bottom: 30px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 15px 22px;
+      font-weight: 800;
+      transition: 0.2s;
+    }
+
+    .btn-primary {
+      background: #0877e8;
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(8, 119, 232, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: #055fc0;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: #0b1b33;
+      border: 1px solid #dbe6f2;
+    }
+
+    .hero-card {
+      background: #ffffff;
+      border: 1px solid #dceaf7;
+      border-radius: 28px;
+      padding: 34px;
+      box-shadow: 0 24px 70px rgba(13, 42, 76, 0.12);
+    }
+
+    .hero-card img {
+      width: 100%;
+      max-width: 360px;
+      display: block;
+      margin: 0 auto 24px;
+    }
+
+    .hero-card h3 {
+      font-size: 26px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .hero-card p {
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 0;
+    }
+
+    section {
+      padding: 78px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(30px, 4vw, 44px);
+      margin-bottom: 12px;
+    }
+
+    .section-title p {
+      color: #5b6b80;
+      font-size: 18px;
+    }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e0eaf5;
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 14px 35px rgba(13, 42, 76, 0.06);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: #e8f3ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #5b6b80;
+      font-size: 15px;
+    }
+
+    .why {
+      background: #0b1b33;
+      color: #fff;
+    }
+
+    .why .section-title p {
+      color: #b9c7d9;
+    }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .why .card {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+
+    .why .card p {
+      color: #c8d5e5;
+    }
+
+    .contact {
+      background: linear-gradient(135deg, #0877e8 0%, #0b1b33 100%);
+      color: #fff;
+      border-radius: 32px;
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .contact h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 10px;
+    }
+
+    .contact p {
+      color: #dcecff;
+      font-size: 18px;
+    }
+
+    .contact .btn {
+      background: #fff;
+      color: #0b1b33;
+      white-space: nowrap;
+    }
+
+    footer {
+      padding: 30px 0;
+      text-align: center;
+      color: #5b6b80;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .services,
+      .why-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .contact {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#" class="brand">
+        <img src="logo.png" alt="Ermoneyt Logo" />
+        <span>ERMONEYT</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#hizmetler">Hizmetler</a>
+        <a href="#neden">Neden Biz?</a>
+        <a href="#iletisim">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="badge">Yazılım • Mobil • Web • ERP • Danışmanlık</div>
+          <h1>İşletmeniz İçin <span class="gradient-text">Dijital Çözümler</span> Üretiyoruz</h1>
+          <p>
+            Ermoneyt; mobil uygulama, web sitesi, özel yazılım, ERP entegrasyonu,
+            sunucu kurulumu ve cloud yönetimi alanlarında işletmelere uçtan uca teknoloji desteği sunar.
+          </p>
+          <div class="actions">
+            <a class="btn btn-primary" href="https://wa.me/905000000000" target="_blank">WhatsApp'tan Teklif Al</a>
+            <a class="btn btn-secondary" href="#hizmetler">Hizmetleri İncele</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <img src="logo.png" alt="Ermoneyt" />
+          <h3>Teknoloji ile işinizi büyütün</h3>
+          <p>Fikrinizden yayına, sunucudan mobil uygulamaya kadar tüm süreci birlikte yönetiyoruz.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="hizmetler">
+      <div class="container">
+        <div class="section-title">
+          <h2>Hizmetlerimiz</h2>
+          <p>İşletmenizin ihtiyacına göre hızlı, güvenli ve ölçeklenebilir çözümler.</p>
+        </div>
+
+        <div class="services">
+          <div class="card">
+            <div class="icon">📱</div>
+            <h3>Mobil Uygulama</h3>
+            <p>Android ve iOS için modern, hızlı ve kullanıcı dostu mobil uygulamalar geliştiriyoruz.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🌐</div>
+            <h3>Web Sitesi</h3>
+            <p>Kurumsal web sitesi, e-ticaret altyapısı ve yönetim panelleri hazırlıyoruz.</p>
+          </div>
+          <div class="card">
+            <div class="icon">⚙️</div>
+            <h3>ERP Çözümleri</h3>
+            <p>İş süreçlerinize uygun rapor, entegrasyon ve özel yazılım çözümleri sunuyoruz.</p>
+          </div>
+          <div class="card">
+            <div class="icon">☁️</div>
+            <h3>Sunucu & Cloud</h3>
+            <p>Sunucu kurulumu, domain, hosting, yedekleme, güvenlik ve cloud yönetimi sağlıyoruz.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="why" id="neden">
+      <div class="container">
+        <div class="section-title">
+          <h2>Neden Ermoneyt?</h2>
+          <p>Sadece yazılım değil, altyapı ve operasyon tarafını da birlikte düşünüyoruz.</p>
+        </div>
+        <div class="why-grid">
+          <div class="card">
+            <h3>Uçtan Uca Hizmet</h3>
+            <p>Web, mobil, backend, sunucu ve yayınlama süreçlerini tek elden yönetiriz.</p>
+          </div>
+          <div class="card">
+            <h3>İş Odaklı Yaklaşım</h3>
+            <p>Teknik çözümü işletmenizin gerçek ihtiyacına göre planlarız.</p>
+          </div>
+          <div class="card">
+            <h3>Hızlı Teslimat</h3>
+            <p>Küçük ve orta ölçekli projelerde hızlı kurulum ve hızlı yayın prensibiyle ilerleriz.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="iletisim">
+      <div class="container">
+        <div class="contact">
+          <div>
+            <h2>Projenizi konuşalım</h2>
+            <p>Mobil uygulama, web sitesi veya sunucu ihtiyacınız için bizimle iletişime geçin.</p>
+          </div>
+          <a class="btn" href="https://wa.me/905000000000" target="_blank">WhatsApp ile Yaz</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Ermoneyt. Tüm hakları saklıdır.
+    </div>
+  </footer>
+</body>
+</html>
