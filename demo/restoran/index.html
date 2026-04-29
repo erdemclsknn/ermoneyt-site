@@ -66,6 +66,9 @@ p{color:var(--muted);line-height:1.7}
 .fixed-qr-box img{width:230px;background:white;padding:12px;border-radius:18px;margin:10px auto;display:block}
 .variant-box{margin-top:12px;padding:14px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
 .notice{border-left:5px solid var(--gold)}
+.lock-screen{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at top,#1b2750,#070b18 60%);padding:20px}
+.lock-box{width:min(420px,100%)}
+.lock-screen.hide{display:none!important}
 .menu-mode .hero,.menu-mode .tabs,.menu-mode #tables,.menu-mode #kitchen,.menu-mode #admin,.menu-mode #report{display:none!important}
 .menu-mode #customer{display:block!important}
 .menu-mode .brand span::after{content:" • Menü";color:var(--gold)}
@@ -79,6 +82,17 @@ p{color:var(--muted);line-height:1.7}
 
 <body>
 
+<div class="lock-screen" id="lockScreen">
+  <div class="card lock-box">
+    <h2>🔐 Ermoneyt Demo Giriş</h2>
+    <p class="small">Yönetim paneline erişmek için giriş yap.</p>
+    <input class="input" id="loginUser" placeholder="Kullanıcı adı">
+    <input class="input" id="loginPass" type="password" placeholder="Şifre">
+    <button class="btn gold" onclick="login()">Giriş Yap</button>
+    <p class="small" id="loginError"></p>
+  </div>
+</div>
+
 <header class="header">
   <div class="container nav">
     <div class="brand">
@@ -91,6 +105,7 @@ p{color:var(--muted);line-height:1.7}
       <button class="tab" onclick="showPage('kitchen',this)">Mutfak</button>
       <button class="tab" onclick="showPage('admin',this)">Admin</button>
       <button class="tab" onclick="showPage('report',this)">Rapor</button>
+      <button class="tab" onclick="logout()">Çıkış</button>
     </div>
   </div>
 </header>
@@ -244,6 +259,9 @@ p{color:var(--muted);line-height:1.7}
 </main>
 
 <script>
+const ADMIN_USER="admin";
+const ADMIN_PASS="1ermoneyt2.";
+
 const LS_CATEGORIES="ermoneyt_categories_full_v1";
 const LS_PRODUCTS="ermoneyt_products_full_v1";
 const LS_ORDERS="ermoneyt_orders_full_v1";
@@ -265,6 +283,37 @@ const defaultProducts=[
   {id:4,name:"Kola",cat:"İçecek",price:45,desc:"Soğuk servis edilir.",img:fallbackImg,variants:[{name:"330 ml",price:45},{name:"1 L",price:80}]},
   {id:5,name:"Sufle",cat:"Tatlı",price:95,desc:"Akışkan çikolatalı sıcak sufle.",img:fallbackImg,variants:[]}
 ];
+
+function checkLogin(){
+  const params=new URLSearchParams(window.location.search);
+  const lock=document.getElementById("lockScreen");
+
+  if(params.get("menu")==="1"){
+    lock.classList.add("hide");
+    return;
+  }
+
+  if(localStorage.getItem("ermoneyt_login")==="ok"){
+    lock.classList.add("hide");
+  }
+}
+
+function login(){
+  const user=document.getElementById("loginUser").value.trim();
+  const pass=document.getElementById("loginPass").value.trim();
+
+  if(user===ADMIN_USER && pass===ADMIN_PASS){
+    localStorage.setItem("ermoneyt_login","ok");
+    document.getElementById("lockScreen").classList.add("hide");
+  }else{
+    document.getElementById("loginError").innerText="Kullanıcı adı veya şifre hatalı.";
+  }
+}
+
+function logout(){
+  localStorage.removeItem("ermoneyt_login");
+  location.reload();
+}
 
 function getCategories(){return JSON.parse(localStorage.getItem(LS_CATEGORIES)||"null")||defaultCategories}
 function setCategories(v){localStorage.setItem(LS_CATEGORIES,JSON.stringify(v))}
@@ -463,6 +512,7 @@ function activateMenuMode(){const params=new URLSearchParams(window.location.sea
 
 renderAll();
 activateMenuMode();
+checkLogin();
 </script>
 </body>
 </html>
