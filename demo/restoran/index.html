@@ -5,15 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Ermoneyt Restoran Demo</title>
 <style>
-:root{
-  --bg:#070b18;--card:#10182d;--card2:#0d1325;--text:#eef5ff;--muted:#94a3b8;
-  --gold:#f8c14a;--green:#22c55e;--red:#ef4444;--blue:#4f8cff;--line:rgba(255,255,255,.1);
-}
+:root{--bg:#070b18;--card:#10182d;--text:#eef5ff;--muted:#94a3b8;--gold:#f8c14a;--green:#22c55e;--red:#ef4444;--blue:#4f8cff;--line:rgba(255,255,255,.1)}
 *{box-sizing:border-box}
 body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#070b18,#0b1020);color:var(--text)}
 .container{width:min(1200px,94%);margin:auto}
-.header{position:sticky;top:0;z-index:20;background:rgba(7,11,24,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+.header{position:sticky;top:0;z-index:20;background:rgba(7,11,24,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font-weight:900}
 .brand img{width:38px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap}
@@ -25,10 +22,8 @@ body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180d
 h1{font-size:clamp(34px,5vw,64px);line-height:1;margin:0 0 16px;letter-spacing:-2px}
 h1 span{color:var(--gold)}
 p{color:var(--muted);line-height:1.7}
-.panel{background:linear-gradient(180deg,#121c34,#0b1020);border:1px solid var(--line);border-radius:26px;padding:22px;box-shadow:0 25px 80px rgba(0,0,0,.35)}
+.panel,.card{background:linear-gradient(180deg,#121c34,#0b1020);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.22)}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px}
-.card h3{margin:0 0 8px}
 .btn{border:0;border-radius:14px;padding:12px 15px;font-weight:900;cursor:pointer;background:var(--gold);color:#111827}
 .btn.dark{background:#1f2937;color:white;border:1px solid var(--line)}
 .btn.green{background:var(--green);color:#052e16}
@@ -37,7 +32,6 @@ p{color:var(--muted);line-height:1.7}
 .section{padding:20px 0 50px}
 .hide{display:none!important}
 .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.item{overflow:hidden}
 .item img{width:100%;height:145px;object-fit:cover;border-radius:18px;background:#111a31}
 .item-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
 .price{color:var(--gold);font-size:22px;font-weight:900}
@@ -45,7 +39,7 @@ p{color:var(--muted);line-height:1.7}
 .cart-list{max-height:220px;overflow:auto;margin:10px 0}
 .row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
 .total{display:flex;justify-content:space-between;font-size:22px;font-weight:900;color:var(--gold);padding-top:12px}
-.table-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.table-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .table{min-height:120px;cursor:pointer;transition:.2s}
 .table:hover{transform:translateY(-4px)}
 .status{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900}
@@ -55,17 +49,17 @@ p{color:var(--muted);line-height:1.7}
 .order-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .order{border-left:5px solid var(--gold)}
 .kitchen{border-left-color:var(--blue)}
-.done{border-left-color:var(--green);opacity:.75}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .kpi b{font-size:28px;color:var(--gold)}
 .kpi span{display:block;color:var(--muted);margin-top:4px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.small{font-size:13px;color:var(--muted)}
+.small{font-size:13px;color:var(--muted);word-break:break-all}
+.qr-img{width:100%;max-width:210px;background:white;padding:12px;border-radius:18px}
+.upload-preview{width:100%;height:130px;object-fit:cover;border-radius:16px;background:#111a31;margin:8px 0}
 @media(max-width:900px){
-  .hero-grid,.grid,.menu-grid,.order-grid,.kpis{grid-template-columns:1fr}
-  .table-grid{grid-template-columns:repeat(2,1fr)}
-  .cart{position:static;width:auto;margin:20px auto}
-  .tabs{overflow:auto}
+.hero-grid,.grid,.menu-grid,.order-grid,.kpis{grid-template-columns:1fr}
+.table-grid{grid-template-columns:repeat(2,1fr)}
+.cart{position:static;width:auto;margin:20px auto}
 }
 </style>
 </head>
@@ -79,9 +73,10 @@ p{color:var(--muted);line-height:1.7}
     </div>
     <div class="tabs">
       <button class="tab active" onclick="showPage('customer',this)">Müşteri QR</button>
+      <button class="tab" onclick="showPage('qr',this)">QR Masalar</button>
       <button class="tab" onclick="showPage('tables',this)">Masa Yönetimi</button>
-      <button class="tab" onclick="showPage('kitchen',this)">Mutfak Ekranı</button>
-      <button class="tab" onclick="showPage('admin',this)">Admin Panel</button>
+      <button class="tab" onclick="showPage('kitchen',this)">Mutfak</button>
+      <button class="tab" onclick="showPage('admin',this)">Admin</button>
       <button class="tab" onclick="showPage('report',this)">Rapor</button>
     </div>
   </div>
@@ -90,19 +85,15 @@ p{color:var(--muted);line-height:1.7}
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <div class="badge">QR Menü • Masa Sistemi • Mutfak • POS • Rapor</div>
+      <div class="badge">QR Menü • Masa Sistemi • Görsel Yükleme • Mutfak • POS</div>
       <h1>Restoran için <span>tam operasyon demosu</span>.</h1>
-      <p>
-        Müşteri QR menüden sipariş verir, sipariş masa hesabına düşer, mutfakta görünür,
-        admin masaları ve ürünleri yönetir, raporda günlük ciro ve siparişler izlenir.
-      </p>
+      <p>Masa QR’ı okutulur, menü açılır, masa otomatik seçilir. Sipariş mutfağa düşer, masa hesabı açılır, admin ürün ve görsel yönetir.</p>
       <div class="actions">
         <button class="btn" onclick="showPage('customer')">QR Demo Başlat</button>
         <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
         <button class="btn red" onclick="resetDemo()">Temizle</button>
       </div>
     </div>
-
     <div class="panel">
       <div class="kpis">
         <div class="card kpi"><b id="kpiSales">₺0</b><span>Bugünkü Ciro</span></div>
@@ -116,131 +107,143 @@ p{color:var(--muted);line-height:1.7}
 
 <main class="container section">
 
-  <!-- CUSTOMER -->
-  <section id="customer">
-    <div class="grid">
-      <div class="card">
-        <h3>📍 Masa Seç</h3>
-        <select id="customerTable"></select>
-        <textarea id="orderNote" rows="3" placeholder="Not: soğansız, acısız, hızlı gelsin..."></textarea>
-      </div>
-      <div class="card">
-        <h3>🔎 Kategori</h3>
-        <div class="actions" id="categoryButtons"></div>
-      </div>
-      <div class="card">
-        <h3>🧾 Sipariş Akışı</h3>
-        <p class="small">QR okut → ürün seç → sipariş gönder → mutfağa düşer → masa hesabına eklenir.</p>
-      </div>
-    </div>
-
-    <br>
-    <div class="menu-grid" id="menuGrid"></div>
-
-    <div class="cart panel">
-      <h3>🛒 Sepet</h3>
-      <div id="cartList" class="cart-list"></div>
-      <div class="total"><span>Toplam</span><span id="cartTotal">₺0</span></div>
-      <div class="actions">
-        <button class="btn green" onclick="placeOrder()">Siparişi Gönder</button>
-        <button class="btn dark" onclick="clearCart()">Temizle</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- TABLES -->
-  <section id="tables" class="hide">
+<section id="customer">
+  <div class="grid">
     <div class="card">
-      <h3>🪑 Masa Yönetimi</h3>
-      <p>Masa durumu, açık hesap, sipariş geçmişi, masa taşıma ve hesap kapatma.</p>
+      <h3>📍 Masa Bilgisi</h3>
+      <select id="customerTable"></select>
+      <p class="small">QR ile girildiyse masa otomatik seçilir. Garson manuel alıyorsa buradan seçebilir.</p>
+      <textarea id="orderNote" rows="3" placeholder="Not: soğansız, acısız, hızlı gelsin..."></textarea>
     </div>
-    <br>
-    <div class="table-grid" id="tableGrid"></div>
-    <br>
-    <div class="panel" id="tableDetail">
-      <h3>Masa Detayı</h3>
-      <p class="small">Bir masa seç.</p>
-    </div>
-  </section>
-
-  <!-- KITCHEN -->
-  <section id="kitchen" class="hide">
     <div class="card">
-      <h3>👨‍🍳 Mutfak Ekranı</h3>
-      <p>Siparişler burada durum bazlı takip edilir.</p>
+      <h3>🔎 Kategori</h3>
+      <div class="actions" id="categoryButtons"></div>
     </div>
-    <br>
-    <div class="order-grid" id="kitchenGrid"></div>
-  </section>
-
-  <!-- ADMIN -->
-  <section id="admin" class="hide">
-    <div class="grid">
-      <div class="card">
-        <h3>➕ Ürün Ekle</h3>
-        <input class="input" id="pName" placeholder="Ürün adı">
-        <input class="input" id="pPrice" type="number" placeholder="Fiyat">
-        <select id="pCat">
-          <option>Pizza</option><option>Burger</option><option>İçecek</option><option>Tatlı</option><option>Ekstra</option>
-        </select>
-        <input class="input" id="pImg" placeholder="Görsel URL / boş kalabilir">
-        <button class="btn" onclick="addProduct()">Ürün Ekle</button>
-      </div>
-
-      <div class="card">
-        <h3>🪑 Masa Ayarı</h3>
-        <input class="input" id="tableCount" type="number" value="12">
-        <button class="btn" onclick="setTableCount()">Masa Sayısını Güncelle</button>
-        <p class="small">Demo için masa sayısını buradan değiştirebilirsin.</p>
-      </div>
-
-      <div class="card">
-        <h3>⚙️ Demo</h3>
-        <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
-        <button class="btn red" onclick="resetDemo()">Tüm Veriyi Sil</button>
-      </div>
-    </div>
-
-    <br>
     <div class="card">
-      <h3>📋 Ürün Listesi</h3>
-      <div id="productList"></div>
+      <h3>🧾 Sipariş Akışı</h3>
+      <p class="small">QR okut → masa otomatik gelsin → ürün seç → sipariş gönder → mutfağa düşsün.</p>
     </div>
-  </section>
+  </div>
 
-  <!-- REPORT -->
-  <section id="report" class="hide">
-    <div class="kpis">
-      <div class="card kpi"><b id="rSales">₺0</b><span>Toplam Ciro</span></div>
-      <div class="card kpi"><b id="rOrders">0</b><span>Toplam Sipariş</span></div>
-      <div class="card kpi"><b id="rAvg">₺0</b><span>Ortalama Sipariş</span></div>
-      <div class="card kpi"><b id="rOpen">0</b><span>Açık Masa</span></div>
+  <br>
+  <div class="menu-grid" id="menuGrid"></div>
+
+  <div class="cart panel">
+    <h3>🛒 Sepet</h3>
+    <div id="cartList" class="cart-list"></div>
+    <div class="total"><span>Toplam</span><span id="cartTotal">₺0</span></div>
+    <div class="actions">
+      <button class="btn green" onclick="placeOrder()">Siparişi Gönder</button>
+      <button class="btn dark" onclick="clearCart()">Temizle</button>
     </div>
-    <br>
+  </div>
+</section>
+
+<section id="qr" class="hide">
+  <div class="card">
+    <h3>📲 Masa QR Kodları</h3>
+    <p>Her masaya özel sabit QR oluşur. QR okutulunca link <b>?masa=1</b> gibi açılır ve masa otomatik seçilir.</p>
+  </div>
+  <br>
+  <div class="table-grid" id="qrGrid"></div>
+</section>
+
+<section id="tables" class="hide">
+  <div class="card">
+    <h3>🪑 Masa Yönetimi</h3>
+    <p>Masa durumu, açık hesap, sipariş geçmişi, masa taşıma ve hesap kapatma.</p>
+  </div>
+  <br>
+  <div class="table-grid" id="tableGrid"></div>
+  <br>
+  <div class="panel" id="tableDetail">
+    <h3>Masa Detayı</h3>
+    <p class="small">Bir masa seç.</p>
+  </div>
+</section>
+
+<section id="kitchen" class="hide">
+  <div class="card">
+    <h3>👨‍🍳 Mutfak Ekranı</h3>
+    <p>Siparişler burada durum bazlı takip edilir.</p>
+  </div>
+  <br>
+  <div class="order-grid" id="kitchenGrid"></div>
+</section>
+
+<section id="admin" class="hide">
+  <div class="grid">
     <div class="card">
-      <h3>📊 Satış Özeti</h3>
-      <div id="reportList"></div>
+      <h3>➕ Ürün Ekle</h3>
+      <input class="input" id="pName" placeholder="Ürün adı">
+      <input class="input" id="pPrice" type="number" placeholder="Fiyat">
+      <select id="pCat">
+        <option>Pizza</option><option>Burger</option><option>İçecek</option><option>Tatlı</option><option>Ekstra</option>
+      </select>
+
+      <input class="input" id="pImgFile" type="file" accept="image/*" onchange="previewUpload(event)">
+      <img id="pPreview" class="upload-preview" style="display:none">
+      <p class="small">Görsel URL yok. Dosya seçiyorsun, demo localStorage’a kaydediyor.</p>
+
+      <button class="btn" onclick="addProduct()">Ürün Ekle</button>
     </div>
-  </section>
+
+    <div class="card">
+      <h3>🪑 Masa Ayarı</h3>
+      <input class="input" id="tableCount" type="number" value="12">
+      <button class="btn" onclick="setTableCount()">Masa Sayısını Güncelle</button>
+      <p class="small">Masa sayısı değişince QR kodları da otomatik değişir.</p>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ Demo</h3>
+      <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
+      <button class="btn red" onclick="resetDemo()">Tüm Veriyi Sil</button>
+    </div>
+  </div>
+
+  <br>
+  <div class="card">
+    <h3>📋 Ürün Listesi</h3>
+    <div id="productList"></div>
+  </div>
+</section>
+
+<section id="report" class="hide">
+  <div class="kpis">
+    <div class="card kpi"><b id="rSales">₺0</b><span>Toplam Ciro</span></div>
+    <div class="card kpi"><b id="rOrders">0</b><span>Toplam Sipariş</span></div>
+    <div class="card kpi"><b id="rAvg">₺0</b><span>Ortalama Sipariş</span></div>
+    <div class="card kpi"><b id="rOpen">0</b><span>Açık Masa</span></div>
+  </div>
+  <br>
+  <div class="card">
+    <h3>📊 Satış Özeti</h3>
+    <div id="reportList"></div>
+  </div>
+</section>
 
 </main>
 
 <script>
-const LS_PRODUCTS="ermoneyt_products_v2";
-const LS_ORDERS="ermoneyt_orders_v2";
-const LS_TABLES="ermoneyt_tables_v2";
+const LS_PRODUCTS="ermoneyt_products_v4";
+const LS_ORDERS="ermoneyt_orders_v4";
+const LS_TABLES="ermoneyt_tables_v4";
 let activeCategory="Tümü";
 let cart=[];
+let uploadedImage="";
+
+const fallbackImg="../../assets/img/restaurant-pos.png";
 
 const defaultProducts=[
-  {id:1,name:"Karışık Pizza",cat:"Pizza",price:180,img:"../../assets/img/restaurant-pos.png"},
-  {id:2,name:"Margarita Pizza",cat:"Pizza",price:150,img:"../../assets/img/restaurant-pos.png"},
-  {id:3,name:"Ermoneyt Burger",cat:"Burger",price:160,img:"../../assets/img/restaurant-pos.png"},
-  {id:4,name:"Cheeseburger",cat:"Burger",price:145,img:"../../assets/img/restaurant-pos.png"},
-  {id:5,name:"Patates Kızartması",cat:"Ekstra",price:70,img:"../../assets/img/restaurant-pos.png"},
-  {id:6,name:"Kola",cat:"İçecek",price:45,img:"../../assets/img/restaurant-pos.png"},
-  {id:7,name:"Limonata",cat:"İçecek",price:65,img:"../../assets/img/restaurant-pos.png"},
-  {id:8,name:"Sufle",cat:"Tatlı",price:95,img:"../../assets/img/restaurant-pos.png"}
+  {id:1,name:"Karışık Pizza",cat:"Pizza",price:180,img:fallbackImg},
+  {id:2,name:"Margarita Pizza",cat:"Pizza",price:150,img:fallbackImg},
+  {id:3,name:"Ermoneyt Burger",cat:"Burger",price:160,img:fallbackImg},
+  {id:4,name:"Cheeseburger",cat:"Burger",price:145,img:fallbackImg},
+  {id:5,name:"Patates Kızartması",cat:"Ekstra",price:70,img:fallbackImg},
+  {id:6,name:"Kola",cat:"İçecek",price:45,img:fallbackImg},
+  {id:7,name:"Limonata",cat:"İçecek",price:65,img:fallbackImg},
+  {id:8,name:"Sufle",cat:"Tatlı",price:95,img:fallbackImg}
 ];
 
 function getProducts(){return JSON.parse(localStorage.getItem(LS_PRODUCTS)||"null")||defaultProducts}
@@ -253,8 +256,8 @@ function getTables(){
   return t;
 }
 function setTables(v){localStorage.setItem(LS_TABLES,JSON.stringify(v))}
-
 function money(n){return "₺"+Number(n||0).toLocaleString("tr-TR")}
+
 function showPage(id,btn){
   document.querySelectorAll("main section").forEach(s=>s.classList.add("hide"));
   document.getElementById(id).classList.remove("hide");
@@ -264,7 +267,16 @@ function showPage(id,btn){
 }
 
 function renderAll(){
-  renderTablesSelect();renderCategories();renderMenu();renderCart();renderTables();renderKitchen();renderAdmin();renderReports();renderKPIs();
+  renderTablesSelect();
+  renderCategories();
+  renderMenu();
+  renderCart();
+  renderQR();
+  renderTables();
+  renderKitchen();
+  renderAdmin();
+  renderReports();
+  renderKPIs();
 }
 
 function renderTablesSelect(){
@@ -283,7 +295,7 @@ function renderMenu(){
   const products=getProducts().filter(p=>activeCategory==="Tümü"||p.cat===activeCategory);
   document.getElementById("menuGrid").innerHTML=products.map(p=>`
     <div class="card item">
-      <img src="${p.img||'../../assets/img/restaurant-pos.png'}" onerror="this.src='../../assets/img/restaurant-pos.png'">
+      <img src="${p.img||fallbackImg}" onerror="this.src='${fallbackImg}'">
       <div class="item-top">
         <div>
           <h3>${p.name}</h3>
@@ -346,6 +358,36 @@ function placeOrder(){
   renderAll();
 }
 
+function getBaseUrl(){
+  return window.location.origin + window.location.pathname;
+}
+
+function renderQR(){
+  const grid=document.getElementById("qrGrid");
+  if(!grid)return;
+  const base=getBaseUrl();
+  grid.innerHTML=getTables().map(t=>{
+    const url=base+"?masa="+t.no;
+    const qr="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+encodeURIComponent(url);
+    return `
+      <div class="card table">
+        <h3>Masa ${t.no}</h3>
+        <img class="qr-img" src="${qr}">
+        <p class="small">${url}</p>
+        <div class="actions">
+          <button class="btn" onclick="window.open('${url}','_blank')">Menüyü Aç</button>
+          <button class="btn dark" onclick="copyText('${url}')">Link Kopyala</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function copyText(text){
+  navigator.clipboard.writeText(text);
+  alert("QR linki kopyalandı");
+}
+
 function renderTables(){
   const orders=getOrders();
   document.getElementById("tableGrid").innerHTML=getTables().map(t=>{
@@ -387,7 +429,10 @@ function closeTable(no){
   if(!confirm("Masa hesabı kapatılsın mı?"))return;
   const orders=getOrders().map(o=>o.tableNo===no && o.status!=="paid"?{...o,status:"paid"}:o);
   setOrders(orders);
-  const tables=getTables(); const t=tables.find(x=>x.no===no); if(t)t.status="empty"; setTables(tables);
+  const tables=getTables(); 
+  const t=tables.find(x=>x.no===no); 
+  if(t)t.status="empty"; 
+  setTables(tables);
   tableDetail(no);renderAll();
 }
 
@@ -398,7 +443,8 @@ function moveTablePrompt(from){
   setOrders(orders);
   const tables=getTables();
   const tf=tables.find(x=>x.no===from), tt=tables.find(x=>x.no===to);
-  if(tf)tf.status="empty"; if(tt)tt.status="busy";
+  if(tf)tf.status="empty"; 
+  if(tt)tt.status="busy";
   setTables(tables);
   renderAll();tableDetail(to);
 }
@@ -430,6 +476,19 @@ function statusText(s){
   return {new:"Yeni",preparing:"Hazırlanıyor",ready:"Hazır",served:"Servis Edildi",paid:"Ödendi"}[s]||s;
 }
 
+function previewUpload(event){
+  const file=event.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    uploadedImage=e.target.result;
+    const img=document.getElementById("pPreview");
+    img.src=uploadedImage;
+    img.style.display="block";
+  };
+  reader.readAsDataURL(file);
+}
+
 function renderAdmin(){
   const list=document.getElementById("productList");
   list.innerHTML=getProducts().map(p=>`
@@ -444,17 +503,24 @@ function addProduct(){
   const name=document.getElementById("pName").value.trim();
   const price=Number(document.getElementById("pPrice").value);
   const cat=document.getElementById("pCat").value;
-  const img=document.getElementById("pImg").value.trim()||"../../assets/img/restaurant-pos.png";
+  const img=uploadedImage||fallbackImg;
   if(!name||!price)return alert("Ürün adı ve fiyat gir.");
   const products=getProducts();
   products.push({id:Date.now(),name,price,cat,img});
   setProducts(products);
+
   document.getElementById("pName").value="";
   document.getElementById("pPrice").value="";
-  document.getElementById("pImg").value="";
+  document.getElementById("pImgFile").value="";
+  document.getElementById("pPreview").style.display="none";
+  uploadedImage="";
   renderAll();
 }
-function deleteProduct(id){setProducts(getProducts().filter(p=>p.id!==id));renderAll()}
+
+function deleteProduct(id){
+  setProducts(getProducts().filter(p=>p.id!==id));
+  renderAll();
+}
 
 function setTableCount(){
   const n=Number(document.getElementById("tableCount").value||12);
@@ -500,13 +566,31 @@ function seedDemo(){
   ]);
   renderAll();
 }
+
 function resetDemo(){
   if(!confirm("Tüm demo verisi silinsin mi?"))return;
-  localStorage.removeItem(LS_PRODUCTS);localStorage.removeItem(LS_ORDERS);localStorage.removeItem(LS_TABLES);
-  cart=[];renderAll();
+  localStorage.removeItem(LS_PRODUCTS);
+  localStorage.removeItem(LS_ORDERS);
+  localStorage.removeItem(LS_TABLES);
+  cart=[];
+  uploadedImage="";
+  renderAll();
 }
 
 renderAll();
+
+const params=new URLSearchParams(window.location.search);
+const masaParam=params.get("masa");
+
+if(masaParam){
+  setTimeout(()=>{
+    const tableSelect=document.getElementById("customerTable");
+    if(tableSelect){
+      tableSelect.value=masaParam;
+      showPage("customer");
+    }
+  },100);
+}
 </script>
 </body>
 </html>
