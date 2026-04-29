@@ -56,6 +56,14 @@ p{color:var(--muted);line-height:1.7}
 .small{font-size:13px;color:var(--muted);word-break:break-all}
 .upload-preview{width:100%;height:130px;object-fit:cover;border-radius:16px;background:#111a31;margin:8px 0}
 .notice{border-left:5px solid var(--gold)}
+.fixed-qr-box{text-align:center}
+.fixed-qr-box img{width:230px;background:white;padding:12px;border-radius:18px;margin:10px auto;display:block}
+.menu-only-title{display:none}
+.qr-menu-mode .hero,.qr-menu-mode .tabs{display:none!important}
+.qr-menu-mode .menu-only-title{display:block;margin-bottom:16px}
+.qr-menu-mode main{padding-top:18px}
+.qr-menu-mode .cart{position:sticky;bottom:0;width:100%;margin-top:20px}
+.qr-menu-mode .brand span::after{content:" • Menü";color:var(--gold)}
 @media(max-width:900px){
 .hero-grid,.grid,.menu-grid,.order-grid,.kpis{grid-template-columns:1fr}
 .table-grid{grid-template-columns:repeat(2,1fr)}
@@ -107,6 +115,11 @@ p{color:var(--muted);line-height:1.7}
 <main class="container section">
 
 <section id="customer">
+  <div class="card menu-only-title">
+    <h3>🍽️ Ermoneyt Restoran Menü</h3>
+    <p class="small">Masa numaranızı seçip ürünleri sepete ekleyerek sipariş verebilirsiniz.</p>
+  </div>
+
   <div class="grid">
     <div class="card notice">
       <h3>📍 Masa Seçimi</h3>
@@ -185,6 +198,14 @@ p{color:var(--muted);line-height:1.7}
       <p class="small">Masa sayısı değişince sipariş ekranındaki masa seçimi de güncellenir.</p>
     </div>
 
+    <div class="card fixed-qr-box">
+      <h3>📲 Sabit Menü QR</h3>
+      <img id="fixedMenuQR" alt="Sabit Menü QR">
+      <p class="small" id="fixedMenuLink"></p>
+      <button class="btn" onclick="copyMenuLink()">QR Linkini Kopyala</button>
+      <p class="small">Bu QR sabittir. Masaya özel değildir. Açılınca garson/müşteri masa seçer.</p>
+    </div>
+
     <div class="card">
       <h3>⚙️ Demo</h3>
       <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
@@ -216,9 +237,9 @@ p{color:var(--muted);line-height:1.7}
 </main>
 
 <script>
-const LS_PRODUCTS="ermoneyt_products_v5";
-const LS_ORDERS="ermoneyt_orders_v5";
-const LS_TABLES="ermoneyt_tables_v5";
+const LS_PRODUCTS="ermoneyt_products_v6";
+const LS_ORDERS="ermoneyt_orders_v6";
+const LS_TABLES="ermoneyt_tables_v6";
 let activeCategory="Tümü";
 let cart=[];
 let uploadedImage="";
@@ -264,6 +285,7 @@ function renderAll(){
   renderTables();
   renderKitchen();
   renderAdmin();
+  renderFixedMenuQR();
   renderReports();
   renderKPIs();
 }
@@ -515,6 +537,32 @@ function renderKPIs(){
   document.getElementById("kpiReady").innerText=open.filter(o=>o.status==="ready").length;
 }
 
+function getMenuUrl(){
+  return window.location.origin + window.location.pathname + "?menu=1";
+}
+
+function renderFixedMenuQR(){
+  const img=document.getElementById("fixedMenuQR");
+  const txt=document.getElementById("fixedMenuLink");
+  if(!img||!txt)return;
+  const url=getMenuUrl();
+  img.src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data="+encodeURIComponent(url);
+  txt.innerText=url;
+}
+
+function copyMenuLink(){
+  navigator.clipboard.writeText(getMenuUrl());
+  alert("Menü QR linki kopyalandı");
+}
+
+function activateMenuOnlyMode(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get("menu")==="1"){
+    document.body.classList.add("qr-menu-mode");
+    showPage("customer");
+  }
+}
+
 function seedDemo(){
   setProducts(defaultProducts);
   setTables(Array.from({length:12},(_,i)=>({no:i+1,status:i<3?"busy":"empty"})));
@@ -537,6 +585,7 @@ function resetDemo(){
 }
 
 renderAll();
+activateMenuOnlyMode();
 </script>
 </body>
 </html>
