@@ -54,8 +54,8 @@ p{color:var(--muted);line-height:1.7}
 .kpi span{display:block;color:var(--muted);margin-top:4px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .small{font-size:13px;color:var(--muted);word-break:break-all}
-.qr-img{width:100%;max-width:210px;background:white;padding:12px;border-radius:18px}
 .upload-preview{width:100%;height:130px;object-fit:cover;border-radius:16px;background:#111a31;margin:8px 0}
+.notice{border-left:5px solid var(--gold)}
 @media(max-width:900px){
 .hero-grid,.grid,.menu-grid,.order-grid,.kpis{grid-template-columns:1fr}
 .table-grid{grid-template-columns:repeat(2,1fr)}
@@ -72,8 +72,7 @@ p{color:var(--muted);line-height:1.7}
       <span>ERMONEYT RESTORAN DEMO</span>
     </div>
     <div class="tabs">
-      <button class="tab active" onclick="showPage('customer',this)">Müşteri QR</button>
-      <button class="tab" onclick="showPage('qr',this)">QR Masalar</button>
+      <button class="tab active" onclick="showPage('customer',this)">Menü / Sipariş</button>
       <button class="tab" onclick="showPage('tables',this)">Masa Yönetimi</button>
       <button class="tab" onclick="showPage('kitchen',this)">Mutfak</button>
       <button class="tab" onclick="showPage('admin',this)">Admin</button>
@@ -85,11 +84,11 @@ p{color:var(--muted);line-height:1.7}
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <div class="badge">QR Menü • Masa Sistemi • Görsel Yükleme • Mutfak • POS</div>
+      <div class="badge">Sabit QR Menü • Garson Masa Seçimi • Görsel Yükleme • Mutfak • POS</div>
       <h1>Restoran için <span>tam operasyon demosu</span>.</h1>
-      <p>Masa QR’ı okutulur, menü açılır, masa otomatik seçilir. Sipariş mutfağa düşer, masa hesabı açılır, admin ürün ve görsel yönetir.</p>
+      <p>Sabit QR ile menü açılır. Garson veya müşteri sipariş vermeden önce masa numarasını seçer. Sipariş mutfağa düşer, masa hesabı açılır, admin ürün ve görsel yönetir.</p>
       <div class="actions">
-        <button class="btn" onclick="showPage('customer')">QR Demo Başlat</button>
+        <button class="btn" onclick="showPage('customer')">Menüyü Aç</button>
         <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
         <button class="btn red" onclick="resetDemo()">Temizle</button>
       </div>
@@ -109,10 +108,10 @@ p{color:var(--muted);line-height:1.7}
 
 <section id="customer">
   <div class="grid">
-    <div class="card">
-      <h3>📍 Masa Bilgisi</h3>
+    <div class="card notice">
+      <h3>📍 Masa Seçimi</h3>
       <select id="customerTable"></select>
-      <p class="small">QR ile girildiyse masa otomatik seçilir. Garson manuel alıyorsa buradan seçebilir.</p>
+      <p class="small">Sabit QR açılır. Garson veya müşteri sipariş vermeden önce masa numarasını buradan seçer.</p>
       <textarea id="orderNote" rows="3" placeholder="Not: soğansız, acısız, hızlı gelsin..."></textarea>
     </div>
     <div class="card">
@@ -121,7 +120,7 @@ p{color:var(--muted);line-height:1.7}
     </div>
     <div class="card">
       <h3>🧾 Sipariş Akışı</h3>
-      <p class="small">QR okut → masa otomatik gelsin → ürün seç → sipariş gönder → mutfağa düşsün.</p>
+      <p class="small">Sabit QR okutulur → masa seçilir → ürün seçilir → sipariş gönderilir → mutfakta görünür.</p>
     </div>
   </div>
 
@@ -137,15 +136,6 @@ p{color:var(--muted);line-height:1.7}
       <button class="btn dark" onclick="clearCart()">Temizle</button>
     </div>
   </div>
-</section>
-
-<section id="qr" class="hide">
-  <div class="card">
-    <h3>📲 Masa QR Kodları</h3>
-    <p>Her masaya özel sabit QR oluşur. QR okutulunca link <b>?masa=1</b> gibi açılır ve masa otomatik seçilir.</p>
-  </div>
-  <br>
-  <div class="table-grid" id="qrGrid"></div>
 </section>
 
 <section id="tables" class="hide">
@@ -192,7 +182,7 @@ p{color:var(--muted);line-height:1.7}
       <h3>🪑 Masa Ayarı</h3>
       <input class="input" id="tableCount" type="number" value="12">
       <button class="btn" onclick="setTableCount()">Masa Sayısını Güncelle</button>
-      <p class="small">Masa sayısı değişince QR kodları da otomatik değişir.</p>
+      <p class="small">Masa sayısı değişince sipariş ekranındaki masa seçimi de güncellenir.</p>
     </div>
 
     <div class="card">
@@ -226,9 +216,9 @@ p{color:var(--muted);line-height:1.7}
 </main>
 
 <script>
-const LS_PRODUCTS="ermoneyt_products_v4";
-const LS_ORDERS="ermoneyt_orders_v4";
-const LS_TABLES="ermoneyt_tables_v4";
+const LS_PRODUCTS="ermoneyt_products_v5";
+const LS_ORDERS="ermoneyt_orders_v5";
+const LS_TABLES="ermoneyt_tables_v5";
 let activeCategory="Tümü";
 let cart=[];
 let uploadedImage="";
@@ -271,7 +261,6 @@ function renderAll(){
   renderCategories();
   renderMenu();
   renderCart();
-  renderQR();
   renderTables();
   renderKitchen();
   renderAdmin();
@@ -356,36 +345,6 @@ function placeOrder(){
   document.getElementById("orderNote").value="";
   alert("Sipariş alındı! Mutfak ekranına düştü.");
   renderAll();
-}
-
-function getBaseUrl(){
-  return window.location.origin + window.location.pathname;
-}
-
-function renderQR(){
-  const grid=document.getElementById("qrGrid");
-  if(!grid)return;
-  const base=getBaseUrl();
-  grid.innerHTML=getTables().map(t=>{
-    const url=base+"?masa="+t.no;
-    const qr="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+encodeURIComponent(url);
-    return `
-      <div class="card table">
-        <h3>Masa ${t.no}</h3>
-        <img class="qr-img" src="${qr}">
-        <p class="small">${url}</p>
-        <div class="actions">
-          <button class="btn" onclick="window.open('${url}','_blank')">Menüyü Aç</button>
-          <button class="btn dark" onclick="copyText('${url}')">Link Kopyala</button>
-        </div>
-      </div>
-    `;
-  }).join("");
-}
-
-function copyText(text){
-  navigator.clipboard.writeText(text);
-  alert("QR linki kopyalandı");
 }
 
 function renderTables(){
@@ -578,19 +537,6 @@ function resetDemo(){
 }
 
 renderAll();
-
-const params=new URLSearchParams(window.location.search);
-const masaParam=params.get("masa");
-
-if(masaParam){
-  setTimeout(()=>{
-    const tableSelect=document.getElementById("customerTable");
-    if(tableSelect){
-      tableSelect.value=masaParam;
-      showPage("customer");
-    }
-  },100);
-}
 </script>
 </body>
 </html>
