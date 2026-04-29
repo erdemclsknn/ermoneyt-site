@@ -47,6 +47,9 @@ p{color:var(--muted);line-height:1.7}
 .variant-list{display:grid;gap:8px;margin-top:12px}
 .variant-row{display:flex;justify-content:space-between;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:10px 12px}
 .variant-row b{color:var(--gold)}
+.variant-row.selectable{cursor:pointer;transition:.2s}
+.variant-row.selectable:hover{border-color:var(--gold);background:rgba(248,193,74,.1)}
+.variant-row.selected{background:rgba(248,193,74,.18);border-color:var(--gold)}
 .cart{position:fixed;right:18px;bottom:18px;width:360px;z-index:30}
 .cart-list{max-height:220px;overflow:auto;margin:10px 0}
 .total{display:flex;justify-content:space-between;font-size:22px;font-weight:900;color:var(--gold);padding-top:12px}
@@ -262,10 +265,10 @@ p{color:var(--muted);line-height:1.7}
 const ADMIN_USER="admin";
 const ADMIN_PASS="1ermoneyt2.";
 
-const LS_CATEGORIES="ermoneyt_categories_full_v1";
-const LS_PRODUCTS="ermoneyt_products_full_v1";
-const LS_ORDERS="ermoneyt_orders_full_v1";
-const LS_TABLES="ermoneyt_tables_full_v1";
+const LS_CATEGORIES="ermoneyt_categories_full_v2";
+const LS_PRODUCTS="ermoneyt_products_full_v2";
+const LS_ORDERS="ermoneyt_orders_full_v2";
+const LS_TABLES="ermoneyt_tables_full_v2";
 
 let activeCategory="Tümü";
 let cart=[];
@@ -277,11 +280,11 @@ const fallbackImg="../../assets/img/restaurant-pos.png";
 const defaultCategories=["Pizza","Burger","İçecek","Tatlı","Ekstra"];
 
 const defaultProducts=[
-  {id:1,name:"Karışık Pizza",cat:"Pizza",price:180,desc:"Sucuk, mantar, biber ve özel peynir karışımı.",img:fallbackImg,variants:[{name:"Küçük",price:140},{name:"Orta",price:180},{name:"Büyük",price:230}]},
-  {id:2,name:"Margarita Pizza",cat:"Pizza",price:150,desc:"Domates sos, mozzarella ve taze fesleğen.",img:fallbackImg,variants:[{name:"Küçük",price:120},{name:"Orta",price:150},{name:"Büyük",price:200}]},
-  {id:3,name:"Ermoneyt Burger",cat:"Burger",price:160,desc:"Özel soslu, çift cheddar peynirli burger.",img:fallbackImg,variants:[{name:"Tek Köfte",price:160},{name:"Çift Köfte",price:220}]},
-  {id:4,name:"Kola",cat:"İçecek",price:45,desc:"Soğuk servis edilir.",img:fallbackImg,variants:[{name:"330 ml",price:45},{name:"1 L",price:80}]},
-  {id:5,name:"Sufle",cat:"Tatlı",price:95,desc:"Akışkan çikolatalı sıcak sufle.",img:fallbackImg,variants:[]}
+  {id:1,name:"Karışık Pizza",cat:"Pizza",price:180,desc:"Sucuk, mantar, biber ve özel peynir karışımı.",img:fallbackImg,variants:[{name:"Küçük",price:140},{name:"Orta",price:180},{name:"Büyük",price:230}],selectedVariantIndex:null},
+  {id:2,name:"Margarita Pizza",cat:"Pizza",price:150,desc:"Domates sos, mozzarella ve taze fesleğen.",img:fallbackImg,variants:[{name:"Küçük",price:120},{name:"Orta",price:150},{name:"Büyük",price:200}],selectedVariantIndex:null},
+  {id:3,name:"Ermoneyt Burger",cat:"Burger",price:160,desc:"Özel soslu, çift cheddar peynirli burger.",img:fallbackImg,variants:[{name:"Tek Köfte",price:160},{name:"Çift Köfte",price:220}],selectedVariantIndex:null},
+  {id:4,name:"Kola",cat:"İçecek",price:45,desc:"Soğuk servis edilir.",img:fallbackImg,variants:[{name:"330 ml",price:45},{name:"1 L",price:80}],selectedVariantIndex:null},
+  {id:5,name:"Sufle",cat:"Tatlı",price:95,desc:"Akışkan çikolatalı sıcak sufle.",img:fallbackImg,variants:[],selectedVariantIndex:null}
 ];
 
 function checkLogin(){
@@ -372,6 +375,7 @@ function renderCategoryButtons(){
 
 function renderMenu(){
   const products=getProducts().filter(p=>activeCategory==="Tümü"||p.cat===activeCategory);
+
   document.getElementById("menuGrid").innerHTML=products.map((p,i)=>`
     <div class="card item" style="animation-delay:${i*0.04}s">
       <img src="${p.img||fallbackImg}" onerror="this.src='${fallbackImg}'">
@@ -380,7 +384,17 @@ function renderMenu(){
       <p class="desc">${p.desc||"Lezzetli ürün açıklaması."}</p>
       ${
         p.variants && p.variants.length
-        ? `<div class="variant-list">${p.variants.map(v=>`<div class="variant-row"><span>${v.name}</span><b>${money(v.price)}</b></div>`).join("")}</div>`
+        ? `<div class="variant-list">
+            ${p.variants.map((v,vi)=>`
+              <div 
+                class="variant-row selectable ${p.selectedVariantIndex===vi?'selected':''}" 
+                id="variant-${p.id}-${vi}" 
+                onclick="selectVariant(${p.id},${vi})">
+                <span>${v.name}</span>
+                <b>${money(v.price)}</b>
+              </div>
+            `).join("")}
+          </div>`
         : `<div class="price">${money(p.price)}</div>`
       }
       <div class="actions order-area">
@@ -390,34 +404,96 @@ function renderMenu(){
   `).join("") || `<div class="card"><h3>Bu kategoride ürün yok</h3><p>Admin panelden ürün ekleyebilirsin.</p></div>`;
 }
 
+function selectVariant(productId, variantIndex){
+  const products=getProducts();
+  const updated=products.map(p=>{
+    if(p.id===productId){
+      return {...p, selectedVariantIndex:variantIndex};
+    }
+    return p;
+  });
+
+  setProducts(updated);
+  renderMenu();
+}
+
 function addCart(id){
   const p=getProducts().find(x=>x.id===id);
-  const found=cart.find(x=>x.id===id);
-  if(found) found.qty++;
-  else cart.push({...p,qty:1});
+  if(!p)return;
+
+  let selectedOption=null;
+  let finalPrice=p.price;
+
+  if(p.variants && p.variants.length){
+    if(p.selectedVariantIndex===undefined || p.selectedVariantIndex===null){
+      return alert("Lütfen önce ürün boyutunu / opsiyonunu seç.");
+    }
+
+    selectedOption=p.variants[p.selectedVariantIndex];
+    finalPrice=selectedOption.price;
+  }
+
+  const cartKey=selectedOption ? `${p.id}-${selectedOption.name}` : `${p.id}`;
+  const found=cart.find(x=>x.cartKey===cartKey);
+
+  if(found){
+    found.qty++;
+  }else{
+    cart.push({
+      cartKey,
+      id:p.id,
+      name:p.name,
+      option:selectedOption ? selectedOption.name : "",
+      price:finalPrice,
+      qty:1
+    });
+  }
+
   renderCart();
 }
 
 function renderCart(){
-  const total=cart.reduce((s,i)=>s+(i.variants?.[0]?.price||i.price)*i.qty,0);
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   document.getElementById("cartTotal").innerText=money(total);
+
   document.getElementById("cartList").innerHTML=cart.length?cart.map(i=>`
     <div class="row">
-      <span>${i.name} x${i.qty}</span>
-      <span>${money((i.variants?.[0]?.price||i.price)*i.qty)}</span>
+      <span>${i.name}${i.option ? " - " + i.option : ""} x${i.qty}</span>
+      <span>${money(i.price*i.qty)}</span>
     </div>
   `).join(""):`<p class="small">Sepet boş.</p>`;
 }
+
 function clearCart(){cart=[];renderCart()}
 
 function placeOrder(){
   if(!cart.length)return alert("Sepet boş.");
+
   const tableNo=Number(document.getElementById("customerTable").value);
   const note=document.getElementById("orderNote").value;
-  const total=cart.reduce((s,i)=>s+(i.variants?.[0]?.price||i.price)*i.qty,0);
-  const order={id:Date.now(),tableNo,note,items:cart.map(i=>({name:i.name,qty:i.qty,price:i.variants?.[0]?.price||i.price})),total,status:"new",createdAt:new Date().toLocaleString("tr-TR")};
-  const orders=getOrders();orders.unshift(order);setOrders(orders);
-  clearCart();document.getElementById("orderNote").value="";
+  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+
+  const order={
+    id:Date.now(),
+    tableNo,
+    note,
+    items:cart.map(i=>({
+      name:i.option ? `${i.name} - ${i.option}` : i.name,
+      qty:i.qty,
+      price:i.price
+    })),
+    total,
+    status:"new",
+    createdAt:new Date().toLocaleString("tr-TR")
+  };
+
+  const orders=getOrders();
+  orders.unshift(order);
+  setOrders(orders);
+
+  clearCart();
+  document.getElementById("orderNote").value="";
+
   alert("Sipariş alındı! Mutfak ekranına düştü.");
   renderAll();
 }
@@ -463,6 +539,7 @@ function renderKitchen(){
     </div>
   `).join(""):`<p class="small">Aktif sipariş yok.</p>`;
 }
+
 function setStatus(id,status){setOrders(getOrders().map(o=>o.id===id?{...o,status}:o));renderAll()}
 function statusText(s){return {new:"Yeni",preparing:"Hazırlanıyor",ready:"Hazır",served:"Servis Edildi",paid:"Ödendi"}[s]||s}
 
@@ -470,45 +547,189 @@ function renderAdminCategories(){
   const box=document.getElementById("categoryList"); if(!box)return;
   box.innerHTML=getCategories().map(c=>`<div class="row"><span>${c}</span><button class="btn red" onclick="deleteCategory('${c}')">Sil</button></div>`).join("");
 }
-function addCategory(){const name=document.getElementById("catName").value.trim();if(!name)return alert("Kategori adı gir.");const cats=getCategories();if(cats.includes(name))return alert("Bu kategori zaten var.");cats.push(name);setCategories(cats);document.getElementById("catName").value="";renderAll()}
-function deleteCategory(name){setCategories(getCategories().filter(c=>c!==name));if(activeCategory===name)activeCategory="Tümü";renderAll()}
 
-function renderProductCategorySelect(){const s=document.getElementById("pCat");if(!s)return;s.innerHTML=getCategories().map(c=>`<option>${c}</option>`).join("")}
-function addVariant(){const name=document.getElementById("variantName").value.trim();const price=Number(document.getElementById("variantPrice").value);if(!name||!price)return alert("Opsiyon adı ve fiyat gir.");variants.push({name,price});document.getElementById("variantName").value="";document.getElementById("variantPrice").value="";renderVariants()}
-function renderVariants(){const box=document.getElementById("variantList");if(!box)return;box.innerHTML=variants.length?variants.map((v,i)=>`<div class="variant-row"><span>${v.name}</span><b>${money(v.price)}</b><button class="btn red" onclick="variants.splice(${i},1);renderVariants()">Sil</button></div>`).join(""):`<p class="small">Henüz opsiyon eklenmedi.</p>`}
-function previewUpload(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=x=>{uploadedImage=x.target.result;const img=document.getElementById("pPreview");img.src=uploadedImage;img.style.display="block"};r.readAsDataURL(f)}
+function addCategory(){
+  const name=document.getElementById("catName").value.trim();
+  if(!name)return alert("Kategori adı gir.");
+  const cats=getCategories();
+  if(cats.includes(name))return alert("Bu kategori zaten var.");
+  cats.push(name);
+  setCategories(cats);
+  document.getElementById("catName").value="";
+  renderAll();
+}
+
+function deleteCategory(name){
+  setCategories(getCategories().filter(c=>c!==name));
+  if(activeCategory===name)activeCategory="Tümü";
+  renderAll();
+}
+
+function renderProductCategorySelect(){
+  const s=document.getElementById("pCat");
+  if(!s)return;
+  s.innerHTML=getCategories().map(c=>`<option>${c}</option>`).join("");
+}
+
+function addVariant(){
+  const name=document.getElementById("variantName").value.trim();
+  const price=Number(document.getElementById("variantPrice").value);
+  if(!name||!price)return alert("Opsiyon adı ve fiyat gir.");
+
+  variants.push({name,price});
+
+  document.getElementById("variantName").value="";
+  document.getElementById("variantPrice").value="";
+
+  renderVariants();
+}
+
+function renderVariants(){
+  const box=document.getElementById("variantList");
+  if(!box)return;
+
+  box.innerHTML=variants.length?variants.map((v,i)=>`
+    <div class="variant-row">
+      <span>${v.name}</span>
+      <b>${money(v.price)}</b>
+      <button class="btn red" onclick="variants.splice(${i},1);renderVariants()">Sil</button>
+    </div>
+  `).join(""):`<p class="small">Henüz opsiyon eklenmedi.</p>`;
+}
+
+function previewUpload(e){
+  const f=e.target.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=x=>{
+    uploadedImage=x.target.result;
+    const img=document.getElementById("pPreview");
+    img.src=uploadedImage;
+    img.style.display="block";
+  };
+  r.readAsDataURL(f);
+}
+
 function addProduct(){
   const name=document.getElementById("pName").value.trim();
   const price=Number(document.getElementById("pPrice").value);
   const cat=document.getElementById("pCat").value;
   const desc=document.getElementById("pDesc").value.trim();
+
   if(!name)return alert("Ürün adı gir.");
   if(!price&&variants.length===0)return alert("Ana fiyat veya opsiyon fiyatı gir.");
+
   const products=getProducts();
-  products.push({id:Date.now(),name,price:price||0,cat,desc,img:uploadedImage||fallbackImg,variants:[...variants]});
+
+  products.push({
+    id:Date.now(),
+    name,
+    price:price||0,
+    cat,
+    desc,
+    img:uploadedImage||fallbackImg,
+    variants:[...variants],
+    selectedVariantIndex:null
+  });
+
   setProducts(products);
-  document.getElementById("pName").value="";document.getElementById("pPrice").value="";document.getElementById("pDesc").value="";document.getElementById("pImgFile").value="";document.getElementById("pPreview").style.display="none";
-  uploadedImage="";variants=[];renderAll();
+
+  document.getElementById("pName").value="";
+  document.getElementById("pPrice").value="";
+  document.getElementById("pDesc").value="";
+  document.getElementById("pImgFile").value="";
+  document.getElementById("pPreview").style.display="none";
+
+  uploadedImage="";
+  variants=[];
+
+  renderAll();
 }
-function renderAdminProducts(){const box=document.getElementById("productList");if(!box)return;box.innerHTML=getProducts().map(p=>`<div class="row"><span>${p.name} • ${p.cat} • ${p.variants?.length?p.variants.map(v=>`${v.name}: ${money(v.price)}`).join(" / "):money(p.price)}</span><button class="btn red" onclick="deleteProduct(${p.id})">Sil</button></div>`).join("")}
-function deleteProduct(id){setProducts(getProducts().filter(p=>p.id!==id));renderAll()}
+
+function renderAdminProducts(){
+  const box=document.getElementById("productList");
+  if(!box)return;
+
+  box.innerHTML=getProducts().map(p=>`
+    <div class="row">
+      <span>${p.name} • ${p.cat} • ${p.variants?.length?p.variants.map(v=>`${v.name}: ${money(v.price)}`).join(" / "):money(p.price)}</span>
+      <button class="btn red" onclick="deleteProduct(${p.id})">Sil</button>
+    </div>
+  `).join("");
+}
+
+function deleteProduct(id){
+  setProducts(getProducts().filter(p=>p.id!==id));
+  renderAll();
+}
 
 function getMenuUrl(){return window.location.origin+window.location.pathname+"?menu=1"}
-function renderFixedMenuQR(){const img=document.getElementById("fixedMenuQR");const txt=document.getElementById("fixedMenuLink");if(!img||!txt)return;const url=getMenuUrl();img.src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data="+encodeURIComponent(url);txt.innerText=url}
-function copyMenuLink(){navigator.clipboard.writeText(getMenuUrl());alert("Menü QR linki kopyalandı")}
+
+function renderFixedMenuQR(){
+  const img=document.getElementById("fixedMenuQR");
+  const txt=document.getElementById("fixedMenuLink");
+  if(!img||!txt)return;
+  const url=getMenuUrl();
+  img.src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data="+encodeURIComponent(url);
+  txt.innerText=url;
+}
+
+function copyMenuLink(){
+  navigator.clipboard.writeText(getMenuUrl());
+  alert("Menü QR linki kopyalandı");
+}
 
 function renderReports(){
-  const orders=getOrders();const paid=orders.filter(o=>o.status==="paid");const total=paid.reduce((s,o)=>s+o.total,0);const avg=paid.length?total/paid.length:0;const open=orders.filter(o=>o.status!=="paid").length;
-  document.getElementById("rSales").innerText=money(total);document.getElementById("rOrders").innerText=orders.length;document.getElementById("rAvg").innerText=money(avg);document.getElementById("rOpen").innerText=open;
-  document.getElementById("reportList").innerHTML=orders.map(o=>`<div class="row"><span>Masa ${o.tableNo} • ${statusText(o.status)} • ${o.createdAt}</span><b>${money(o.total)}</b></div>`).join("")||"<p class='small'>Henüz sipariş yok.</p>";
-}
-function renderKPIs(){
-  const orders=getOrders();const paid=orders.filter(o=>o.status==="paid");const open=orders.filter(o=>o.status!=="paid");
-  document.getElementById("kpiSales").innerText=money(paid.reduce((s,o)=>s+o.total,0));document.getElementById("kpiOrders").innerText=orders.length;document.getElementById("kpiTables").innerText=new Set(open.map(o=>o.tableNo)).size;document.getElementById("kpiReady").innerText=open.filter(o=>o.status==="ready").length;
+  const orders=getOrders();
+  const paid=orders.filter(o=>o.status==="paid");
+  const total=paid.reduce((s,o)=>s+o.total,0);
+  const avg=paid.length?total/paid.length:0;
+  const open=orders.filter(o=>o.status!=="paid").length;
+
+  document.getElementById("rSales").innerText=money(total);
+  document.getElementById("rOrders").innerText=orders.length;
+  document.getElementById("rAvg").innerText=money(avg);
+  document.getElementById("rOpen").innerText=open;
+
+  document.getElementById("reportList").innerHTML=orders.map(o=>`
+    <div class="row">
+      <span>Masa ${o.tableNo} • ${statusText(o.status)} • ${o.createdAt}</span>
+      <b>${money(o.total)}</b>
+    </div>
+  `).join("")||"<p class='small'>Henüz sipariş yok.</p>";
 }
 
-function resetDemo(){if(!confirm("Tüm demo verisi silinsin mi?"))return;localStorage.removeItem(LS_CATEGORIES);localStorage.removeItem(LS_PRODUCTS);localStorage.removeItem(LS_ORDERS);localStorage.removeItem(LS_TABLES);activeCategory="Tümü";cart=[];uploadedImage="";variants=[];renderAll()}
-function activateMenuMode(){const params=new URLSearchParams(window.location.search);if(params.get("menu")==="1"){document.body.classList.add("menu-mode");showPage("customer")}}
+function renderKPIs(){
+  const orders=getOrders();
+  const paid=orders.filter(o=>o.status==="paid");
+  const open=orders.filter(o=>o.status!=="paid");
+
+  document.getElementById("kpiSales").innerText=money(paid.reduce((s,o)=>s+o.total,0));
+  document.getElementById("kpiOrders").innerText=orders.length;
+  document.getElementById("kpiTables").innerText=new Set(open.map(o=>o.tableNo)).size;
+  document.getElementById("kpiReady").innerText=open.filter(o=>o.status==="ready").length;
+}
+
+function resetDemo(){
+  if(!confirm("Tüm demo verisi silinsin mi?"))return;
+  localStorage.removeItem(LS_CATEGORIES);
+  localStorage.removeItem(LS_PRODUCTS);
+  localStorage.removeItem(LS_ORDERS);
+  localStorage.removeItem(LS_TABLES);
+  activeCategory="Tümü";
+  cart=[];
+  uploadedImage="";
+  variants=[];
+  renderAll();
+}
+
+function activateMenuMode(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get("menu")==="1"){
+    document.body.classList.add("menu-mode");
+    showPage("customer");
+  }
+}
 
 renderAll();
 activateMenuMode();
