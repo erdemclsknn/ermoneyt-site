@@ -6,6 +6,79 @@
   <title>Restoran QR Sipariş Sistemi | Ermoneyt</title>
   <meta name="description" content="Restoran ve kafeler için QR menü, masadan sipariş, mutfak ekranı, garson paneli, adisyon, paket servis ve satış raporlama sistemi.">
   <link rel="stylesheet" href="../css/style.css">
+
+  <style>
+    .demo-box {
+      margin-top: 28px;
+      background: linear-gradient(135deg, #ffffff, #f3f6ff);
+      border-radius: 28px;
+      padding: 34px;
+      border: 1px solid rgba(255,255,255,.2);
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      color: #111827;
+      text-align: center;
+    }
+
+    .demo-box span {
+      display: inline-block;
+      color: #2563eb;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: .4px;
+    }
+
+    .demo-box h2 {
+      color: #0f172a;
+      font-size: 34px;
+      margin-bottom: 14px;
+    }
+
+    .demo-box p {
+      color: #334155;
+      max-width: 780px;
+      margin: 0 auto 24px;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .demo-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .demo-actions .btn {
+      min-width: 220px;
+      text-align: center;
+    }
+
+    .section.dark {
+      background: #07111f;
+      color: #fff;
+    }
+
+    .section.dark .section-head span,
+    .section.dark .section-head h2,
+    .section.dark .section-head p,
+    .section-head.light span,
+    .section-head.light h2,
+    .section-head.light p {
+      color: #fff;
+    }
+
+    .solution {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #fff;
+    }
+
+    .solution h3,
+    .solution p,
+    .solution b {
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
 
@@ -38,7 +111,7 @@
       <div class="hero-actions">
         <a class="btn primary" href="https://wa.me/905511620693" target="_blank">WhatsApp'tan Teklif Al</a>
         <a class="btn secondary" href="#fonksiyonlar">Sistemi İncele</a>
-        <a class="btn secondary" href="https://ermoneyt.com/hizmetler/restoran.html" target="_blank">Demoyu Gör</a>
+        <a class="btn secondary" href="https://ermoneyt.com/demo/restoran/index.html" target="_blank">Demoyu Gör</a>
       </div>
 
       <div class="stats">
@@ -73,7 +146,7 @@
           <li>Kategori yönetimi</li>
           <li>Ürün fotoğrafı</li>
           <li>Fiyat ve açıklama</li>
-          <li>Aktif/pasif ürün</li>
+          <li>Aktif / pasif ürün</li>
         </ul>
       </div>
 
@@ -106,7 +179,7 @@
         <h3>Adisyon</h3>
         <p>Masa hesabı, ürün ekleme, silme ve ödeme yönetimi.</p>
         <ul>
-          <li>Masa aç/kapat</li>
+          <li>Masa aç / kapat</li>
           <li>Masa taşıma</li>
           <li>Hesap bölme</li>
           <li>Ödeme takibi</li>
@@ -142,16 +215,20 @@
 
 <section id="demo" class="section dark">
   <div class="container">
-    <div class="section-head light">
-      <span>Canlı Demo</span>
-      <h2>Restoran QR sipariş sistemi demosunu inceleyebilirsin.</h2>
+    <div class="demo-box">
+      <span>CANLI DEMO</span>
+      <h2>Restoran QR sipariş sistemi demosunu inceleyin.</h2>
       <p>
-        Demo erişimi ve işletmene özel kurulum detayları için WhatsApp üzerinden iletişime geçebilirsin.
+        Demo üzerinden QR menü, ürün seçenekleri, masa siparişi ve restoran akışını görebilirsiniz.
+        Demo erişimi, kurulum ve fiyat bilgisi için WhatsApp üzerinden iletişime geçebilirsiniz.
       </p>
-      <div class="hero-actions" style="justify-content:center;margin-top:24px;">
-        <a class="btn primary" href="https://ermoneyt.com/hizmetler/restoran.html" target="_blank">Demoyu Aç</a>
+
+      <div class="demo-actions">
+        <a class="btn primary" href="https://ermoneyt.com/demo/restoran/index.html" target="_blank">
+          Demoyu Aç
+        </a>
         <a class="btn secondary" href="https://wa.me/905511620693?text=Merhaba,%20restoran%20QR%20sipariş%20sistemi%20demosu%20hakkında%20bilgi%20almak%20istiyorum." target="_blank">
-          Demo Erişimi İçin WhatsApp'tan Yaz
+          WhatsApp'tan Demo Erişimi İste
         </a>
       </div>
     </div>
@@ -164,10 +241,25 @@
       <span>Kimler İçin?</span>
       <h2>Restoran, kafe, lokanta, fast food ve paket servis işletmeleri için.</h2>
     </div>
+
     <div class="solution-grid">
-      <div class="solution"><b>01</b><h3>Kafe</h3><p>QR menü, masa siparişi ve hızlı ödeme akışı.</p></div>
-      <div class="solution"><b>02</b><h3>Restoran</h3><p>Adisyon, mutfak ekranı, garson paneli ve raporlama.</p></div>
-      <div class="solution"><b>03</b><h3>Paket Servis</h3><p>Adres, sipariş, kurye ve teslimat süreçleri.</p></div>
+      <div class="solution">
+        <b>01</b>
+        <h3>Kafe</h3>
+        <p>QR menü, masa siparişi ve hızlı ödeme akışı.</p>
+      </div>
+
+      <div class="solution">
+        <b>02</b>
+        <h3>Restoran</h3>
+        <p>Adisyon, mutfak ekranı, garson paneli ve raporlama.</p>
+      </div>
+
+      <div class="solution">
+        <b>03</b>
+        <h3>Paket Servis</h3>
+        <p>Adres, sipariş, kurye ve teslimat süreçleri.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -182,6 +274,7 @@
           Demo erişimi, fiyat teklifi ve işletmene özel kurulum için WhatsApp üzerinden iletişime geçebilirsin.
         </p>
       </div>
+
       <a class="btn primary" href="https://wa.me/905511620693?text=Merhaba,%20restoran%20QR%20sipariş%20sistemi%20için%20bilgi%20almak%20istiyorum." target="_blank">
         WhatsApp ile Yaz
       </a>
@@ -195,6 +288,7 @@
       <strong>ERMONEYT</strong>
       <p>Web, mobil, ERP, cloud ve dijital sistem çözümleri.</p>
     </div>
+
     <div>
       <a href="../index.html">Ana Sayfa</a>
       <a href="../index.html#hizmetler">Hizmetler</a>
