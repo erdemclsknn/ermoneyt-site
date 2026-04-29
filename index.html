@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Ermoneyt | Yazılım, Web, Mobil, ERP ve Cloud Çözümleri</title>
-  <meta name="description" content="Ermoneyt; restoran QR sipariş sistemleri, stok depo yazılımları, B2B paneller, rezervasyon sistemleri, web siteleri ve mobil uygulamalar geliştirir.">
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ermoneyt | Web, Mobil, ERP, Cloud ve Dijital Sistemler</title>
+  <meta name="description" content="Ermoneyt; restoran QR sipariş sistemleri, web siteleri, mobil uygulamalar, stok-depo yazılımları, B2B paneller, rezervasyon sistemleri, cloud ve sunucu çözümleri geliştirir.">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="stylesheet" href="css/style.css" />
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
 
-<header>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<header class="site-header">
   <div class="container nav">
-    <a class="logo" href="index.html">
+    <a class="brand" href="index.html">
       <img src="logo.png" alt="Ermoneyt Logo">
       <span>ERMONEYT</span>
     </a>
-    <nav>
+
+    <button class="menu-btn" id="menuBtn">☰</button>
+
+    <nav id="navMenu">
       <a href="#hizmetler">Hizmetler</a>
+      <a href="#cozumler">Çözümler</a>
+      <a href="#altyapi">Altyapı</a>
       <a href="#surec">Süreç</a>
       <a href="#iletisim">İletişim</a>
     </nav>
@@ -26,114 +35,328 @@
 
 <section class="hero">
   <div class="container hero-grid">
-    <div data-aos="fade-right">
-      <div class="badge">Web • Mobil • Panel • ERP • Cloud</div>
-      <h1>İşletmelere <span>dijital sistemler</span> kuruyoruz.</h1>
+    <div class="hero-content" data-aos="fade-right">
+      <div class="badge">Web • Mobil • Panel • ERP • Cloud • Hosting</div>
+      <h1>İşletmelere çalışan <span>dijital sistemler</span> kuruyoruz.</h1>
       <p>
-        Restoran QR sipariş sistemlerinden stok-depo yazılımlarına, B2B bayi panellerinden
-        mobil uygulamalara kadar işletmenize özel yazılım çözümleri geliştiriyoruz.
+        Ermoneyt; restoran QR sipariş sistemlerinden mobil uygulamalara, stok-depo yazılımlarından
+        B2B bayi panellerine, cloud sunucu kurulumlarından özel ERP entegrasyonlarına kadar
+        işletmeler için uçtan uca dijital çözümler üretir.
       </p>
-      <div class="actions">
-        <a class="btn" href="https://wa.me/905000000000" target="_blank">WhatsApp'tan Teklif Al</a>
-        <a class="btn ghost" href="#hizmetler">Hizmetleri İncele</a>
+
+      <div class="hero-actions">
+        <a class="btn primary" href="https://wa.me/905000000000" target="_blank">WhatsApp'tan Teklif Al</a>
+        <a class="btn secondary" href="#hizmetler">Hizmetleri İncele</a>
+      </div>
+
+      <div class="stats">
+        <div><b>12+</b><span>Hizmet Alanı</span></div>
+        <div><b>360°</b><span>Dijital Kurulum</span></div>
+        <div><b>7/24</b><span>Yayın & Destek</span></div>
       </div>
     </div>
 
-    <div class="visual" data-aos="zoom-in">
-      <div class="screen">
-        <div class="screen-row"><strong>QR Sipariş</strong><span class="dot"></span></div>
-        <div class="screen-row"><strong>Stok Takip</strong><span class="dot"></span></div>
-        <div class="screen-row"><strong>B2B Panel</strong><span class="dot"></span></div>
-        <div class="screen-row"><strong>Mobil Uygulama</strong><span class="dot"></span></div>
-        <div class="screen-row"><strong>Cloud Sunucu</strong><span class="dot"></span></div>
+    <div class="hero-visual" data-aos="zoom-in">
+      <div class="dashboard-card">
+        <div class="dash-top">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="dash-title">
+          <div>
+            <small>Ermoneyt Business Panel</small>
+            <h3>Canlı Operasyon</h3>
+          </div>
+          <strong>98%</strong>
+        </div>
+        <div class="dash-grid">
+          <div class="metric"><b>₺128K</b><span>Aylık satış</span></div>
+          <div class="metric"><b>842</b><span>Sipariş</span></div>
+          <div class="metric"><b>36</b><span>Aktif bayi</span></div>
+          <div class="metric"><b>14</b><span>Depo işlem</span></div>
+        </div>
+        <div class="chart">
+          <i style="height:35%"></i>
+          <i style="height:65%"></i>
+          <i style="height:45%"></i>
+          <i style="height:80%"></i>
+          <i style="height:55%"></i>
+          <i style="height:95%"></i>
+          <i style="height:70%"></i>
+        </div>
+      </div>
+
+      <div class="phone-card">
+        <div class="phone-notch"></div>
+        <h4>QR Menü</h4>
+        <div class="food-line"></div>
+        <div class="food-line small"></div>
+        <button>Sipariş Ver</button>
       </div>
     </div>
   </div>
 </section>
 
-<section id="hizmetler">
+<section class="logos">
+  <div class="container logo-strip">
+    <span>QR Sipariş</span>
+    <span>Mobil Uygulama</span>
+    <span>B2B Panel</span>
+    <span>Stok Depo</span>
+    <span>Cloud Sunucu</span>
+    <span>ERP Entegrasyon</span>
+  </div>
+</section>
+
+<section id="hizmetler" class="section">
   <div class="container">
-    <div class="section-title" data-aos="fade-up">
-      <h2>Hizmetlerimiz</h2>
-      <p>Tek sayfalık site değil, işletmeye çalışan gerçek sistemler kuruyoruz.</p>
+    <div class="section-head" data-aos="fade-up">
+      <span>Hizmetlerimiz</span>
+      <h2>Tek sayfalık site değil, işletmeye sistem kuruyoruz.</h2>
+      <p>Her projeyi sadece görünüm olarak değil; yönetim paneli, raporlama, güvenlik, sunucu ve sürdürülebilirlik tarafıyla birlikte planlıyoruz.</p>
     </div>
 
-    <div class="services">
-      <a class="card" href="hizmetler/restoran.html" data-aos="fade-up">
+    <div class="service-grid">
+      <a class="service-card" href="hizmetler/restoran.html" data-aos="fade-up">
         <div class="icon">🍽️</div>
-        <h3>Restoran QR Sipariş</h3>
-        <p>QR menü, masadan sipariş, mutfak ekranı, garson paneli ve satış raporları.</p>
-        <ul><li>QR menü</li><li>Mutfak ekranı</li><li>Adisyon takibi</li></ul>
+        <h3>Restoran QR Sipariş Sistemi</h3>
+        <p>QR menü, masa bazlı sipariş, mutfak ekranı, garson paneli, adisyon ve satış raporları.</p>
+        <ul>
+          <li>QR menü ve kategori yönetimi</li>
+          <li>Masadan sipariş alma</li>
+          <li>Mutfak hazırlık ekranı</li>
+          <li>Garson çağırma ve adisyon</li>
+          <li>Günlük/aylık satış raporu</li>
+        </ul>
       </a>
 
-      <a class="card" href="hizmetler/stok.html" data-aos="fade-up">
+      <a class="service-card" href="hizmetler/stok.html" data-aos="fade-up">
         <div class="icon">📦</div>
         <h3>Stok & Depo Yazılımı</h3>
-        <p>Barkodlu stok giriş-çıkış, depo transferi, sayım ve raporlama sistemi.</p>
-        <ul><li>Barkod</li><li>Depo transfer</li><li>Raporlama</li></ul>
+        <p>Ürün, depo, barkod, sayım, transfer ve stok hareketlerini tek panelden yönetin.</p>
+        <ul>
+          <li>Barkodlu giriş-çıkış</li>
+          <li>Depolar arası transfer</li>
+          <li>Minimum stok uyarısı</li>
+          <li>Sayım ve fire takibi</li>
+          <li>Excel/PDF raporlama</li>
+        </ul>
       </a>
 
-      <a class="card" href="hizmetler/b2b.html" data-aos="fade-up">
+      <a class="service-card" href="hizmetler/b2b.html" data-aos="fade-up">
         <div class="icon">🏢</div>
-        <h3>B2B Bayi Paneli</h3>
-        <p>Bayilere özel fiyat, cari hesap, sipariş, sevkiyat ve ödeme takip sistemi.</p>
-        <ul><li>Bayi girişi</li><li>Cari fiyat</li><li>Sipariş takibi</li></ul>
+        <h3>B2B Bayi & Sipariş Paneli</h3>
+        <p>Bayilerinizin özel fiyat, cari hesap, sipariş ve sevkiyat süreçlerini dijitale taşıyoruz.</p>
+        <ul>
+          <li>Bayiye özel fiyat listesi</li>
+          <li>Cari bakiye görüntüleme</li>
+          <li>Sipariş onay akışı</li>
+          <li>Sevkiyat ve ödeme takibi</li>
+          <li>Yetkili kullanıcı yönetimi</li>
+        </ul>
       </a>
 
-      <a class="card" href="hizmetler/rezervasyon.html" data-aos="fade-up">
+      <a class="service-card" href="hizmetler/rezervasyon.html" data-aos="fade-up">
         <div class="icon">📅</div>
-        <h3>Rezervasyon Sistemi</h3>
-        <p>Restoran, otel, klinik, kuaför ve etkinlikler için online rezervasyon sistemi.</p>
-        <ul><li>Takvim</li><li>Randevu</li><li>Bildirim</li></ul>
+        <h3>Rezervasyon & Randevu Sistemi</h3>
+        <p>Restoran, otel, kuaför, klinik, spor salonu ve etkinlikler için online rezervasyon altyapısı.</p>
+        <ul>
+          <li>Takvim tabanlı randevu</li>
+          <li>SMS/e-posta bildirimleri</li>
+          <li>Personel ve masa seçimi</li>
+          <li>Ön ödeme entegrasyonu</li>
+          <li>İptal ve doluluk yönetimi</li>
+        </ul>
       </a>
 
-      <a class="card" href="hizmetler/vakif.html" data-aos="fade-up">
+      <a class="service-card" href="hizmetler/vakif.html" data-aos="fade-up">
         <div class="icon">🤝</div>
         <h3>Vakıf & Dernek Paneli</h3>
-        <p>Üye yönetimi, bağış takibi, etkinlik, duyuru ve gönüllü yönetim paneli.</p>
-        <ul><li>Üye takip</li><li>Bağış</li><li>Duyuru</li></ul>
+        <p>Üye, bağış, etkinlik, duyuru, gönüllü ve başvuru süreçlerini yönetilebilir hale getiriyoruz.</p>
+        <ul>
+          <li>Üye ve gönüllü yönetimi</li>
+          <li>Bağış ve aidat takibi</li>
+          <li>Duyuru ve etkinlik paneli</li>
+          <li>Başvuru formları</li>
+          <li>Raporlama ekranları</li>
+        </ul>
       </a>
 
-      <a class="card" href="hizmetler/mobil-oyun.html" data-aos="fade-up">
+      <a class="service-card" href="hizmetler/mobil-oyun.html" data-aos="fade-up">
         <div class="icon">🎮</div>
         <h3>Mini Mobil Oyunlar</h3>
-        <p>Markalara özel reklam, ödül, kampanya ve etkileşim odaklı mini oyunlar.</p>
-        <ul><li>Android</li><li>Reklam</li><li>Ödül sistemi</li></ul>
+        <p>Markalara özel kampanya, ödül, reklam ve kullanıcı etkileşimi odaklı mini oyunlar.</p>
+        <ul>
+          <li>Android mobil oyun</li>
+          <li>Liderlik tablosu</li>
+          <li>Ödül ve kampanya sistemi</li>
+          <li>AdMob reklam entegrasyonu</li>
+          <li>Firebase/PostgreSQL backend</li>
+        </ul>
       </a>
+
+      <div class="service-card" data-aos="fade-up">
+        <div class="icon">🌐</div>
+        <h3>Kurumsal Web Sitesi</h3>
+        <p>Markanıza özel, hızlı, mobil uyumlu ve SEO temelli web siteleri geliştiriyoruz.</p>
+        <ul>
+          <li>Kurumsal tanıtım sitesi</li>
+          <li>Landing page</li>
+          <li>Blog ve içerik yönetimi</li>
+          <li>SEO temel ayarları</li>
+          <li>Form ve WhatsApp entegrasyonu</li>
+        </ul>
+      </div>
+
+      <div class="service-card" data-aos="fade-up">
+        <div class="icon">🛒</div>
+        <h3>E-Ticaret Altyapısı</h3>
+        <p>Ürün, kategori, sepet, ödeme, kampanya ve sipariş yönetimli satış sistemleri kuruyoruz.</p>
+        <ul>
+          <li>Ürün ve varyant yönetimi</li>
+          <li>Sepet ve ödeme sistemi</li>
+          <li>Kargo/sipariş takibi</li>
+          <li>İndirim kuponu</li>
+          <li>Admin panel</li>
+        </ul>
+      </div>
+
+      <div class="service-card" data-aos="fade-up">
+        <div class="icon">☁️</div>
+        <h3>Cloud, Sunucu & Hosting</h3>
+        <p>AWS, VPS, domain, SSL, yedekleme, deploy ve sunucu yönetimini uçtan uca yapıyoruz.</p>
+        <ul>
+          <li>AWS EC2 / VPS kurulum</li>
+          <li>Nginx, SSL, domain yönlendirme</li>
+          <li>GitHub Actions deploy</li>
+          <li>Yedekleme ve monitoring</li>
+          <li>PostgreSQL/MySQL kurulum</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="dark" id="surec">
+<section id="cozumler" class="section dark">
   <div class="container">
-    <div class="section-title" data-aos="fade-up">
-      <h2>Nasıl Çalışıyoruz?</h2>
-      <p>Fikirden yayına kadar tüm süreci planlı ilerletiyoruz.</p>
+    <div class="section-head light" data-aos="fade-up">
+      <span>Sektöre Özel</span>
+      <h2>Her işletmeye aynı sistemi değil, ihtiyacına göre çözüm kuruyoruz.</h2>
     </div>
 
-    <div class="process">
-      <div class="step" data-aos="fade-up"><b>01</b><h3>Analiz</h3><p>İhtiyacı netleştiririz.</p></div>
-      <div class="step" data-aos="fade-up"><b>02</b><h3>Tasarım</h3><p>Ekranları hazırlarız.</p></div>
-      <div class="step" data-aos="fade-up"><b>03</b><h3>Yazılım</h3><p>Panel, web ve mobil geliştiririz.</p></div>
-      <div class="step" data-aos="fade-up"><b>04</b><h3>Yayın</h3><p>Sunucu, domain, SSL ve deploy yaparız.</p></div>
+    <div class="solution-grid">
+      <div class="solution" data-aos="fade-up"><b>01</b><h3>Restoran & Kafe</h3><p>QR menü, sipariş, adisyon, mutfak ekranı, paket servis ve satış raporları.</p></div>
+      <div class="solution" data-aos="fade-up"><b>02</b><h3>Depo & Lojistik</h3><p>Barkod, stok, sevkiyat, transfer, depo sayım ve anlık hareket takibi.</p></div>
+      <div class="solution" data-aos="fade-up"><b>03</b><h3>Fabrika & Üretim</h3><p>Üretim takip ekranları, ERP veri entegrasyonu, raporlama ve özel operasyon panelleri.</p></div>
+      <div class="solution" data-aos="fade-up"><b>04</b><h3>Klinik & Kuaför</h3><p>Randevu, personel takibi, müşteri geçmişi, ödeme ve kampanya yönetimi.</p></div>
+      <div class="solution" data-aos="fade-up"><b>05</b><h3>Vakıf & Dernek</h3><p>Üye yönetimi, bağış takibi, duyuru, etkinlik, gönüllü ve başvuru formları.</p></div>
+      <div class="solution" data-aos="fade-up"><b>06</b><h3>Marka & E-Ticaret</h3><p>Web mağaza, ürün yönetimi, kampanya, mobil uygulama ve oyunlaştırılmış pazarlama.</p></div>
     </div>
   </div>
 </section>
 
-<section id="iletisim">
+<section id="altyapi" class="section">
+  <div class="container tech-grid">
+    <div data-aos="fade-right">
+      <div class="section-head left">
+        <span>Teknik Altyapı</span>
+        <h2>Yayına aldıktan sonra ortadan kaybolmuyoruz.</h2>
+        <p>
+          Projeyi sadece kodlayıp bırakmıyoruz. Domain, SSL, sunucu, veritabanı,
+          yedekleme, performans ve deploy süreçlerini de kuruyoruz.
+        </p>
+      </div>
+
+      <div class="tech-list">
+        <div><strong>Sunucu</strong><span>AWS, VPS, Linux, Nginx</span></div>
+        <div><strong>Veritabanı</strong><span>PostgreSQL, MySQL, Firebase</span></div>
+        <div><strong>Deploy</strong><span>GitHub Actions, CI/CD, otomatik yayın</span></div>
+        <div><strong>Güvenlik</strong><span>SSL, firewall, yedekleme, erişim kontrolü</span></div>
+      </div>
+    </div>
+
+    <div class="code-card" data-aos="fade-left">
+      <div class="code-top"><span></span><span></span><span></span></div>
+      <pre><code>deploy:
+  branch: main
+  server: ermoneyt.com
+  stack:
+    - nginx
+    - ssl
+    - postgresql
+    - admin-panel
+  status: production-ready</code></pre>
+    </div>
+  </div>
+</section>
+
+<section id="surec" class="section soft">
+  <div class="container">
+    <div class="section-head" data-aos="fade-up">
+      <span>Çalışma Süreci</span>
+      <h2>Fikirden yayına kadar düzenli ilerleriz.</h2>
+    </div>
+
+    <div class="process-grid">
+      <div data-aos="fade-up"><b>01</b><h3>Analiz</h3><p>İhtiyacı, kullanıcı rollerini, ekranları ve veri akışını çıkarırız.</p></div>
+      <div data-aos="fade-up"><b>02</b><h3>Tasarım</h3><p>Mobil uyumlu, modern ve işletmeye özel arayüzleri hazırlarız.</p></div>
+      <div data-aos="fade-up"><b>03</b><h3>Geliştirme</h3><p>Web, mobil, admin panel, veritabanı ve API tarafını geliştiririz.</p></div>
+      <div data-aos="fade-up"><b>04</b><h3>Yayın</h3><p>Sunucu, domain, SSL, deploy, test ve canlıya alma süreçlerini tamamlarız.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section packages">
+  <div class="container">
+    <div class="section-head" data-aos="fade-up">
+      <span>Paket Mantığı</span>
+      <h2>İhtiyaca göre küçükten kurumsala ölçeklenebilir yapı.</h2>
+    </div>
+
+    <div class="package-grid">
+      <div class="package" data-aos="fade-up">
+        <h3>Başlangıç</h3>
+        <p>Web sitesi, temel panel, iletişim formları ve hızlı yayın.</p>
+        <ul><li>Kurumsal web</li><li>Mobil uyum</li><li>SSL</li><li>WhatsApp entegrasyonu</li></ul>
+      </div>
+      <div class="package featured" data-aos="fade-up">
+        <h3>Profesyonel</h3>
+        <p>Admin panel, kullanıcı rolleri, raporlama, sipariş/randevu/stok modülleri.</p>
+        <ul><li>Admin panel</li><li>Veritabanı</li><li>Raporlama</li><li>Otomatik deploy</li></ul>
+      </div>
+      <div class="package" data-aos="fade-up">
+        <h3>Kurumsal</h3>
+        <p>ERP entegrasyonu, B2B yapı, mobil uygulama, cloud ve özel operasyon ekranları.</p>
+        <ul><li>API entegrasyon</li><li>Mobil uygulama</li><li>Cloud mimari</li><li>Özel geliştirme</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="iletisim" class="section">
   <div class="container">
     <div class="cta" data-aos="zoom-in">
       <div>
-        <h2>Projeni başlatalım.</h2>
-        <p>Restoran, depo, B2B, mobil uygulama veya web sitesi için hemen yaz.</p>
+        <span>Projeni konuşalım</span>
+        <h2>Restoran, depo, B2B, mobil uygulama veya web sistemi için başlayalım.</h2>
+        <p>İşletmen için sadece güzel görünen değil, gerçekten çalışan bir dijital sistem kuralım.</p>
       </div>
-      <a class="btn ghost" href="https://wa.me/905000000000" target="_blank">WhatsApp ile Yaz</a>
+      <a class="btn primary" href="https://wa.me/905000000000" target="_blank">WhatsApp ile Yaz</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="container">© 2026 Ermoneyt. Tüm hakları saklıdır.</div>
+  <div class="container footer-grid">
+    <div>
+      <strong>ERMONEYT</strong>
+      <p>Web, mobil, ERP, cloud ve dijital sistem çözümleri.</p>
+    </div>
+    <div>
+      <a href="#hizmetler">Hizmetler</a>
+      <a href="#altyapi">Altyapı</a>
+      <a href="#iletisim">İletişim</a>
+    </div>
+  </div>
 </footer>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
