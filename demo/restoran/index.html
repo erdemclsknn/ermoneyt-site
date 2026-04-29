@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Restoran | Ermoneyt</title>
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f172a; --card:#111827; --accent:#22c55e; --text:#e5e7eb; --muted:#9ca3af;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui;background:linear-gradient(180deg,#0b1220,#0f172a);color:var(--text)}
+.container{max-width:1100px;margin:auto;padding:16px}
+.header{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.logo{display:flex;gap:8px;align-items:center;font-weight:700}
+.logo img{width:28px}
+.badge{color:var(--accent);font-weight:600}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px}
+.menu{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.item{background:#0b1324;border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:10px}
+.item img{width:100%;border-radius:10px}
+.item h4{margin:8px 0 4px}
+.item p{margin:0;color:var(--muted);font-size:13px}
+.price{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+button{background:var(--accent);border:none;color:#022c22;padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600}
+button.secondary{background:#1f2937;color:#e5e7eb}
+.cart{position:fixed;right:16px;bottom:16px;width:320px}
+.cart h3{margin:0 0 8px}
+.cart-list{max-height:220px;overflow:auto}
+.row{display:flex;justify-content:space-between;gap:8px;margin:6px 0}
+.total{display:flex;justify-content:space-between;border-top:1px solid rgba(255,255,255,.1);padding-top:8px;margin-top:8px}
+.input{width:100%;padding:8px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#020617;color:#fff}
+.actions{display:flex;gap:8px;margin-top:8px}
+.kv{display:flex;gap:8px;align-items:center}
+.tag{font-size:12px;color:#86efac}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.cart{left:16px;right:16px;width:auto}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="logo">
+      <img src="/logo.png">
+      <span>DEMO RESTORAN</span>
+    </div>
+    <div class="badge">QR Sipariş • Canlı Demo</div>
+  </div>
+
+  <div class="grid">
+    <!-- MENÜ -->
+    <div class="card" data-aos="fade-up">
+      <div class="kv"><h2 style="margin:0">Menü</h2><span class="tag">Kategoriler: Pizza • Burger • İçecek</span></div>
+
+      <div class="menu">
+
+        <div class="item">
+          <img src="/assets/img/restaurant-pos.png">
+          <h4>Pizza</h4>
+          <p>Bol malzemeli, taş fırın</p>
+          <div class="price">
+            <b>150 ₺</b>
+            <button onclick="add('Pizza',150)">Ekle</button>
+          </div>
+        </div>
+
+        <div class="item">
+          <img src="/assets/img/restaurant-pos.png">
+          <h4>Burger</h4>
+          <p>Özel soslu</p>
+          <div class="price">
+            <b>120 ₺</b>
+            <button onclick="add('Burger',120)">Ekle</button>
+          </div>
+        </div>
+
+        <div class="item">
+          <img src="/assets/img/restaurant-pos.png">
+          <h4>Kola</h4>
+          <p>Soğuk içecek</p>
+          <div class="price">
+            <b>40 ₺</b>
+            <button onclick="add('Kola',40)">Ekle</button>
+          </div>
+        </div>
+
+        <div class="item">
+          <img src="/assets/img/restaurant-pos.png">
+          <h4>Patates</h4>
+          <p>Çıtır çıtır</p>
+          <div class="price">
+            <b>60 ₺</b>
+            <button onclick="add('Patates',60)">Ekle</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BİLGİ -->
+    <div class="card" data-aos="fade-up">
+      <h2 style="margin-top:0">Nasıl Çalışır?</h2>
+      <ul>
+        <li>📱 QR kod okutulur</li>
+        <li>🍽️ Menü açılır</li>
+        <li>🛒 Sepete eklenir</li>
+        <li>📩 Sipariş gönderilir</li>
+        <li>👨‍🍳 Mutfak ekranına düşer</li>
+      </ul>
+
+      <img src="/assets/img/qr-menu.png" style="width:100%;border-radius:12px;margin-top:10px">
+    </div>
+  </div>
+</div>
+
+<!-- SEPET -->
+<div class="cart card" data-aos="zoom-in">
+  <h3>🛒 Sepet</h3>
+
+  <div class="cart-list" id="cartList"></div>
+
+  <div class="total">
+    <b>Toplam</b>
+    <b id="total">0 ₺</b>
+  </div>
+
+  <input class="input" id="table" placeholder="Masa No (örn: 5)">
+  <input class="input" id="note" placeholder="Not (soğansız vs)">
+
+  <div class="actions">
+    <button onclick="send()">Siparişi Gönder</button>
+    <button class="secondary" onclick="clearCart()">Temizle</button>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init();
+
+let cart = [];
+function add(name,price){
+  cart.push({name,price});
+  render();
+}
+function render(){
+  let html = "";
+  let total = 0;
+
+  cart.forEach((i,idx)=>{
+    total += i.price;
+    html += `<div class="row">
+      <span>${i.name}</span>
+      <span>${i.price}₺</span>
+    </div>`;
+  });
+
+  document.getElementById("cartList").innerHTML = html;
+  document.getElementById("total").innerText = total + " ₺";
+}
+
+function clearCart(){
+  cart=[];
+  render();
+}
+
+function send(){
+  if(cart.length===0) return alert("Sepet boş");
+
+  let masa = document.getElementById("table").value || "Belirtilmedi";
+  let note = document.getElementById("note").value;
+
+  let text = "Yeni Sipariş%0A";
+  text += "Masa: " + masa + "%0A";
+
+  cart.forEach(i=>{
+    text += "- " + i.name + " ("+i.price+"₺)%0A";
+  });
+
+  text += "Not: " + note;
+
+  window.open("https://wa.me/905511620693?text="+text);
+}
+</script>
+
+</body>
+</html>
