@@ -3,72 +3,53 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Ermoneyt Restoran Demo</title>
+<title>Ermoneyt Restoran Menü Demo</title>
 <style>
-:root{--bg:#070b18;--card:#10182d;--text:#eef5ff;--muted:#94a3b8;--gold:#f8c14a;--green:#22c55e;--red:#ef4444;--blue:#4f8cff;--line:rgba(255,255,255,.1)}
+:root{--bg:#070b18;--card:#10182d;--text:#eef5ff;--muted:#94a3b8;--gold:#f8c14a;--green:#22c55e;--red:#ef4444;--line:rgba(255,255,255,.1)}
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(180deg,#070b18,#0b1020);color:var(--text)}
-.container{width:min(1200px,94%);margin:auto}
+body{margin:0;font-family:Inter,Arial,sans-serif;background:radial-gradient(circle at top,#1b2750,#070b18 55%);color:var(--text)}
+.container{width:min(1180px,94%);margin:auto}
 .header{position:sticky;top:0;z-index:20;background:rgba(7,11,24,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .nav{min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;font-weight:900}
 .brand img{width:38px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap}
-.tab{border:1px solid var(--line);background:#111a31;color:white;border-radius:999px;padding:10px 14px;cursor:pointer;font-weight:800}
-.tab.active{background:var(--gold);color:#111827}
-.hero{padding:34px 0}
-.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:center}
+.tab,.btn{border:0;border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer;background:#111a31;color:white;border:1px solid var(--line)}
+.tab.active,.btn.gold{background:var(--gold);color:#111827}
+.btn.red{background:var(--red);color:white}
+.btn.green{background:var(--green);color:#052e16}
+.hero{padding:46px 0 24px}
 .badge{display:inline-block;background:rgba(248,193,74,.12);color:var(--gold);padding:10px 14px;border-radius:999px;font-weight:900;margin-bottom:16px}
-h1{font-size:clamp(34px,5vw,64px);line-height:1;margin:0 0 16px;letter-spacing:-2px}
+h1{font-size:clamp(38px,6vw,78px);line-height:.95;margin:0 0 16px;letter-spacing:-3px}
 h1 span{color:var(--gold)}
 p{color:var(--muted);line-height:1.7}
-.panel,.card{background:linear-gradient(180deg,#121c34,#0b1020);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.22)}
+.card{background:linear-gradient(180deg,#121c34,#0b1020);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.24)}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.btn{border:0;border-radius:14px;padding:12px 15px;font-weight:900;cursor:pointer;background:var(--gold);color:#111827}
-.btn.dark{background:#1f2937;color:white;border:1px solid var(--line)}
-.btn.green{background:var(--green);color:#052e16}
-.btn.red{background:var(--red);color:white}
-.input,select,textarea{width:100%;padding:12px;border-radius:14px;border:1px solid var(--line);background:#070b18;color:white;margin:6px 0}
-.section{padding:20px 0 50px}
+.input,select,textarea{width:100%;padding:13px;border-radius:14px;border:1px solid var(--line);background:#070b18;color:white;margin:7px 0}
+.section{padding:22px 0 60px}
 .hide{display:none!important}
-.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.item img{width:100%;height:145px;object-fit:cover;border-radius:18px;background:#111a31}
-.item-top{display:flex;justify-content:space-between;gap:10px;align-items:start}
-.price{color:var(--gold);font-size:22px;font-weight:900}
-.cart{position:fixed;right:18px;bottom:18px;width:360px;z-index:30}
-.cart-list{max-height:220px;overflow:auto;margin:10px 0}
-.row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
-.total{display:flex;justify-content:space-between;font-size:22px;font-weight:900;color:var(--gold);padding-top:12px}
-.table-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.table{min-height:120px;cursor:pointer;transition:.2s}
-.table:hover{transform:translateY(-4px)}
-.status{display:inline-block;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900}
-.empty{background:rgba(34,197,94,.12);color:#86efac}
-.busy{background:rgba(248,193,74,.12);color:#fde68a}
-.ready{background:rgba(79,140,255,.14);color:#bfdbfe}
-.order-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.order{border-left:5px solid var(--gold)}
-.kitchen{border-left-color:var(--blue)}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.kpi b{font-size:28px;color:var(--gold)}
-.kpi span{display:block;color:var(--muted);margin-top:4px}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .small{font-size:13px;color:var(--muted);word-break:break-all}
-.upload-preview{width:100%;height:130px;object-fit:cover;border-radius:16px;background:#111a31;margin:8px 0}
-.notice{border-left:5px solid var(--gold)}
+.menu-top{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:22px}
+.category-bar{display:flex;gap:10px;overflow:auto;padding:8px 0 18px}
+.category-pill{white-space:nowrap;border:1px solid var(--line);background:rgba(255,255,255,.05);color:white;border-radius:999px;padding:12px 16px;font-weight:900;cursor:pointer}
+.category-pill.active{background:var(--gold);color:#111827}
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.item{position:relative;overflow:hidden;transition:.25s;animation:fadeUp .5s ease both}
+.item:hover{transform:translateY(-7px)}
+.item img{width:100%;height:190px;object-fit:cover;border-radius:20px;background:#111a31}
+.item h3{font-size:22px;margin:14px 0 8px}
+.price{color:var(--gold);font-size:25px;font-weight:900}
+.desc{min-height:48px}
+.tag{display:inline-flex;padding:6px 10px;border-radius:999px;background:rgba(248,193,74,.12);color:var(--gold);font-size:12px;font-weight:900}
+.admin-list .row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.upload-preview{width:100%;height:150px;object-fit:cover;border-radius:16px;background:#111a31;margin:8px 0}
 .fixed-qr-box{text-align:center}
 .fixed-qr-box img{width:230px;background:white;padding:12px;border-radius:18px;margin:10px auto;display:block}
-.menu-only-title{display:none}
-.qr-menu-mode .hero,.qr-menu-mode .tabs{display:none!important}
-.qr-menu-mode .menu-only-title{display:block;margin-bottom:16px}
-.qr-menu-mode main{padding-top:18px}
-.qr-menu-mode .cart{position:sticky;bottom:0;width:100%;margin-top:20px}
-.qr-menu-mode .brand span::after{content:" • Menü";color:var(--gold)}
-@media(max-width:900px){
-.hero-grid,.grid,.menu-grid,.order-grid,.kpis{grid-template-columns:1fr}
-.table-grid{grid-template-columns:repeat(2,1fr)}
-.cart{position:static;width:auto;margin:20px auto}
-}
+.menu-mode .tabs,.menu-mode .admin-only,.menu-mode .hero-admin{display:none!important}
+.menu-mode .header .brand span::after{content:" • Menü";color:var(--gold)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.grid,.menu-grid{grid-template-columns:1fr}.nav{align-items:flex-start}.tabs{width:100%}}
 </style>
 </head>
 <body>
@@ -80,193 +61,103 @@ p{color:var(--muted);line-height:1.7}
       <span>ERMONEYT RESTORAN DEMO</span>
     </div>
     <div class="tabs">
-      <button class="tab active" onclick="showPage('customer',this)">Menü / Sipariş</button>
-      <button class="tab" onclick="showPage('tables',this)">Masa Yönetimi</button>
-      <button class="tab" onclick="showPage('kitchen',this)">Mutfak</button>
+      <button class="tab active" onclick="showPage('menu',this)">Menü</button>
       <button class="tab" onclick="showPage('admin',this)">Admin</button>
-      <button class="tab" onclick="showPage('report',this)">Rapor</button>
     </div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="container hero-grid">
-    <div>
-      <div class="badge">Sabit QR Menü • Garson Masa Seçimi • Görsel Yükleme • Mutfak • POS</div>
-      <h1>Restoran için <span>tam operasyon demosu</span>.</h1>
-      <p>Sabit QR ile menü açılır. Garson veya müşteri sipariş vermeden önce masa numarasını seçer. Sipariş mutfağa düşer, masa hesabı açılır, admin ürün ve görsel yönetir.</p>
-      <div class="actions">
-        <button class="btn" onclick="showPage('customer')">Menüyü Aç</button>
-        <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
-        <button class="btn red" onclick="resetDemo()">Temizle</button>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="kpis">
-        <div class="card kpi"><b id="kpiSales">₺0</b><span>Bugünkü Ciro</span></div>
-        <div class="card kpi"><b id="kpiOrders">0</b><span>Sipariş</span></div>
-        <div class="card kpi"><b id="kpiTables">0</b><span>Dolu Masa</span></div>
-        <div class="card kpi"><b id="kpiReady">0</b><span>Hazır</span></div>
-      </div>
+<section class="hero hero-admin">
+  <div class="container">
+    <div class="badge">QR Menü • Kategori Yönetimi • Ürün Görseli • Premium Demo</div>
+    <h1>Restoran için <span>premium dijital menü</span>.</h1>
+    <p>Admin’den kategori ve ürün ekle. Görsel yükle. QR okutulunca müşteri sadece şık menüyü görsün.</p>
+    <div class="actions">
+      <button class="btn gold" onclick="showPage('menu')">Menüyü Aç</button>
+      <button class="btn" onclick="showPage('admin')">Admin Panel</button>
+      <button class="btn red" onclick="resetDemo()">Demo Verisini Sil</button>
     </div>
   </div>
 </section>
 
 <main class="container section">
 
-<section id="customer">
-  <div class="card menu-only-title">
-    <h3>🍽️ Ermoneyt Restoran Menü</h3>
-    <p class="small">Masa numaranızı seçip ürünleri sepete ekleyerek sipariş verebilirsiniz.</p>
-  </div>
-
-  <div class="grid">
-    <div class="card notice">
-      <h3>📍 Masa Seçimi</h3>
-      <select id="customerTable"></select>
-      <p class="small">Sabit QR açılır. Garson veya müşteri sipariş vermeden önce masa numarasını buradan seçer.</p>
-      <textarea id="orderNote" rows="3" placeholder="Not: soğansız, acısız, hızlı gelsin..."></textarea>
-    </div>
-    <div class="card">
-      <h3>🔎 Kategori</h3>
-      <div class="actions" id="categoryButtons"></div>
-    </div>
-    <div class="card">
-      <h3>🧾 Sipariş Akışı</h3>
-      <p class="small">Sabit QR okutulur → masa seçilir → ürün seçilir → sipariş gönderilir → mutfakta görünür.</p>
+<section id="menu">
+  <div class="menu-top">
+    <div>
+      <div class="badge">Dijital Menü</div>
+      <h1 style="font-size:clamp(34px,5vw,58px)">Lezzet Menüsü</h1>
+      <p>Ürünleri kategori kategori inceleyin. Fiyat, açıklama ve görseller admin panelden yönetilir.</p>
     </div>
   </div>
 
-  <br>
+  <div class="category-bar" id="categoryBar"></div>
   <div class="menu-grid" id="menuGrid"></div>
-
-  <div class="cart panel">
-    <h3>🛒 Sepet</h3>
-    <div id="cartList" class="cart-list"></div>
-    <div class="total"><span>Toplam</span><span id="cartTotal">₺0</span></div>
-    <div class="actions">
-      <button class="btn green" onclick="placeOrder()">Siparişi Gönder</button>
-      <button class="btn dark" onclick="clearCart()">Temizle</button>
-    </div>
-  </div>
 </section>
 
-<section id="tables" class="hide">
-  <div class="card">
-    <h3>🪑 Masa Yönetimi</h3>
-    <p>Masa durumu, açık hesap, sipariş geçmişi, masa taşıma ve hesap kapatma.</p>
-  </div>
-  <br>
-  <div class="table-grid" id="tableGrid"></div>
-  <br>
-  <div class="panel" id="tableDetail">
-    <h3>Masa Detayı</h3>
-    <p class="small">Bir masa seç.</p>
-  </div>
-</section>
-
-<section id="kitchen" class="hide">
-  <div class="card">
-    <h3>👨‍🍳 Mutfak Ekranı</h3>
-    <p>Siparişler burada durum bazlı takip edilir.</p>
-  </div>
-  <br>
-  <div class="order-grid" id="kitchenGrid"></div>
-</section>
-
-<section id="admin" class="hide">
+<section id="admin" class="hide admin-only">
   <div class="grid">
     <div class="card">
-      <h3>➕ Ürün Ekle</h3>
+      <h3>➕ Kategori Ekle</h3>
+      <input class="input" id="catName" placeholder="Kategori adı: Pizza, İçecek, Tatlı...">
+      <button class="btn gold" onclick="addCategory()">Kategori Ekle</button>
+      <br><br>
+      <div class="admin-list" id="categoryList"></div>
+    </div>
+
+    <div class="card">
+      <h3>🍽️ Ürün Ekle</h3>
       <input class="input" id="pName" placeholder="Ürün adı">
       <input class="input" id="pPrice" type="number" placeholder="Fiyat">
-      <select id="pCat">
-        <option>Pizza</option><option>Burger</option><option>İçecek</option><option>Tatlı</option><option>Ekstra</option>
-      </select>
-
+      <select id="pCat"></select>
+      <textarea id="pDesc" rows="3" placeholder="Ürün açıklaması"></textarea>
       <input class="input" id="pImgFile" type="file" accept="image/*" onchange="previewUpload(event)">
       <img id="pPreview" class="upload-preview" style="display:none">
-      <p class="small">Görsel URL yok. Dosya seçiyorsun, demo localStorage’a kaydediyor.</p>
-
-      <button class="btn" onclick="addProduct()">Ürün Ekle</button>
-    </div>
-
-    <div class="card">
-      <h3>🪑 Masa Ayarı</h3>
-      <input class="input" id="tableCount" type="number" value="12">
-      <button class="btn" onclick="setTableCount()">Masa Sayısını Güncelle</button>
-      <p class="small">Masa sayısı değişince sipariş ekranındaki masa seçimi de güncellenir.</p>
+      <button class="btn gold" onclick="addProduct()">Ürün Ekle</button>
     </div>
 
     <div class="card fixed-qr-box">
-      <h3>📲 Sabit Menü QR</h3>
-      <img id="fixedMenuQR" alt="Sabit Menü QR">
+      <h3>📲 Müşteri Menü QR</h3>
+      <img id="fixedMenuQR" alt="Menü QR">
       <p class="small" id="fixedMenuLink"></p>
-      <button class="btn" onclick="copyMenuLink()">QR Linkini Kopyala</button>
-      <p class="small">Bu QR sabittir. Masaya özel değildir. Açılınca garson/müşteri masa seçer.</p>
-    </div>
-
-    <div class="card">
-      <h3>⚙️ Demo</h3>
-      <button class="btn dark" onclick="seedDemo()">Demo Verisi Yükle</button>
-      <button class="btn red" onclick="resetDemo()">Tüm Veriyi Sil</button>
+      <button class="btn gold" onclick="copyMenuLink()">QR Linkini Kopyala</button>
+      <p class="small">Bu QR okutulunca sadece müşteri menüsü açılır.</p>
     </div>
   </div>
 
   <br>
   <div class="card">
     <h3>📋 Ürün Listesi</h3>
-    <div id="productList"></div>
-  </div>
-</section>
-
-<section id="report" class="hide">
-  <div class="kpis">
-    <div class="card kpi"><b id="rSales">₺0</b><span>Toplam Ciro</span></div>
-    <div class="card kpi"><b id="rOrders">0</b><span>Toplam Sipariş</span></div>
-    <div class="card kpi"><b id="rAvg">₺0</b><span>Ortalama Sipariş</span></div>
-    <div class="card kpi"><b id="rOpen">0</b><span>Açık Masa</span></div>
-  </div>
-  <br>
-  <div class="card">
-    <h3>📊 Satış Özeti</h3>
-    <div id="reportList"></div>
+    <div class="admin-list" id="productList"></div>
   </div>
 </section>
 
 </main>
 
 <script>
-const LS_PRODUCTS="ermoneyt_products_v6";
-const LS_ORDERS="ermoneyt_orders_v6";
-const LS_TABLES="ermoneyt_tables_v6";
+const LS_CATEGORIES="ermoneyt_menu_categories_v1";
+const LS_PRODUCTS="ermoneyt_menu_products_v1";
 let activeCategory="Tümü";
-let cart=[];
 let uploadedImage="";
-
 const fallbackImg="../../assets/img/restaurant-pos.png";
 
+const defaultCategories=["Pizza","Burger","İçecek","Tatlı","Ekstra"];
+
 const defaultProducts=[
-  {id:1,name:"Karışık Pizza",cat:"Pizza",price:180,img:fallbackImg},
-  {id:2,name:"Margarita Pizza",cat:"Pizza",price:150,img:fallbackImg},
-  {id:3,name:"Ermoneyt Burger",cat:"Burger",price:160,img:fallbackImg},
-  {id:4,name:"Cheeseburger",cat:"Burger",price:145,img:fallbackImg},
-  {id:5,name:"Patates Kızartması",cat:"Ekstra",price:70,img:fallbackImg},
-  {id:6,name:"Kola",cat:"İçecek",price:45,img:fallbackImg},
-  {id:7,name:"Limonata",cat:"İçecek",price:65,img:fallbackImg},
-  {id:8,name:"Sufle",cat:"Tatlı",price:95,img:fallbackImg}
+  {id:1,name:"Karışık Pizza",cat:"Pizza",price:180,desc:"Sucuk, mantar, biber ve özel peynir karışımı.",img:fallbackImg},
+  {id:2,name:"Margarita Pizza",cat:"Pizza",price:150,desc:"Domates sos, mozzarella ve taze fesleğen.",img:fallbackImg},
+  {id:3,name:"Ermoneyt Burger",cat:"Burger",price:160,desc:"Özel soslu, çift cheddar peynirli burger.",img:fallbackImg},
+  {id:4,name:"Cheeseburger",cat:"Burger",price:145,desc:"Klasik burger, cheddar ve özel sos.",img:fallbackImg},
+  {id:5,name:"Patates Kızartması",cat:"Ekstra",price:70,desc:"Çıtır patates, özel baharat karışımı.",img:fallbackImg},
+  {id:6,name:"Kola",cat:"İçecek",price:45,desc:"Soğuk servis edilir.",img:fallbackImg},
+  {id:7,name:"Limonata",cat:"İçecek",price:65,desc:"Ev yapımı ferah limonata.",img:fallbackImg},
+  {id:8,name:"Sufle",cat:"Tatlı",price:95,desc:"Akışkan çikolatalı sıcak sufle.",img:fallbackImg}
 ];
 
+function getCategories(){return JSON.parse(localStorage.getItem(LS_CATEGORIES)||"null")||defaultCategories}
+function setCategories(v){localStorage.setItem(LS_CATEGORIES,JSON.stringify(v))}
 function getProducts(){return JSON.parse(localStorage.getItem(LS_PRODUCTS)||"null")||defaultProducts}
 function setProducts(v){localStorage.setItem(LS_PRODUCTS,JSON.stringify(v))}
-function getOrders(){return JSON.parse(localStorage.getItem(LS_ORDERS)||"[]")}
-function setOrders(v){localStorage.setItem(LS_ORDERS,JSON.stringify(v))}
-function getTables(){
-  let t=JSON.parse(localStorage.getItem(LS_TABLES)||"null");
-  if(!t){t=Array.from({length:12},(_,i)=>({no:i+1,status:"empty"}));setTables(t)}
-  return t;
-}
-function setTables(v){localStorage.setItem(LS_TABLES,JSON.stringify(v))}
 function money(n){return "₺"+Number(n||0).toLocaleString("tr-TR")}
 
 function showPage(id,btn){
@@ -278,190 +169,85 @@ function showPage(id,btn){
 }
 
 function renderAll(){
-  renderTablesSelect();
-  renderCategories();
+  renderCategoryBar();
   renderMenu();
-  renderCart();
-  renderTables();
-  renderKitchen();
-  renderAdmin();
+  renderAdminCategories();
+  renderAdminProducts();
+  renderProductCategorySelect();
   renderFixedMenuQR();
-  renderReports();
-  renderKPIs();
 }
 
-function renderTablesSelect(){
-  const sel=document.getElementById("customerTable");
-  sel.innerHTML=getTables().map(t=>`<option value="${t.no}">Masa ${t.no}</option>`).join("");
-}
-
-function renderCategories(){
-  const cats=["Tümü",...new Set(getProducts().map(p=>p.cat))];
-  document.getElementById("categoryButtons").innerHTML=cats.map(c=>
-    `<button class="btn ${activeCategory===c?'':'dark'}" onclick="activeCategory='${c}';renderMenu();renderCategories()">${c}</button>`
-  ).join("");
+function renderCategoryBar(){
+  const cats=["Tümü",...getCategories()];
+  document.getElementById("categoryBar").innerHTML=cats.map(c=>`
+    <button class="category-pill ${activeCategory===c?'active':''}" onclick="activeCategory='${c}';renderCategoryBar();renderMenu()">${c}</button>
+  `).join("");
 }
 
 function renderMenu(){
   const products=getProducts().filter(p=>activeCategory==="Tümü"||p.cat===activeCategory);
-  document.getElementById("menuGrid").innerHTML=products.map(p=>`
-    <div class="card item">
+  document.getElementById("menuGrid").innerHTML=products.map((p,i)=>`
+    <div class="card item" style="animation-delay:${i*0.04}s">
       <img src="${p.img||fallbackImg}" onerror="this.src='${fallbackImg}'">
-      <div class="item-top">
-        <div>
-          <h3>${p.name}</h3>
-          <p>${p.cat} • Demo ürün</p>
-        </div>
-        <div class="price">${money(p.price)}</div>
-      </div>
-      <div class="actions">
-        <button class="btn" onclick="addCart(${p.id})">Sepete Ekle</button>
-      </div>
+      <span class="tag">${p.cat}</span>
+      <h3>${p.name}</h3>
+      <p class="desc">${p.desc||"Lezzetli ürün açıklaması admin panelden düzenlenebilir."}</p>
+      <div class="price">${money(p.price)}</div>
+    </div>
+  `).join("") || `<div class="card"><h3>Bu kategoride ürün yok</h3><p>Admin panelden ürün ekleyebilirsin.</p></div>`;
+}
+
+function renderProductCategorySelect(){
+  const select=document.getElementById("pCat");
+  if(!select)return;
+  select.innerHTML=getCategories().map(c=>`<option>${c}</option>`).join("");
+}
+
+function renderAdminCategories(){
+  const box=document.getElementById("categoryList");
+  if(!box)return;
+  box.innerHTML=getCategories().map(c=>`
+    <div class="row">
+      <span>${c}</span>
+      <button class="btn red" onclick="deleteCategory('${c}')">Sil</button>
     </div>
   `).join("");
 }
 
-function addCart(id){
-  const p=getProducts().find(x=>x.id===id);
-  const found=cart.find(x=>x.id===id);
-  if(found) found.qty++;
-  else cart.push({...p,qty:1});
-  renderCart();
-}
-
-function renderCart(){
-  const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
-  document.getElementById("cartTotal").innerText=money(total);
-  document.getElementById("cartList").innerHTML=cart.length?cart.map(i=>`
+function renderAdminProducts(){
+  const box=document.getElementById("productList");
+  if(!box)return;
+  box.innerHTML=getProducts().map(p=>`
     <div class="row">
-      <span>${i.name} x${i.qty}</span>
-      <span>${money(i.price*i.qty)}</span>
+      <span>${p.name} • ${p.cat} • ${money(p.price)}</span>
+      <button class="btn red" onclick="deleteProduct(${p.id})">Sil</button>
     </div>
-  `).join(""):`<p class="small">Sepet boş.</p>`;
+  `).join("");
 }
-function clearCart(){cart=[];renderCart()}
 
-function placeOrder(){
-  if(!cart.length)return alert("Sepet boş.");
-  const tableNo=Number(document.getElementById("customerTable").value);
-  const note=document.getElementById("orderNote").value;
-  const orders=getOrders();
-  const order={
-    id:Date.now(),
-    tableNo,
-    note,
-    items:cart.map(i=>({id:i.id,name:i.name,price:i.price,qty:i.qty})),
-    total:cart.reduce((s,i)=>s+i.price*i.qty,0),
-    status:"new",
-    createdAt:new Date().toLocaleString("tr-TR")
-  };
-  orders.unshift(order);
-  setOrders(orders);
-
-  const tables=getTables();
-  const t=tables.find(x=>x.no===tableNo);
-  if(t)t.status="busy";
-  setTables(tables);
-
-  clearCart();
-  document.getElementById("orderNote").value="";
-  alert("Sipariş alındı! Mutfak ekranına düştü.");
+function addCategory(){
+  const name=document.getElementById("catName").value.trim();
+  if(!name)return alert("Kategori adı gir.");
+  const cats=getCategories();
+  if(cats.includes(name))return alert("Bu kategori zaten var.");
+  cats.push(name);
+  setCategories(cats);
+  document.getElementById("catName").value="";
   renderAll();
 }
 
-function renderTables(){
-  const orders=getOrders();
-  document.getElementById("tableGrid").innerHTML=getTables().map(t=>{
-    const open=orders.filter(o=>o.tableNo===t.no && o.status!=="paid");
-    const total=open.reduce((s,o)=>s+o.total,0);
-    const ready=open.some(o=>o.status==="ready");
-    const cls=open.length?(ready?"ready":"busy"):"empty";
-    const text=open.length?(ready?"Hazır":"Dolu"):"Boş";
-    return `<div class="card table" onclick="tableDetail(${t.no})">
-      <h3>Masa ${t.no}</h3>
-      <span class="status ${cls}">${text}</span>
-      <p>${open.length} sipariş</p>
-      <b>${money(total)}</b>
-    </div>`;
-  }).join("");
-}
-
-function tableDetail(no){
-  const open=getOrders().filter(o=>o.tableNo===no && o.status!=="paid");
-  const total=open.reduce((s,o)=>s+o.total,0);
-  document.getElementById("tableDetail").innerHTML=`
-    <h3>🪑 Masa ${no}</h3>
-    <p>Açık hesap: <b>${money(total)}</b></p>
-    ${open.length?open.map(o=>`
-      <div class="card">
-        <b>#${o.id}</b> <span class="status busy">${statusText(o.status)}</span>
-        <p>${o.items.map(i=>`${i.name} x${i.qty}`).join(", ")}</p>
-        <p class="small">${o.note||"Not yok"} • ${o.createdAt}</p>
-      </div>
-    `).join(""):"<p class='small'>Bu masada açık hesap yok.</p>"}
-    <div class="actions">
-      <button class="btn green" onclick="closeTable(${no})">Hesabı Kapat</button>
-      <button class="btn dark" onclick="moveTablePrompt(${no})">Masa Taşı</button>
-    </div>
-  `;
-}
-
-function closeTable(no){
-  if(!confirm("Masa hesabı kapatılsın mı?"))return;
-  const orders=getOrders().map(o=>o.tableNo===no && o.status!=="paid"?{...o,status:"paid"}:o);
-  setOrders(orders);
-  const tables=getTables(); 
-  const t=tables.find(x=>x.no===no); 
-  if(t)t.status="empty"; 
-  setTables(tables);
-  tableDetail(no);renderAll();
-}
-
-function moveTablePrompt(from){
-  const to=Number(prompt("Hangi masaya taşınacak?"));
-  if(!to)return;
-  const orders=getOrders().map(o=>o.tableNo===from && o.status!=="paid"?{...o,tableNo:to}:o);
-  setOrders(orders);
-  const tables=getTables();
-  const tf=tables.find(x=>x.no===from), tt=tables.find(x=>x.no===to);
-  if(tf)tf.status="empty"; 
-  if(tt)tt.status="busy";
-  setTables(tables);
-  renderAll();tableDetail(to);
-}
-
-function renderKitchen(){
-  const open=getOrders().filter(o=>o.status!=="paid");
-  document.getElementById("kitchenGrid").innerHTML=open.length?open.map(o=>`
-    <div class="card order ${o.status==='ready'?'kitchen':''}">
-      <h3>Masa ${o.tableNo} • #${o.id}</h3>
-      <span class="status ${o.status==='ready'?'ready':'busy'}">${statusText(o.status)}</span>
-      <p>${o.items.map(i=>`${i.name} x${i.qty}`).join("<br>")}</p>
-      <p class="small">Not: ${o.note||"Yok"}<br>${o.createdAt}</p>
-      <b>${money(o.total)}</b>
-      <div class="actions">
-        <button class="btn dark" onclick="setStatus(${o.id},'preparing')">Hazırlanıyor</button>
-        <button class="btn" onclick="setStatus(${o.id},'ready')">Hazır</button>
-        <button class="btn green" onclick="setStatus(${o.id},'served')">Servis Edildi</button>
-      </div>
-    </div>
-  `).join(""):`<p class="small">Aktif sipariş yok.</p>`;
-}
-
-function setStatus(id,status){
-  setOrders(getOrders().map(o=>o.id===id?{...o,status}:o));
+function deleteCategory(name){
+  if(!confirm(name+" kategorisi silinsin mi?"))return;
+  setCategories(getCategories().filter(c=>c!==name));
+  if(activeCategory===name)activeCategory="Tümü";
   renderAll();
-}
-
-function statusText(s){
-  return {new:"Yeni",preparing:"Hazırlanıyor",ready:"Hazır",served:"Servis Edildi",paid:"Ödendi"}[s]||s;
 }
 
 function previewUpload(event){
   const file=event.target.files[0];
   if(!file)return;
   const reader=new FileReader();
-  reader.onload=function(e){
+  reader.onload=e=>{
     uploadedImage=e.target.result;
     const img=document.getElementById("pPreview");
     img.src=uploadedImage;
@@ -470,28 +256,18 @@ function previewUpload(event){
   reader.readAsDataURL(file);
 }
 
-function renderAdmin(){
-  const list=document.getElementById("productList");
-  list.innerHTML=getProducts().map(p=>`
-    <div class="row">
-      <span>${p.name} • ${p.cat}</span>
-      <span>${money(p.price)} <button class="btn red" onclick="deleteProduct(${p.id})">Sil</button></span>
-    </div>
-  `).join("");
-}
-
 function addProduct(){
   const name=document.getElementById("pName").value.trim();
   const price=Number(document.getElementById("pPrice").value);
   const cat=document.getElementById("pCat").value;
-  const img=uploadedImage||fallbackImg;
+  const desc=document.getElementById("pDesc").value.trim();
   if(!name||!price)return alert("Ürün adı ve fiyat gir.");
   const products=getProducts();
-  products.push({id:Date.now(),name,price,cat,img});
+  products.push({id:Date.now(),name,price,cat,desc,img:uploadedImage||fallbackImg});
   setProducts(products);
-
   document.getElementById("pName").value="";
   document.getElementById("pPrice").value="";
+  document.getElementById("pDesc").value="";
   document.getElementById("pImgFile").value="";
   document.getElementById("pPreview").style.display="none";
   uploadedImage="";
@@ -501,40 +277,6 @@ function addProduct(){
 function deleteProduct(id){
   setProducts(getProducts().filter(p=>p.id!==id));
   renderAll();
-}
-
-function setTableCount(){
-  const n=Number(document.getElementById("tableCount").value||12);
-  setTables(Array.from({length:n},(_,i)=>({no:i+1,status:"empty"})));
-  renderAll();
-}
-
-function renderReports(){
-  const orders=getOrders();
-  const paid=orders.filter(o=>o.status==="paid");
-  const total=paid.reduce((s,o)=>s+o.total,0);
-  const avg=paid.length?total/paid.length:0;
-  const open=orders.filter(o=>o.status!=="paid").length;
-  document.getElementById("rSales").innerText=money(total);
-  document.getElementById("rOrders").innerText=orders.length;
-  document.getElementById("rAvg").innerText=money(avg);
-  document.getElementById("rOpen").innerText=open;
-  document.getElementById("reportList").innerHTML=orders.length?orders.map(o=>`
-    <div class="row">
-      <span>Masa ${o.tableNo} • ${statusText(o.status)} • ${o.createdAt}</span>
-      <b>${money(o.total)}</b>
-    </div>
-  `).join(""):"<p class='small'>Henüz sipariş yok.</p>";
-}
-
-function renderKPIs(){
-  const orders=getOrders();
-  const paid=orders.filter(o=>o.status==="paid");
-  const open=orders.filter(o=>o.status!=="paid");
-  document.getElementById("kpiSales").innerText=money(paid.reduce((s,o)=>s+o.total,0));
-  document.getElementById("kpiOrders").innerText=orders.length;
-  document.getElementById("kpiTables").innerText=new Set(open.map(o=>o.tableNo)).size;
-  document.getElementById("kpiReady").innerText=open.filter(o=>o.status==="ready").length;
 }
 
 function getMenuUrl(){
@@ -555,37 +297,25 @@ function copyMenuLink(){
   alert("Menü QR linki kopyalandı");
 }
 
-function activateMenuOnlyMode(){
-  const params=new URLSearchParams(window.location.search);
-  if(params.get("menu")==="1"){
-    document.body.classList.add("qr-menu-mode");
-    showPage("customer");
-  }
-}
-
-function seedDemo(){
-  setProducts(defaultProducts);
-  setTables(Array.from({length:12},(_,i)=>({no:i+1,status:i<3?"busy":"empty"})));
-  setOrders([
-    {id:1001,tableNo:1,note:"Acısız olsun",items:[{name:"Karışık Pizza",qty:1,price:180},{name:"Kola",qty:2,price:45}],total:270,status:"preparing",createdAt:new Date().toLocaleString("tr-TR")},
-    {id:1002,tableNo:2,note:"Ketçap fazla",items:[{name:"Ermoneyt Burger",qty:2,price:160},{name:"Patates Kızartması",qty:1,price:70}],total:390,status:"ready",createdAt:new Date().toLocaleString("tr-TR")},
-    {id:1003,tableNo:3,note:"",items:[{name:"Sufle",qty:2,price:95}],total:190,status:"served",createdAt:new Date().toLocaleString("tr-TR")}
-  ]);
-  renderAll();
-}
-
 function resetDemo(){
   if(!confirm("Tüm demo verisi silinsin mi?"))return;
+  localStorage.removeItem(LS_CATEGORIES);
   localStorage.removeItem(LS_PRODUCTS);
-  localStorage.removeItem(LS_ORDERS);
-  localStorage.removeItem(LS_TABLES);
-  cart=[];
+  activeCategory="Tümü";
   uploadedImage="";
   renderAll();
 }
 
+function activateMenuMode(){
+  const params=new URLSearchParams(window.location.search);
+  if(params.get("menu")==="1"){
+    document.body.classList.add("menu-mode");
+    showPage("menu");
+  }
+}
+
 renderAll();
-activateMenuOnlyMode();
+activateMenuMode();
 </script>
 </body>
 </html>
