@@ -1,297 +1,543 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ermoneyt Stok Demo Paneli</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Ermoneyt Stok Depo Demo Paneli</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
-    body{background:#0f172a;color:#e5e7eb}
-    .app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
-    aside{background:#020617;padding:24px;border-right:1px solid #1e293b}
-    .brand{font-size:24px;font-weight:800;color:#fff;margin-bottom:30px}
+    body{background:#0b1120;color:#e5e7eb}
+    .app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+    aside{background:#020617;border-right:1px solid #1e293b;padding:24px;position:sticky;top:0;height:100vh}
+    .brand{font-size:25px;font-weight:900;margin-bottom:28px}
     .brand span{color:#38bdf8}
-    .menu a{display:block;color:#94a3b8;text-decoration:none;padding:13px 14px;border-radius:12px;margin-bottom:8px}
-    .menu a.active,.menu a:hover{background:#1e293b;color:#fff}
+    .menu button{width:100%;text-align:left;background:transparent;border:0;color:#94a3b8;padding:13px 14px;border-radius:13px;margin-bottom:7px;font-weight:700;cursor:pointer}
+    .menu button.active,.menu button:hover{background:#1e293b;color:#fff}
     main{padding:24px}
-    .top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:24px}
+    .top{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:22px}
     .top h1{font-size:28px}
-    .top p{color:#94a3b8;margin-top:4px}
-    .btn{border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer}
+    .top p{color:#94a3b8;margin-top:5px}
+    .btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
     .primary{background:#38bdf8;color:#020617}
-    .secondary{background:#1e293b;color:#fff}
-    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-    .card{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px}
-    .card span{color:#94a3b8;font-size:14px}
-    .card h2{font-size:28px;margin-top:10px}
-    .grid{display:grid;grid-template-columns:1.4fr .8fr;gap:16px}
+    .darkbtn{background:#1e293b;color:#fff}
+    .dangerbtn{background:#ef4444;color:white}
+    .greenbtn{background:#22c55e;color:#052e16}
+    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}
+    .card{background:linear-gradient(145deg,#111827,#0f172a);border:1px solid #1f2937;border-radius:20px;padding:20px}
+    .card span{color:#94a3b8;font-size:13px}
+    .card h2{font-size:30px;margin-top:8px}
+    .section{display:none}
+    .section.active{display:block}
     .panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px;margin-bottom:16px}
-    .panel h3{margin-bottom:16px}
-    .filters{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-    input,select{background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:12px;padding:12px;outline:none}
+    .panel h3{margin-bottom:14px}
+    .grid2{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+    input,select{background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:12px;padding:12px;outline:none;width:100%}
     table{width:100%;border-collapse:collapse}
-    th,td{text-align:left;padding:13px;border-bottom:1px solid #1f2937;font-size:14px}
+    th,td{text-align:left;padding:12px;border-bottom:1px solid #1f2937;font-size:14px}
     th{color:#94a3b8}
-    .badge{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800}
+    .badge{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;display:inline-block}
     .ok{background:#064e3b;color:#6ee7b7}
     .warn{background:#713f12;color:#fde68a}
     .danger{background:#7f1d1d;color:#fecaca}
-    .movement{display:flex;justify-content:space-between;border-bottom:1px solid #1f2937;padding:13px 0}
-    .movement small{color:#94a3b8}
-    .mobile-warning{display:none}
-    @media(max-width:900px){
+    .blue{background:#0c4a6e;color:#7dd3fc}
+    .log{display:flex;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid #1f2937}
+    .log small{color:#94a3b8}
+    .toast{position:fixed;right:20px;bottom:20px;background:#16a34a;color:white;padding:14px 18px;border-radius:14px;font-weight:800;display:none;z-index:99}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}
+    .modal-box{background:#111827;border:1px solid #334155;border-radius:22px;padding:22px;max-width:520px;width:100%}
+    .modal-box h3{margin-bottom:15px}
+    .close{float:right;cursor:pointer;color:#94a3b8;font-size:22px}
+    .searchbar{display:grid;grid-template-columns:1fr 220px 160px;gap:10px;margin-bottom:14px}
+    .mini{font-size:12px;color:#94a3b8}
+    .mobile-menu{display:none;margin-bottom:15px}
+    @media(max-width:1000px){
       .app{grid-template-columns:1fr}
       aside{display:none}
+      .mobile-menu{display:block}
       .cards{grid-template-columns:1fr 1fr}
-      .grid{grid-template-columns:1fr}
+      .grid2,.grid3,.form,.searchbar{grid-template-columns:1fr}
       .top{display:block}
-      .top div:last-child{margin-top:14px}
+      .top div:last-child{margin-top:12px}
     }
-    @media(max-width:520px){
+    @media(max-width:560px){
       main{padding:14px}
       .cards{grid-template-columns:1fr}
-      table{font-size:12px}
-      th,td{padding:10px 6px}
+      table{display:block;overflow:auto}
     }
   </style>
 </head>
 <body>
 
+<div class="toast" id="toast">İşlem başarılı</div>
+
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeModal()">×</span>
+    <h3>Yeni Ürün Kartı</h3>
+    <div class="form" style="grid-template-columns:1fr 1fr">
+      <input id="newName" placeholder="Ürün adı">
+      <input id="newBarcode" placeholder="Barkod">
+      <input id="newCategory" placeholder="Kategori">
+      <select id="newWarehouse">
+        <option>Ana Depo</option>
+        <option>Soğuk Depo</option>
+        <option>Sevkiyat Deposu</option>
+        <option>Üretim Deposu</option>
+      </select>
+      <input id="newStock" type="number" placeholder="Stok">
+      <input id="newMin" type="number" placeholder="Minimum stok">
+    </div>
+    <button class="btn primary" onclick="saveProduct()">Ürünü Kaydet</button>
+  </div>
+</div>
+
 <div class="app">
   <aside>
     <div class="brand">ER<span>MONEYT</span></div>
     <div class="menu">
-      <a class="active" href="#">Dashboard</a>
-      <a href="#">Ürünler</a>
-      <a href="#">Stok Hareketleri</a>
-      <a href="#">Depo Transferi</a>
-      <a href="#">Sayım</a>
-      <a href="#">Raporlar</a>
-      <a href="https://ermoneyt.com/hizmetler/stok.html">Tanıtım Sayfası</a>
+      <button class="active" onclick="showTab('dashboard',this)">Dashboard</button>
+      <button onclick="showTab('products',this)">Ürün Kartları</button>
+      <button onclick="showTab('movement',this)">Stok Giriş / Çıkış</button>
+      <button onclick="showTab('transfer',this)">Depo Transfer</button>
+      <button onclick="showTab('counting',this)">Sayım</button>
+      <button onclick="showTab('reports',this)">Raporlar</button>
+      <button onclick="location.href='https://ermoneyt.com/hizmetler/stok.html'">Tanıtım Sayfası</button>
     </div>
   </aside>
 
   <main>
+    <select class="mobile-menu" onchange="mobileTab(this.value)">
+      <option value="dashboard">Dashboard</option>
+      <option value="products">Ürün Kartları</option>
+      <option value="movement">Stok Giriş / Çıkış</option>
+      <option value="transfer">Depo Transfer</option>
+      <option value="counting">Sayım</option>
+      <option value="reports">Raporlar</option>
+    </select>
+
     <div class="top">
       <div>
         <h1>Stok & Depo Demo Paneli</h1>
-        <p>Barkodlu stok takip, depo hareketleri, kritik stok ve sayım ekranı.</p>
+        <p>Barkod, depo transferi, sayım, kritik stok ve raporlama demo ekranı.</p>
       </div>
       <div>
-        <button class="btn secondary" onclick="scanBarcode()">Barkod Okut</button>
-        <button class="btn primary" onclick="addMovement()">Yeni Hareket</button>
+        <button class="btn darkbtn" onclick="scanBarcode()">Barkod Okut</button>
+        <button class="btn primary" onclick="openModal()">Yeni Ürün</button>
       </div>
     </div>
 
     <div class="cards">
-      <div class="card"><span>Toplam Ürün</span><h2 id="totalProducts">0</h2></div>
-      <div class="card"><span>Toplam Stok</span><h2 id="totalStock">0</h2></div>
-      <div class="card"><span>Kritik Ürün</span><h2 id="criticalCount">0</h2></div>
-      <div class="card"><span>Bugünkü Hareket</span><h2 id="moveCount">0</h2></div>
+      <div class="card"><span>Toplam Ürün</span><h2 id="statProducts">0</h2></div>
+      <div class="card"><span>Toplam Stok</span><h2 id="statStock">0</h2></div>
+      <div class="card"><span>Kritik Ürün</span><h2 id="statCritical">0</h2></div>
+      <div class="card"><span>Bugünkü Hareket</span><h2 id="statMoves">0</h2></div>
     </div>
 
-    <div class="grid">
-      <div>
+    <section id="dashboard" class="section active">
+      <div class="grid2">
         <div class="panel">
-          <h3>Ürün Stok Listesi</h3>
-
-          <div class="filters">
-            <input id="searchInput" type="text" placeholder="Ürün veya barkod ara..." onkeyup="renderProducts()">
-            <select id="warehouseFilter" onchange="renderProducts()">
-              <option value="">Tüm Depolar</option>
-              <option value="Ana Depo">Ana Depo</option>
-              <option value="Soğuk Depo">Soğuk Depo</option>
-              <option value="Sevkiyat Deposu">Sevkiyat Deposu</option>
-            </select>
-          </div>
-
+          <h3>Kritik Stok Listesi</h3>
           <table>
-            <thead>
-              <tr>
-                <th>Ürün</th>
-                <th>Barkod</th>
-                <th>Depo</th>
-                <th>Stok</th>
-                <th>Durum</th>
-              </tr>
-            </thead>
-            <tbody id="productTable"></tbody>
+            <thead><tr><th>Ürün</th><th>Depo</th><th>Stok</th><th>Min.</th><th>Durum</th></tr></thead>
+            <tbody id="criticalTable"></tbody>
           </table>
         </div>
 
         <div class="panel">
-          <h3>Sayım Fark Raporu</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Ürün</th>
-                <th>Sistem</th>
-                <th>Sayım</th>
-                <th>Fark</th>
-              </tr>
-            </thead>
-            <tbody id="countTable"></tbody>
-          </table>
+          <h3>Son Hareketler</h3>
+          <div id="lastMoves"></div>
         </div>
       </div>
 
-      <div>
-        <div class="panel">
-          <h3>Son Stok Hareketleri</h3>
-          <div id="movementList"></div>
-        </div>
+      <div class="panel">
+        <h3>Depo Bazlı Stok Özeti</h3>
+        <table>
+          <thead><tr><th>Depo</th><th>Ürün Sayısı</th><th>Toplam Stok</th><th>Kritik Ürün</th></tr></thead>
+          <tbody id="warehouseSummary"></tbody>
+        </table>
+      </div>
+    </section>
 
+    <section id="products" class="section">
+      <div class="panel">
+        <h3>Ürün Kartları</h3>
+        <div class="searchbar">
+          <input id="searchInput" onkeyup="renderProducts()" placeholder="Ürün, barkod veya kategori ara...">
+          <select id="warehouseFilter" onchange="renderProducts()">
+            <option value="">Tüm Depolar</option>
+            <option>Ana Depo</option>
+            <option>Soğuk Depo</option>
+            <option>Sevkiyat Deposu</option>
+            <option>Üretim Deposu</option>
+          </select>
+          <button class="btn greenbtn" onclick="exportCSV()">CSV İndir</button>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Ürün</th><th>Barkod</th><th>Kategori</th><th>Depo</th><th>Stok</th><th>Min.</th><th>Durum</th><th>İşlem</th></tr>
+          </thead>
+          <tbody id="productTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="movement" class="section">
+      <div class="panel">
+        <h3>Stok Giriş / Çıkış Fişi</h3>
+        <div class="form">
+          <select id="moveProduct"></select>
+          <select id="moveType">
+            <option value="Giriş">Stok Giriş</option>
+            <option value="Çıkış">Stok Çıkış</option>
+            <option value="Fire">Fire</option>
+            <option value="İade">İade</option>
+          </select>
+          <input id="moveQty" type="number" value="10" placeholder="Miktar">
+          <button class="btn primary" onclick="makeMovement()">Fişi Kaydet</button>
+        </div>
+        <p class="mini">Demo mantık: Giriş ve iade stoğu artırır. Çıkış ve fire stoğu azaltır.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Tüm Hareket Geçmişi</h3>
+        <table>
+          <thead><tr><th>Tarih</th><th>Tip</th><th>Ürün</th><th>Miktar</th><th>Kullanıcı</th></tr></thead>
+          <tbody id="movementTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="transfer" class="section">
+      <div class="panel">
+        <h3>Depo Transfer Formu</h3>
+        <div class="form">
+          <select id="transferProduct"></select>
+          <select id="fromWarehouse">
+            <option>Ana Depo</option>
+            <option>Soğuk Depo</option>
+            <option>Sevkiyat Deposu</option>
+            <option>Üretim Deposu</option>
+          </select>
+          <select id="toWarehouse">
+            <option>Sevkiyat Deposu</option>
+            <option>Ana Depo</option>
+            <option>Soğuk Depo</option>
+            <option>Üretim Deposu</option>
+          </select>
+          <input id="transferQty" type="number" value="5">
+        </div>
+        <button class="btn primary" onclick="makeTransfer()">Transferi Başlat</button>
+      </div>
+
+      <div class="panel">
+        <h3>Transfer Notu</h3>
+        <p id="transferInfo" class="mini">Henüz transfer yapılmadı.</p>
+      </div>
+    </section>
+
+    <section id="counting" class="section">
+      <div class="panel">
+        <h3>Sayım Ekranı</h3>
+        <table>
+          <thead><tr><th>Ürün</th><th>Sistem Stok</th><th>Sayım Stok</th><th>Fark</th><th>İşlem</th></tr></thead>
+          <tbody id="countTable"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="reports" class="section">
+      <div class="grid3">
         <div class="panel">
-          <h3>Depo Transfer Demo</h3>
-          <div class="filters">
-            <select id="fromWarehouse">
-              <option>Ana Depo</option>
-              <option>Soğuk Depo</option>
-              <option>Sevkiyat Deposu</option>
-            </select>
-            <select id="toWarehouse">
-              <option>Sevkiyat Deposu</option>
-              <option>Ana Depo</option>
-              <option>Soğuk Depo</option>
-            </select>
-            <input id="transferQty" type="number" value="12">
-            <button class="btn primary" onclick="transferStock()">Transfer Yap</button>
-          </div>
-          <p id="transferResult" style="color:#94a3b8;margin-top:10px;">Demo transfer işlemi bekleniyor.</p>
+          <h3>Stok Raporu</h3>
+          <p class="mini">Ürün, depo ve kategori bazlı stok raporu alınır.</p><br>
+          <button class="btn primary" onclick="exportCSV()">Stok CSV İndir</button>
+        </div>
+        <div class="panel">
+          <h3>Fire Raporu</h3>
+          <p class="mini">Fire hareketlerini ürün ve tarih bazlı gösterir.</p><br>
+          <button class="btn darkbtn" onclick="showOnlyFire()">Fireleri Göster</button>
+        </div>
+        <div class="panel">
+          <h3>Kritik Stok</h3>
+          <p class="mini">Minimum stok altındaki ürünleri listeler.</p><br>
+          <button class="btn dangerbtn" onclick="showCriticalReport()">Kritikleri Göster</button>
         </div>
       </div>
-    </div>
+
+      <div class="panel">
+        <h3>Rapor Sonucu</h3>
+        <div id="reportResult" class="mini">Rapor seçiniz.</div>
+      </div>
+    </section>
+
   </main>
 </div>
 
 <script>
-  const products = [
-    {name:"Koli Ambalaj 30x40", barcode:"868000100001", warehouse:"Ana Depo", stock:420, min:100},
-    {name:"Barkod Etiketi", barcode:"868000100002", warehouse:"Ana Depo", stock:85, min:120},
-    {name:"Streç Film", barcode:"868000100003", warehouse:"Sevkiyat Deposu", stock:38, min:50},
-    {name:"Temizlik Ürünü 5L", barcode:"868000100004", warehouse:"Soğuk Depo", stock:210, min:70},
-    {name:"Palet", barcode:"868000100005", warehouse:"Sevkiyat Deposu", stock:16, min:25},
-    {name:"Kargo Poşeti", barcode:"868000100006", warehouse:"Ana Depo", stock:1280, min:300}
-  ];
+let products = [
+  {id:1,name:"Koli Ambalaj 30x40",barcode:"868000100001",category:"Ambalaj",warehouse:"Ana Depo",stock:420,min:100},
+  {id:2,name:"Barkod Etiketi",barcode:"868000100002",category:"Etiket",warehouse:"Ana Depo",stock:85,min:120},
+  {id:3,name:"Streç Film",barcode:"868000100003",category:"Ambalaj",warehouse:"Sevkiyat Deposu",stock:38,min:50},
+  {id:4,name:"Temizlik Ürünü 5L",barcode:"868000100004",category:"Kimyasal",warehouse:"Soğuk Depo",stock:210,min:70},
+  {id:5,name:"Palet",barcode:"868000100005",category:"Sevkiyat",warehouse:"Sevkiyat Deposu",stock:16,min:25},
+  {id:6,name:"Kargo Poşeti",barcode:"868000100006",category:"Ambalaj",warehouse:"Ana Depo",stock:1280,min:300},
+  {id:7,name:"Hammadde Kutusu",barcode:"868000100007",category:"Üretim",warehouse:"Üretim Deposu",stock:64,min:90}
+];
 
-  const movements = [
-    {type:"Giriş", product:"Koli Ambalaj 30x40", qty:"+120", user:"Depo Personeli"},
-    {type:"Çıkış", product:"Palet", qty:"-9", user:"Sevkiyat"},
-    {type:"Transfer", product:"Streç Film", qty:"-20", user:"Ana Depo"},
-    {type:"İade", product:"Temizlik Ürünü 5L", qty:"+14", user:"Operasyon"}
-  ];
+let movements = [
+  {date:"2026-05-04 10:20",type:"Giriş",product:"Koli Ambalaj 30x40",qty:120,user:"Depo Personeli"},
+  {date:"2026-05-04 10:31",type:"Çıkış",product:"Palet",qty:-9,user:"Sevkiyat"},
+  {date:"2026-05-04 11:05",type:"Transfer",product:"Streç Film",qty:-20,user:"Ana Depo → Sevkiyat"},
+  {date:"2026-05-04 11:40",type:"İade",product:"Temizlik Ürünü 5L",qty:14,user:"Operasyon"}
+];
 
-  const counts = [
-    {product:"Barkod Etiketi", system:85, counted:80},
-    {product:"Palet", system:16, counted:18},
-    {product:"Streç Film", system:38, counted:35}
-  ];
+function now(){
+  const d = new Date();
+  return d.toLocaleString("tr-TR");
+}
 
-  function statusBadge(product){
-    if(product.stock <= product.min * 0.5) return `<span class="badge danger">Kritik</span>`;
-    if(product.stock <= product.min) return `<span class="badge warn">Az Stok</span>`;
-    return `<span class="badge ok">Yeterli</span>`;
-  }
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.innerText=msg;
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1800);
+}
 
-  function renderProducts(){
-    const search = document.getElementById("searchInput").value.toLowerCase();
-    const warehouse = document.getElementById("warehouseFilter").value;
+function statusBadge(p){
+  if(p.stock <= p.min * .5) return `<span class="badge danger">Kritik</span>`;
+  if(p.stock <= p.min) return `<span class="badge warn">Az Stok</span>`;
+  return `<span class="badge ok">Yeterli</span>`;
+}
 
-    const filtered = products.filter(p => {
-      const matchSearch = p.name.toLowerCase().includes(search) || p.barcode.includes(search);
-      const matchWarehouse = !warehouse || p.warehouse === warehouse;
-      return matchSearch && matchWarehouse;
-    });
+function showTab(id,btn){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+}
 
-    document.getElementById("productTable").innerHTML = filtered.map(p => `
-      <tr>
-        <td>${p.name}</td>
-        <td>${p.barcode}</td>
-        <td>${p.warehouse}</td>
-        <td>${p.stock}</td>
-        <td>${statusBadge(p)}</td>
-      </tr>
-    `).join("");
+function mobileTab(id){ showTab(id,null); }
 
-    renderStats();
-  }
+function renderStats(){
+  document.getElementById("statProducts").innerText=products.length;
+  document.getElementById("statStock").innerText=products.reduce((a,b)=>a+b.stock,0);
+  document.getElementById("statCritical").innerText=products.filter(p=>p.stock<=p.min).length;
+  document.getElementById("statMoves").innerText=movements.length;
+}
 
-  function renderStats(){
-    document.getElementById("totalProducts").innerText = products.length;
-    document.getElementById("totalStock").innerText = products.reduce((a,b)=>a+b.stock,0);
-    document.getElementById("criticalCount").innerText = products.filter(p=>p.stock <= p.min).length;
-    document.getElementById("moveCount").innerText = movements.length;
-  }
+function renderSelects(){
+  const options = products.map(p=>`<option value="${p.id}">${p.name} - ${p.warehouse}</option>`).join("");
+  document.getElementById("moveProduct").innerHTML=options;
+  document.getElementById("transferProduct").innerHTML=options;
+}
 
-  function renderMovements(){
-    document.getElementById("movementList").innerHTML = movements.map(m => `
-      <div class="movement">
-        <div>
-          <b>${m.type}</b>
-          <br>
-          <small>${m.product} • ${m.user}</small>
-        </div>
-        <strong>${m.qty}</strong>
-      </div>
-    `).join("");
-  }
+function renderProducts(){
+  const search = (document.getElementById("searchInput")?.value || "").toLowerCase();
+  const wh = document.getElementById("warehouseFilter")?.value || "";
 
-  function renderCounts(){
-    document.getElementById("countTable").innerHTML = counts.map(c => {
-      const diff = c.counted - c.system;
-      return `
-        <tr>
-          <td>${c.product}</td>
-          <td>${c.system}</td>
-          <td>${c.counted}</td>
-          <td>${diff > 0 ? "+" + diff : diff}</td>
-        </tr>
-      `;
-    }).join("");
-  }
+  const filtered = products.filter(p=>{
+    const s = p.name.toLowerCase().includes(search) || p.barcode.includes(search) || p.category.toLowerCase().includes(search);
+    const w = !wh || p.warehouse === wh;
+    return s && w;
+  });
 
-  function scanBarcode(){
-    document.getElementById("searchInput").value = "868000100002";
-    renderProducts();
-    alert("Demo barkod okutuldu: 868000100002");
-  }
+  document.getElementById("productTable").innerHTML = filtered.map(p=>`
+    <tr>
+      <td>${p.name}</td>
+      <td>${p.barcode}</td>
+      <td>${p.category}</td>
+      <td>${p.warehouse}</td>
+      <td>${p.stock}</td>
+      <td>${p.min}</td>
+      <td>${statusBadge(p)}</td>
+      <td>
+        <button class="btn darkbtn" onclick="quickEntry(${p.id})">+10</button>
+        <button class="btn dangerbtn" onclick="quickExit(${p.id})">-10</button>
+      </td>
+    </tr>
+  `).join("");
+}
 
-  function addMovement(){
-    movements.unshift({
-      type:"Çıkış",
-      product:"Kargo Poşeti",
-      qty:"-25",
-      user:"Demo Kullanıcı"
-    });
+function renderCritical(){
+  const list = products.filter(p=>p.stock<=p.min);
+  document.getElementById("criticalTable").innerHTML = list.map(p=>`
+    <tr><td>${p.name}</td><td>${p.warehouse}</td><td>${p.stock}</td><td>${p.min}</td><td>${statusBadge(p)}</td></tr>
+  `).join("") || `<tr><td colspan="5">Kritik stok yok.</td></tr>`;
+}
 
-    products[5].stock -= 25;
+function renderMoves(){
+  document.getElementById("lastMoves").innerHTML = movements.slice(0,6).map(m=>`
+    <div class="log">
+      <div><b>${m.type}</b><br><small>${m.product} • ${m.user}</small></div>
+      <strong>${m.qty>0 ? "+"+m.qty : m.qty}</strong>
+    </div>
+  `).join("");
 
-    renderProducts();
-    renderMovements();
-  }
+  document.getElementById("movementTable").innerHTML = movements.map(m=>`
+    <tr>
+      <td>${m.date}</td>
+      <td><span class="badge blue">${m.type}</span></td>
+      <td>${m.product}</td>
+      <td>${m.qty>0 ? "+"+m.qty : m.qty}</td>
+      <td>${m.user}</td>
+    </tr>
+  `).join("");
+}
 
-  function transferStock(){
-    const from = document.getElementById("fromWarehouse").value;
-    const to = document.getElementById("toWarehouse").value;
-    const qty = document.getElementById("transferQty").value;
+function renderWarehouseSummary(){
+  const warehouses = [...new Set(products.map(p=>p.warehouse))];
+  document.getElementById("warehouseSummary").innerHTML = warehouses.map(w=>{
+    const list = products.filter(p=>p.warehouse===w);
+    return `<tr>
+      <td>${w}</td>
+      <td>${list.length}</td>
+      <td>${list.reduce((a,b)=>a+b.stock,0)}</td>
+      <td>${list.filter(p=>p.stock<=p.min).length}</td>
+    </tr>`;
+  }).join("");
+}
 
-    document.getElementById("transferResult").innerHTML =
-      `<b>${from}</b> deposundan <b>${to}</b> deposuna <b>${qty}</b> adet ürün transfer edildi.`;
+function renderCounting(){
+  document.getElementById("countTable").innerHTML = products.map(p=>{
+    const counted = p.stock + (p.id % 2 === 0 ? -3 : 2);
+    const diff = counted - p.stock;
+    return `<tr>
+      <td>${p.name}</td>
+      <td>${p.stock}</td>
+      <td><input type="number" id="count_${p.id}" value="${counted}"></td>
+      <td id="diff_${p.id}">${diff>0 ? "+"+diff : diff}</td>
+      <td><button class="btn primary" onclick="applyCount(${p.id})">Stoku Düzelt</button></td>
+    </tr>`;
+  }).join("");
+}
 
-    movements.unshift({
-      type:"Transfer",
-      product:"Demo Ürün",
-      qty:"-" + qty,
-      user:from + " → " + to
-    });
+function applyCount(id){
+  const p = products.find(x=>x.id===id);
+  const counted = Number(document.getElementById("count_"+id).value);
+  const diff = counted - p.stock;
+  p.stock = counted;
+  movements.unshift({date:now(),type:"Sayım Düzeltme",product:p.name,qty:diff,user:"Sayım Kullanıcısı"});
+  refresh();
+  toast("Sayım farkı işlendi");
+}
 
-    renderMovements();
-    renderStats();
-  }
+function makeMovement(){
+  const id = Number(document.getElementById("moveProduct").value);
+  const type = document.getElementById("moveType").value;
+  let qty = Number(document.getElementById("moveQty").value);
+  const p = products.find(x=>x.id===id);
 
+  if(!qty || qty <= 0){ toast("Miktar hatalı"); return; }
+
+  if(type==="Çıkış" || type==="Fire") qty = -qty;
+  p.stock += qty;
+
+  movements.unshift({date:now(),type,product:p.name,qty,user:"Demo Kullanıcı"});
+  refresh();
+  toast("Stok fişi kaydedildi");
+}
+
+function quickEntry(id){
+  const p=products.find(x=>x.id===id);
+  p.stock += 10;
+  movements.unshift({date:now(),type:"Hızlı Giriş",product:p.name,qty:10,user:"Demo Kullanıcı"});
+  refresh();
+  toast("+10 stok eklendi");
+}
+
+function quickExit(id){
+  const p=products.find(x=>x.id===id);
+  p.stock -= 10;
+  movements.unshift({date:now(),type:"Hızlı Çıkış",product:p.name,qty:-10,user:"Demo Kullanıcı"});
+  refresh();
+  toast("-10 stok düşüldü");
+}
+
+function makeTransfer(){
+  const id=Number(document.getElementById("transferProduct").value);
+  const from=document.getElementById("fromWarehouse").value;
+  const to=document.getElementById("toWarehouse").value;
+  const qty=Number(document.getElementById("transferQty").value);
+  const p=products.find(x=>x.id===id);
+
+  if(from===to){ toast("Kaynak ve hedef depo aynı olamaz"); return; }
+  if(!qty || qty<=0){ toast("Miktar hatalı"); return; }
+
+  movements.unshift({date:now(),type:"Transfer",product:p.name,qty:-qty,user:from+" → "+to});
+  document.getElementById("transferInfo").innerHTML = `<b>${p.name}</b> ürünü için <b>${from}</b> deposundan <b>${to}</b> deposuna <b>${qty}</b> adet transfer kaydı oluşturuldu.`;
+
+  refresh();
+  toast("Transfer kaydı oluşturuldu");
+}
+
+function scanBarcode(){
+  showTab("products",null);
+  document.getElementById("searchInput").value="868000100002";
   renderProducts();
-  renderMovements();
-  renderCounts();
+  toast("Barkod okutuldu: 868000100002");
+}
+
+function openModal(){ document.getElementById("productModal").style.display="flex"; }
+function closeModal(){ document.getElementById("productModal").style.display="none"; }
+
+function saveProduct(){
+  const name=document.getElementById("newName").value.trim();
+  const barcode=document.getElementById("newBarcode").value.trim();
+  const category=document.getElementById("newCategory").value.trim();
+  const warehouse=document.getElementById("newWarehouse").value;
+  const stock=Number(document.getElementById("newStock").value);
+  const min=Number(document.getElementById("newMin").value);
+
+  if(!name || !barcode || !category){ toast("Eksik bilgi var"); return; }
+
+  products.push({id:Date.now(),name,barcode,category,warehouse,stock,min});
+  movements.unshift({date:now(),type:"Ürün Kartı",product:name,qty:stock,user:"Admin"});
+  closeModal();
+  refresh();
+  toast("Yeni ürün kartı açıldı");
+}
+
+function exportCSV(){
+  let csv = "Urun,Barkod,Kategori,Depo,Stok,Minimum\n";
+  products.forEach(p=>{
+    csv += `${p.name},${p.barcode},${p.category},${p.warehouse},${p.stock},${p.min}\n`;
+  });
+  const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href=url;
+  a.download="ermoneyt-stok-demo.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function showOnlyFire(){
+  const fires = movements.filter(m=>m.type==="Fire");
+  document.getElementById("reportResult").innerHTML = fires.length 
+    ? fires.map(f=>`<div class="log"><b>${f.product}</b><span>${f.qty}</span></div>`).join("")
+    : "Henüz fire hareketi yok.";
+}
+
+function showCriticalReport(){
+  const list = products.filter(p=>p.stock<=p.min);
+  document.getElementById("reportResult").innerHTML = list.map(p=>`
+    <div class="log"><b>${p.name}</b><span>${p.stock} / Min: ${p.min}</span></div>
+  `).join("") || "Kritik ürün yok.";
+}
+
+function refresh(){
+  renderStats();
+  renderSelects();
+  renderProducts();
+  renderCritical();
+  renderMoves();
+  renderWarehouseSummary();
+  renderCounting();
+}
+
+refresh();
 </script>
 
 </body>
