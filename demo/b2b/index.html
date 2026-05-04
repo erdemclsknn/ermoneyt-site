@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ermoneyt B2B Bayi Demo Paneli</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+body{background:#0b1120;color:#e5e7eb}
+.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+aside{background:#020617;border-right:1px solid #1e293b;padding:24px;position:sticky;top:0;height:100vh}
+.brand{font-size:25px;font-weight:900;margin-bottom:28px}
+.brand span{color:#38bdf8}
+.menu button{width:100%;text-align:left;background:transparent;border:0;color:#94a3b8;padding:13px 14px;border-radius:13px;margin-bottom:7px;font-weight:700;cursor:pointer}
+.menu button.active,.menu button:hover{background:#1e293b;color:#fff}
+main{padding:24px}
+.top{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:22px}
+.top h1{font-size:28px}
+.top p{color:#94a3b8;margin-top:5px}
+.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
+.primary{background:#38bdf8;color:#020617}
+.darkbtn{background:#1e293b;color:#fff}
+.greenbtn{background:#22c55e;color:#052e16}
+.redbtn{background:#ef4444;color:white}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}
+.card{background:linear-gradient(145deg,#111827,#0f172a);border:1px solid #1f2937;border-radius:20px;padding:20px}
+.card span{color:#94a3b8;font-size:13px}
+.card h2{font-size:28px;margin-top:8px}
+.section{display:none}
+.section.active{display:block}
+.panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px;margin-bottom:16px}
+.panel h3{margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+input,select{background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:12px;padding:12px;outline:none;width:100%}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #1f2937;font-size:14px}
+th{color:#94a3b8}
+.badge{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;display:inline-block}
+.ok{background:#064e3b;color:#6ee7b7}
+.warn{background:#713f12;color:#fde68a}
+.danger{background:#7f1d1d;color:#fecaca}
+.blue{background:#0c4a6e;color:#7dd3fc}
+.log{display:flex;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid #1f2937}
+.log small{color:#94a3b8}
+.toast{position:fixed;right:20px;bottom:20px;background:#16a34a;color:white;padding:14px 18px;border-radius:14px;font-weight:800;display:none;z-index:99}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}
+.modal-box{background:#111827;border:1px solid #334155;border-radius:22px;padding:22px;max-width:620px;width:100%}
+.close{float:right;cursor:pointer;color:#94a3b8;font-size:22px}
+.searchbar{display:grid;grid-template-columns:1fr 220px 160px;gap:10px;margin-bottom:14px}
+.mini{font-size:12px;color:#94a3b8}
+.mobile-menu{display:none;margin-bottom:15px}
+.cart-item{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #1f2937;padding:10px 0}
+@media(max-width:1000px){
+.app{grid-template-columns:1fr}
+aside{display:none}
+.mobile-menu{display:block}
+.cards{grid-template-columns:1fr 1fr}
+.grid2,.grid3,.form,.searchbar{grid-template-columns:1fr}
+.top{display:block}
+.top div:last-child{margin-top:12px}
+}
+@media(max-width:560px){
+main{padding:14px}
+.cards{grid-template-columns:1fr}
+table{display:block;overflow:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">İşlem başarılı</div>
+
+<div class="modal" id="dealerModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeDealerModal()">×</span>
+    <h3>Yeni Bayi Tanımı</h3>
+    <div class="form" style="grid-template-columns:1fr 1fr">
+      <input id="dealerName" placeholder="Bayi adı">
+      <input id="dealerCity" placeholder="Şehir">
+      <select id="dealerGroup">
+        <option>A Grubu</option>
+        <option>B Grubu</option>
+        <option>C Grubu</option>
+      </select>
+      <input id="dealerLimit" type="number" placeholder="Risk limiti">
+    </div>
+    <button class="btn primary" onclick="saveDealer()">Bayiyi Kaydet</button>
+  </div>
+</div>
+
+<div class="app">
+<aside>
+  <div class="brand">ER<span>MONEYT</span></div>
+  <div class="menu">
+    <button class="active" onclick="showTab('dashboard',this)">Dashboard</button>
+    <button onclick="showTab('catalog',this)">Ürün Kataloğu</button>
+    <button onclick="showTab('cart',this)">Sepet / Sipariş</button>
+    <button onclick="showTab('orders',this)">Siparişler</button>
+    <button onclick="showTab('dealers',this)">Bayiler</button>
+    <button onclick="showTab('current',this)">Cari Hesap</button>
+    <button onclick="showTab('reports',this)">Raporlar</button>
+    <button onclick="location.href='https://ermoneyt.com/hizmetler/b2b.html'">Tanıtım Sayfası</button>
+  </div>
+</aside>
+
+<main>
+  <select class="mobile-menu" onchange="showTab(this.value,null)">
+    <option value="dashboard">Dashboard</option>
+    <option value="catalog">Ürün Kataloğu</option>
+    <option value="cart">Sepet / Sipariş</option>
+    <option value="orders">Siparişler</option>
+    <option value="dealers">Bayiler</option>
+    <option value="current">Cari Hesap</option>
+    <option value="reports">Raporlar</option>
+  </select>
+
+  <div class="top">
+    <div>
+      <h1>B2B Bayi Sipariş Demo Paneli</h1>
+      <p>Bayi özel fiyat, cari bakiye, sipariş, sevkiyat, ödeme ve raporlama ekranı.</p>
+    </div>
+    <div>
+      <button class="btn darkbtn" onclick="showTab('catalog',null)">Ürün Seç</button>
+      <button class="btn primary" onclick="openDealerModal()">Yeni Bayi</button>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card"><span>Aktif Bayi</span><h2 id="statDealers">0</h2></div>
+    <div class="card"><span>Bugünkü Sipariş</span><h2 id="statOrders">0</h2></div>
+    <div class="card"><span>Sepet Tutarı</span><h2 id="statCart">₺0</h2></div>
+    <div class="card"><span>Açık Bakiye</span><h2 id="statBalance">₺0</h2></div>
+  </div>
+
+  <section id="dashboard" class="section active">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Son Siparişler</h3>
+        <table>
+          <thead><tr><th>No</th><th>Bayi</th><th>Tutar</th><th>Durum</th><th>Sevkiyat</th></tr></thead>
+          <tbody id="lastOrders"></tbody>
+        </table>
+      </div>
+      <div class="panel">
+        <h3>Uyarılar</h3>
+        <div id="alerts"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Bayi Performans Özeti</h3>
+      <table>
+        <thead><tr><th>Bayi</th><th>Şehir</th><th>Grup</th><th>Bakiye</th><th>Risk</th><th>Durum</th></tr></thead>
+        <tbody id="dealerSummary"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="catalog" class="section">
+    <div class="panel">
+      <h3>Ürün Kataloğu</h3>
+      <div class="searchbar">
+        <input id="searchProduct" onkeyup="renderCatalog()" placeholder="Ürün veya kod ara...">
+        <select id="dealerPriceGroup" onchange="renderCatalog()">
+          <option value="A">A Grubu Fiyat</option>
+          <option value="B">B Grubu Fiyat</option>
+          <option value="C">C Grubu Fiyat</option>
+        </select>
+        <button class="btn greenbtn" onclick="exportProducts()">CSV İndir</button>
+      </div>
+      <table>
+        <thead><tr><th>Kod</th><th>Ürün</th><th>Stok</th><th>Liste</th><th>Bayi Fiyat</th><th>Adet</th><th>İşlem</th></tr></thead>
+        <tbody id="catalogTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="cart" class="section">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Sepet</h3>
+        <div id="cartList"></div>
+      </div>
+      <div class="panel">
+        <h3>Sipariş Özeti</h3>
+        <select id="selectedDealer"></select><br><br>
+        <p class="mini">Ara Toplam</p>
+        <h2 id="cartSubtotal">₺0</h2><br>
+        <p class="mini">KDV Dahil Tahmini Toplam</p>
+        <h2 id="cartTotal">₺0</h2><br>
+        <button class="btn primary" onclick="createOrder()">Siparişi Oluştur</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="orders" class="section">
+    <div class="panel">
+      <h3>Sipariş Yönetimi</h3>
+      <table>
+        <thead><tr><th>No</th><th>Tarih</th><th>Bayi</th><th>Tutar</th><th>Durum</th><th>Sevkiyat</th><th>İşlem</th></tr></thead>
+        <tbody id="ordersTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="dealers" class="section">
+    <div class="panel">
+      <h3>Bayi Listesi</h3>
+      <table>
+        <thead><tr><th>Bayi</th><th>Şehir</th><th>Grup</th><th>Bakiye</th><th>Limit</th><th>Durum</th></tr></thead>
+        <tbody id="dealersTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="current" class="section">
+    <div class="panel">
+      <h3>Cari Hesap Ekstresi</h3>
+      <select id="currentDealer" onchange="renderCurrent()"></select><br><br>
+      <table>
+        <thead><tr><th>Tarih</th><th>İşlem</th><th>Borç</th><th>Alacak</th><th>Bakiye</th></tr></thead>
+        <tbody id="currentTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="reports" class="section">
+    <div class="grid3">
+      <div class="panel">
+        <h3>Bayi Ciro Raporu</h3>
+        <p class="mini">Bayi bazlı sipariş toplamları.</p><br>
+        <button class="btn primary" onclick="reportDealerTurnover()">Raporla</button>
+      </div>
+      <div class="panel">
+        <h3>Sevkiyat Raporu</h3>
+        <p class="mini">Hazırlanıyor / sevk edildi / teslim edildi.</p><br>
+        <button class="btn darkbtn" onclick="reportShipping()">Raporla</button>
+      </div>
+      <div class="panel">
+        <h3>Risk Raporu</h3>
+        <p class="mini">Risk limitini aşan bayiler.</p><br>
+        <button class="btn redbtn" onclick="reportRisk()">Raporla</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Rapor Sonucu</h3>
+      <div id="reportResult" class="mini">Rapor seçiniz.</div>
+    </div>
+  </section>
+</main>
+</div>
+
+<script>
+let dealers=[
+{id:1,name:"Karadeniz Marketçilik",city:"Trabzon",group:"A",balance:128500,limit:250000},
+{id:2,name:"Doğu Dağıtım",city:"Van",group:"B",balance:84500,limit:100000},
+{id:3,name:"Ege Toptan",city:"İzmir",group:"A",balance:315000,limit:300000},
+{id:4,name:"Marmara Gross",city:"İstanbul",group:"C",balance:42500,limit:150000}
+];
+
+let products=[
+{code:"B2B-1001",name:"Doğal Sabun 3'lü Paket",stock:840,list:180,A:145,B:155,C:165},
+{code:"B2B-1002",name:"Duş Jeli 500 ML",stock:420,list:220,A:178,B:190,C:205},
+{code:"B2B-1003",name:"Güneş Kremi SPF50",stock:160,list:360,A:295,B:315,C:335},
+{code:"B2B-1004",name:"Cilt Maskesi",stock:90,list:140,A:105,B:115,C:125},
+{code:"B2B-1005",name:"Dudak Koruyucu",stock:1200,list:75,A:52,B:58,C:64},
+{code:"B2B-1006",name:"Tüy Dökücü Krem",stock:250,list:210,A:168,B:182,C:195}
+];
+
+let cart=[];
+let orders=[
+{id:1001,date:"04.05.2026",dealer:"Karadeniz Marketçilik",total:24680,status:"Onaylandı",ship:"Hazırlanıyor"},
+{id:1002,date:"04.05.2026",dealer:"Doğu Dağıtım",total:18420,status:"Bekliyor",ship:"Beklemede"},
+{id:1003,date:"03.05.2026",dealer:"Ege Toptan",total:42890,status:"Onaylandı",ship:"Sevk Edildi"}
+];
+
+let currentRows=[
+{dealer:"Karadeniz Marketçilik",date:"01.05.2026",text:"Açılış Bakiyesi",debt:120000,credit:0,balance:120000},
+{dealer:"Karadeniz Marketçilik",date:"04.05.2026",text:"Sipariş",debt:24680,credit:0,balance:144680},
+{dealer:"Karadeniz Marketçilik",date:"04.05.2026",text:"Ödeme",debt:0,credit:16180,balance:128500},
+{dealer:"Doğu Dağıtım",date:"02.05.2026",text:"Sipariş",debt:18420,credit:0,balance:84500},
+{dealer:"Ege Toptan",date:"03.05.2026",text:"Sipariş",debt:42890,credit:0,balance:315000}
+];
+
+function money(n){return "₺"+Number(n).toLocaleString("tr-TR")}
+function toast(msg){let t=document.getElementById("toast");t.innerText=msg;t.style.display="block";setTimeout(()=>t.style.display="none",1600)}
+function riskBadge(d){return d.balance>d.limit?'<span class="badge danger">Risk Aştı</span>':'<span class="badge ok">Normal</span>'}
+function orderBadge(s){return s==="Onaylandı"?'<span class="badge ok">Onaylandı</span>':s==="Bekliyor"?'<span class="badge warn">Bekliyor</span>':'<span class="badge blue">'+s+'</span>'}
+
+function showTab(id,btn){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
+if(btn)btn.classList.add("active");
+}
+
+function renderStats(){
+document.getElementById("statDealers").innerText=dealers.length;
+document.getElementById("statOrders").innerText=orders.length;
+document.getElementById("statCart").innerText=money(cart.reduce((a,b)=>a+b.total,0));
+document.getElementById("statBalance").innerText=money(dealers.reduce((a,b)=>a+b.balance,0));
+}
+
+function renderCatalog(){
+let q=(document.getElementById("searchProduct")?.value||"").toLowerCase();
+let g=document.getElementById("dealerPriceGroup")?.value||"A";
+let rows=products.filter(p=>p.name.toLowerCase().includes(q)||p.code.toLowerCase().includes(q));
+document.getElementById("catalogTable").innerHTML=rows.map(p=>`
+<tr>
+<td>${p.code}</td><td>${p.name}</td><td>${p.stock}</td><td>${money(p.list)}</td><td>${money(p[g])}</td>
+<td><input id="qty_${p.code}" type="number" value="1" min="1"></td>
+<td><button class="btn primary" onclick="addToCart('${p.code}')">Sepete Ekle</button></td>
+</tr>`).join("");
+}
+
+function addToCart(code){
+let g=document.getElementById("dealerPriceGroup").value;
+let p=products.find(x=>x.code===code);
+let qty=Number(document.getElementById("qty_"+code).value);
+if(!qty||qty<=0){toast("Adet hatalı");return}
+let existing=cart.find(x=>x.code===code);
+if(existing){existing.qty+=qty;existing.total=existing.qty*existing.price}
+else cart.push({code:p.code,name:p.name,qty,price:p[g],total:qty*p[g]});
+refresh();
+toast("Ürün sepete eklendi");
+}
+
+function renderCart(){
+document.getElementById("cartList").innerHTML=cart.length?cart.map(c=>`
+<div class="cart-item">
+<div><b>${c.name}</b><br><small>${c.qty} adet x ${money(c.price)}</small></div>
+<div><b>${money(c.total)}</b><br><button class="btn redbtn" onclick="removeCart('${c.code}')">Sil</button></div>
+</div>`).join(""):"Sepet boş.";
+let sub=cart.reduce((a,b)=>a+b.total,0);
+document.getElementById("cartSubtotal").innerText=money(sub);
+document.getElementById("cartTotal").innerText=money(sub*1.20);
+}
+
+function removeCart(code){cart=cart.filter(x=>x.code!==code);refresh();toast("Sepetten silindi")}
+
+function renderDealerSelects(){
+let opts=dealers.map(d=>`<option value="${d.id}">${d.name}</option>`).join("");
+document.getElementById("selectedDealer").innerHTML=opts;
+document.getElementById("currentDealer").innerHTML=opts;
+}
+
+function createOrder(){
+if(cart.length===0){toast("Sepet boş");return}
+let dealer=dealers.find(d=>d.id==document.getElementById("selectedDealer").value);
+let sub=cart.reduce((a,b)=>a+b.total,0);
+let total=Math.round(sub*1.20);
+orders.unshift({id:1000+orders.length+1,date:new Date().toLocaleDateString("tr-TR"),dealer:dealer.name,total,status:"Bekliyor",ship:"Beklemede"});
+dealer.balance+=total;
+currentRows.push({dealer:dealer.name,date:new Date().toLocaleDateString("tr-TR"),text:"Yeni Sipariş",debt:total,credit:0,balance:dealer.balance});
+cart=[];
+refresh();
+showTab("orders",null);
+toast("Sipariş oluşturuldu");
+}
+
+function renderOrders(){
+document.getElementById("ordersTable").innerHTML=orders.map(o=>`
+<tr>
+<td>#${o.id}</td><td>${o.date}</td><td>${o.dealer}</td><td>${money(o.total)}</td><td>${orderBadge(o.status)}</td><td>${o.ship}</td>
+<td>
+<button class="btn greenbtn" onclick="approveOrder(${o.id})">Onayla</button>
+<button class="btn darkbtn" onclick="shipOrder(${o.id})">Sevk</button>
+</td>
+</tr>`).join("");
+document.getElementById("lastOrders").innerHTML=orders.slice(0,5).map(o=>`
+<tr><td>#${o.id}</td><td>${o.dealer}</td><td>${money(o.total)}</td><td>${orderBadge(o.status)}</td><td>${o.ship}</td></tr>
+`).join("");
+}
+
+function approveOrder(id){let o=orders.find(x=>x.id===id);o.status="Onaylandı";refresh();toast("Sipariş onaylandı")}
+function shipOrder(id){let o=orders.find(x=>x.id===id);o.ship=o.ship==="Sevk Edildi"?"Teslim Edildi":"Sevk Edildi";refresh();toast("Sevkiyat durumu güncellendi")}
+
+function renderDealers(){
+let rows=dealers.map(d=>`
+<tr><td>${d.name}</td><td>${d.city}</td><td>${d.group}</td><td>${money(d.balance)}</td><td>${money(d.limit)}</td><td>${riskBadge(d)}</td></tr>
+`).join("");
+document.getElementById("dealersTable").innerHTML=rows;
+document.getElementById("dealerSummary").innerHTML=rows;
+}
+
+function renderCurrent(){
+let dealer=dealers.find(d=>d.id==document.getElementById("currentDealer").value);
+let rows=currentRows.filter(r=>r.dealer===dealer.name);
+document.getElementById("currentTable").innerHTML=rows.map(r=>`
+<tr><td>${r.date}</td><td>${r.text}</td><td>${r.debt?money(r.debt):"-"}</td><td>${r.credit?money(r.credit):"-"}</td><td>${money(r.balance)}</td></tr>
+`).join("")||"<tr><td colspan='5'>Ekstre bulunamadı.</td></tr>";
+}
+
+function renderAlerts(){
+let risk=dealers.filter(d=>d.balance>d.limit);
+let pending=orders.filter(o=>o.status==="Bekliyor");
+document.getElementById("alerts").innerHTML=
+`<div class="log"><div><b>Risk Limiti Aşan Bayi</b><br><small>${risk.length} bayi kontrol bekliyor</small></div><span class="badge danger">${risk.length}</span></div>
+<div class="log"><div><b>Onay Bekleyen Sipariş</b><br><small>Sipariş onay ekranı</small></div><span class="badge warn">${pending.length}</span></div>
+<div class="log"><div><b>Sevkiyat Bekleyen</b><br><small>Hazırlanacak siparişler</small></div><span class="badge blue">${orders.filter(o=>o.ship==="Beklemede").length}</span></div>`;
+}
+
+function openDealerModal(){document.getElementById("dealerModal").style.display="flex"}
+function closeDealerModal(){document.getElementById("dealerModal").style.display="none"}
+
+function saveDealer(){
+let name=document.getElementById("dealerName").value.trim();
+let city=document.getElementById("dealerCity").value.trim();
+let group=document.getElementById("dealerGroup").value[0];
+let limit=Number(document.getElementById("dealerLimit").value);
+if(!name||!city||!limit){toast("Eksik bilgi var");return}
+dealers.push({id:Date.now(),name,city,group,balance:0,limit});
+closeDealerModal();
+refresh();
+toast("Yeni bayi oluşturuldu");
+}
+
+function reportDealerTurnover(){
+let html=dealers.map(d=>{
+let total=orders.filter(o=>o.dealer===d.name).reduce((a,b)=>a+b.total,0);
+return `<div class="log"><b>${d.name}</b><span>${money(total)}</span></div>`;
+}).join("");
+document.getElementById("reportResult").innerHTML=html;
+}
+
+function reportShipping(){
+let groups=["Beklemede","Hazırlanıyor","Sevk Edildi","Teslim Edildi"];
+document.getElementById("reportResult").innerHTML=groups.map(g=>`
+<div class="log"><b>${g}</b><span>${orders.filter(o=>o.ship===g).length} sipariş</span></div>
+`).join("");
+}
+
+function reportRisk(){
+let risk=dealers.filter(d=>d.balance>d.limit);
+document.getElementById("reportResult").innerHTML=risk.length?risk.map(d=>`
+<div class="log"><b>${d.name}</b><span>${money(d.balance)} / ${money(d.limit)}</span></div>
+`).join(""):"Risk aşımı yok.";
+}
+
+function exportProducts(){
+let csv="Kod,Urun,Stok,Liste,A,B,C\n";
+products.forEach(p=>csv+=`${p.code},${p.name},${p.stock},${p.list},${p.A},${p.B},${p.C}\n`);
+let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+let url=URL.createObjectURL(blob);
+let a=document.createElement("a");
+a.href=url;
+a.download="ermoneyt-b2b-urun-listesi.csv";
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function refresh(){
+renderStats();
+renderCatalog();
+renderCart();
+renderDealerSelects();
+renderOrders();
+renderDealers();
+renderCurrent();
+renderAlerts();
+}
+refresh();
+</script>
+
+</body>
+</html>
