@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ermoneyt Rezervasyon Demo Paneli</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+body{background:#0b1120;color:#e5e7eb}
+.app{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+aside{background:#020617;border-right:1px solid #1e293b;padding:24px;position:sticky;top:0;height:100vh}
+.brand{font-size:25px;font-weight:900;margin-bottom:28px}
+.brand span{color:#38bdf8}
+.menu button{width:100%;text-align:left;background:transparent;border:0;color:#94a3b8;padding:13px 14px;border-radius:13px;margin-bottom:7px;font-weight:700;cursor:pointer}
+.menu button.active,.menu button:hover{background:#1e293b;color:#fff}
+main{padding:24px}
+.top{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:22px}
+.top h1{font-size:28px}
+.top p{color:#94a3b8;margin-top:5px}
+.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
+.primary{background:#38bdf8;color:#020617}
+.darkbtn{background:#1e293b;color:#fff}
+.greenbtn{background:#22c55e;color:#052e16}
+.redbtn{background:#ef4444;color:white}
+.orangebtn{background:#f59e0b;color:#111827}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}
+.card{background:linear-gradient(145deg,#111827,#0f172a);border:1px solid #1f2937;border-radius:20px;padding:20px}
+.card span{color:#94a3b8;font-size:13px}
+.card h2{font-size:28px;margin-top:8px}
+.section{display:none}
+.section.active{display:block}
+.panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px;margin-bottom:16px}
+.panel h3{margin-bottom:14px}
+.grid2{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+input,select,textarea{background:#020617;color:#e5e7eb;border:1px solid #334155;border-radius:12px;padding:12px;outline:none;width:100%}
+textarea{min-height:90px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:12px;border-bottom:1px solid #1f2937;font-size:14px}
+th{color:#94a3b8}
+.badge{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;display:inline-block}
+.ok{background:#064e3b;color:#6ee7b7}
+.warn{background:#713f12;color:#fde68a}
+.danger{background:#7f1d1d;color:#fecaca}
+.blue{background:#0c4a6e;color:#7dd3fc}
+.log{display:flex;justify-content:space-between;gap:8px;padding:12px 0;border-bottom:1px solid #1f2937}
+.log small{color:#94a3b8}
+.toast{position:fixed;right:20px;bottom:20px;background:#16a34a;color:white;padding:14px 18px;border-radius:14px;font-weight:800;display:none;z-index:99}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;padding:15px;z-index:50}
+.modal-box{background:#111827;border:1px solid #334155;border-radius:22px;padding:22px;max-width:760px;width:100%}
+.close{float:right;cursor:pointer;color:#94a3b8;font-size:22px}
+.searchbar{display:grid;grid-template-columns:1fr 220px 180px;gap:10px;margin-bottom:14px}
+.mini{font-size:12px;color:#94a3b8}
+.mobile-menu{display:none;margin-bottom:15px}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+.day{background:#020617;border:1px solid #1f2937;border-radius:16px;padding:12px;min-height:110px}
+.day b{display:block;margin-bottom:8px}
+.slot{font-size:12px;margin:5px 0;padding:6px 8px;border-radius:9px;background:#1e293b;color:#cbd5e1}
+.slot.full{background:#7f1d1d;color:#fecaca}
+.slot.okay{background:#064e3b;color:#6ee7b7}
+.resource{display:flex;justify-content:space-between;padding:12px;border:1px solid #1f2937;border-radius:14px;margin-bottom:10px;background:#020617}
+.progress{height:10px;background:#1e293b;border-radius:999px;overflow:hidden;margin-top:7px}
+.progress div{height:100%;background:#38bdf8}
+@media(max-width:1000px){
+.app{grid-template-columns:1fr}
+aside{display:none}
+.mobile-menu{display:block}
+.cards{grid-template-columns:1fr 1fr}
+.grid2,.grid3,.form,.searchbar,.calendar{grid-template-columns:1fr}
+.top{display:block}
+.top div:last-child{margin-top:12px}
+}
+@media(max-width:560px){
+main{padding:14px}
+.cards{grid-template-columns:1fr}
+table{display:block;overflow:auto}
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">İşlem başarılı</div>
+
+<div class="modal" id="reservationModal">
+  <div class="modal-box">
+    <span class="close" onclick="closeReservationModal()">×</span>
+    <h3>Yeni Rezervasyon / Randevu</h3>
+
+    <div class="form" style="grid-template-columns:1fr 1fr">
+      <input id="customerName" placeholder="Müşteri adı">
+      <input id="customerPhone" placeholder="Telefon">
+      <select id="reservationType">
+        <option>Kuaför Randevusu</option>
+        <option>Klinik Randevusu</option>
+        <option>Restoran Rezervasyonu</option>
+        <option>Otel Rezervasyonu</option>
+        <option>Etkinlik Katılımı</option>
+      </select>
+      <select id="serviceSelect"></select>
+      <select id="staffSelect"></select>
+      <input id="reservationDate" type="date">
+      <input id="reservationTime" type="time" value="14:30">
+      <input id="personCount" type="number" value="1" placeholder="Kişi sayısı">
+    </div>
+
+    <textarea id="reservationNote" placeholder="Not / özel talep"></textarea>
+    <br><br>
+    <button class="btn primary" onclick="saveReservation()">Rezervasyonu Oluştur</button>
+  </div>
+</div>
+
+<div class="app">
+<aside>
+  <div class="brand">ER<span>MONEYT</span></div>
+  <div class="menu">
+    <button class="active" onclick="showTab('dashboard',this)">Dashboard</button>
+    <button onclick="showTab('calendar',this)">Takvim</button>
+    <button onclick="showTab('newres',this)">Randevu Oluştur</button>
+    <button onclick="showTab('reservations',this)">Rezervasyonlar</button>
+    <button onclick="showTab('resources',this)">Masa / Oda / Personel</button>
+    <button onclick="showTab('customers',this)">Müşteriler</button>
+    <button onclick="showTab('notifications',this)">Bildirimler</button>
+    <button onclick="showTab('reports',this)">Raporlar</button>
+    <button onclick="location.href='https://ermoneyt.com/hizmetler/rezervasyon.html'">Tanıtım Sayfası</button>
+  </div>
+</aside>
+
+<main>
+  <select class="mobile-menu" onchange="showTab(this.value,null)">
+    <option value="dashboard">Dashboard</option>
+    <option value="calendar">Takvim</option>
+    <option value="newres">Randevu Oluştur</option>
+    <option value="reservations">Rezervasyonlar</option>
+    <option value="resources">Masa / Oda / Personel</option>
+    <option value="customers">Müşteriler</option>
+    <option value="notifications">Bildirimler</option>
+    <option value="reports">Raporlar</option>
+  </select>
+
+  <div class="top">
+    <div>
+      <h1>Rezervasyon & Randevu Demo Paneli</h1>
+      <p>Takvim, personel, masa/oda kapasitesi, online randevu, bildirim ve doluluk raporu.</p>
+    </div>
+    <div>
+      <button class="btn darkbtn" onclick="simulateReminder()">Hatırlatma Gönder</button>
+      <button class="btn primary" onclick="openReservationModal()">Yeni Randevu</button>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card"><span>Bugünkü Randevu</span><h2 id="statToday">0</h2></div>
+    <div class="card"><span>Doluluk</span><h2 id="statOccupancy">%0</h2></div>
+    <div class="card"><span>Bekleyen Onay</span><h2 id="statPending">0</h2></div>
+    <div class="card"><span>Tahmini Ciro</span><h2 id="statRevenue">₺0</h2></div>
+  </div>
+
+  <section id="dashboard" class="section active">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Bugünkü Akış</h3>
+        <table>
+          <thead><tr><th>Saat</th><th>Müşteri</th><th>Hizmet</th><th>Personel</th><th>Durum</th></tr></thead>
+          <tbody id="todayTable"></tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h3>Operasyon Uyarıları</h3>
+        <div id="alerts"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Personel Doluluk Özeti</h3>
+      <div id="staffSummary"></div>
+    </div>
+  </section>
+
+  <section id="calendar" class="section">
+    <div class="panel">
+      <h3>Haftalık Takvim</h3>
+      <div class="calendar" id="calendarGrid"></div>
+    </div>
+  </section>
+
+  <section id="newres" class="section">
+    <div class="panel">
+      <h3>Hızlı Rezervasyon Formu</h3>
+      <div class="form">
+        <input id="quickName" placeholder="Müşteri adı">
+        <input id="quickPhone" placeholder="Telefon">
+        <select id="quickService"></select>
+        <select id="quickStaff"></select>
+        <input id="quickDate" type="date">
+        <input id="quickTime" type="time" value="15:00">
+        <input id="quickCount" type="number" value="1">
+        <button class="btn primary" onclick="saveQuickReservation()">Kaydet</button>
+      </div>
+      <p class="mini">Bu form restoran masa rezervasyonu, klinik randevusu, otel rezervasyonu veya kuaför randevusu için uyarlanabilir.</p>
+    </div>
+  </section>
+
+  <section id="reservations" class="section">
+    <div class="panel">
+      <h3>Rezervasyon Listesi</h3>
+      <div class="searchbar">
+        <input id="searchReservation" onkeyup="renderReservations()" placeholder="Müşteri, telefon veya hizmet ara...">
+        <select id="statusFilter" onchange="renderReservations()">
+          <option value="">Tüm Durumlar</option>
+          <option>Onaylandı</option>
+          <option>Bekliyor</option>
+          <option>İptal</option>
+          <option>Tamamlandı</option>
+        </select>
+        <button class="btn greenbtn" onclick="exportCSV()">CSV İndir</button>
+      </div>
+      <table>
+        <thead><tr><th>Tarih</th><th>Saat</th><th>Müşteri</th><th>Hizmet</th><th>Personel</th><th>Kişi</th><th>Tutar</th><th>Durum</th><th>İşlem</th></tr></thead>
+        <tbody id="reservationTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="resources" class="section">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Personel / Kaynak Yönetimi</h3>
+        <div id="resourceList"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Masa / Oda / Kapasite</h3>
+        <div id="capacityList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="customers" class="section">
+    <div class="panel">
+      <h3>Müşteri Kartları</h3>
+      <table>
+        <thead><tr><th>Müşteri</th><th>Telefon</th><th>Toplam Randevu</th><th>Son Hizmet</th><th>Toplam Harcama</th></tr></thead>
+        <tbody id="customerTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="notifications" class="section">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Bildirim Şablonları</h3>
+        <div class="log"><div><b>Randevu Onayı</b><br><small>Randevunuz onaylandı.</small></div><span class="badge ok">Aktif</span></div>
+        <div class="log"><div><b>Hatırlatma</b><br><small>Randevunuza 2 saat kaldı.</small></div><span class="badge ok">Aktif</span></div>
+        <div class="log"><div><b>İptal Bilgisi</b><br><small>Randevunuz iptal edildi.</small></div><span class="badge warn">Taslak</span></div>
+      </div>
+
+      <div class="panel">
+        <h3>Bildirim Geçmişi</h3>
+        <div id="notificationLog"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reports" class="section">
+    <div class="grid3">
+      <div class="panel">
+        <h3>Doluluk Raporu</h3>
+        <p class="mini">Personel ve kaynak bazlı doluluk oranı.</p><br>
+        <button class="btn primary" onclick="reportOccupancy()">Raporla</button>
+      </div>
+      <div class="panel">
+        <h3>İptal Raporu</h3>
+        <p class="mini">İptal edilen rezervasyonları gösterir.</p><br>
+        <button class="btn redbtn" onclick="reportCancel()">Raporla</button>
+      </div>
+      <div class="panel">
+        <h3>Gelir Raporu</h3>
+        <p class="mini">Hizmet bazlı tahmini ciro.</p><br>
+        <button class="btn greenbtn" onclick="reportRevenue()">Raporla</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Rapor Sonucu</h3>
+      <div id="reportResult" class="mini">Rapor seçiniz.</div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<script>
+let services=[
+{id:1,name:"Saç Kesim & Bakım",duration:45,price:650},
+{id:2,name:"Cilt Bakımı",duration:60,price:1200},
+{id:3,name:"Diş Muayene",duration:30,price:800},
+{id:4,name:"Restoran Akşam Rezervasyonu",duration:90,price:1500},
+{id:5,name:"Otel Oda Rezervasyonu",duration:1440,price:3500},
+{id:6,name:"Etkinlik Katılımı",duration:120,price:900}
+];
+
+let staff=[
+{id:1,name:"Ayşe Yılmaz",role:"Kuaför Uzmanı",capacity:8},
+{id:2,name:"Dr. Mehmet Kaya",role:"Klinik",capacity:10},
+{id:3,name:"Restoran Salon",role:"Masa Rezervasyonu",capacity:18},
+{id:4,name:"Otel Resepsiyon",role:"Oda Rezervasyonu",capacity:12}
+];
+
+let capacities=[
+{name:"Restoran Masa",total:24,used:13},
+{name:"Otel Oda",total:32,used:21},
+{name:"Klinik Oda",total:6,used:4},
+{name:"Etkinlik Kontenjan",total:120,used:86}
+];
+
+let reservations=[
+{id:101,date:"2026-05-04",time:"10:00",customer:"Merve Demir",phone:"05551230001",service:"Saç Kesim & Bakım",staff:"Ayşe Yılmaz",count:1,price:650,status:"Onaylandı",note:""},
+{id:102,date:"2026-05-04",time:"11:30",customer:"Ahmet Koç",phone:"05551230002",service:"Diş Muayene",staff:"Dr. Mehmet Kaya",count:1,price:800,status:"Bekliyor",note:"İlk muayene"},
+{id:103,date:"2026-05-04",time:"19:30",customer:"Selin Arslan",phone:"05551230003",service:"Restoran Akşam Rezervasyonu",staff:"Restoran Salon",count:4,price:1500,status:"Onaylandı",note:"Cam kenarı"},
+{id:104,date:"2026-05-05",time:"14:00",customer:"Can Ergin",phone:"05551230004",service:"Cilt Bakımı",staff:"Ayşe Yılmaz",count:1,price:1200,status:"İptal",note:""},
+{id:105,date:"2026-05-06",time:"09:00",customer:"Bora Tekin",phone:"05551230005",service:"Otel Oda Rezervasyonu",staff:"Otel Resepsiyon",count:2,price:3500,status:"Onaylandı",note:"2 gece"}
+];
+
+let notifications=[
+{time:"09:05",text:"Merve Demir için randevu onay SMS'i gönderildi."},
+{time:"09:30",text:"Ahmet Koç için onay bekleyen randevu bildirimi oluşturuldu."}
+];
+
+function money(n){return "₺"+Number(n).toLocaleString("tr-TR")}
+function today(){return "2026-05-04"}
+function toast(msg){let t=document.getElementById("toast");t.innerText=msg;t.style.display="block";setTimeout(()=>t.style.display="none",1700)}
+function statusBadge(s){
+if(s==="Onaylandı")return '<span class="badge ok">Onaylandı</span>';
+if(s==="Bekliyor")return '<span class="badge warn">Bekliyor</span>';
+if(s==="İptal")return '<span class="badge danger">İptal</span>';
+return '<span class="badge blue">'+s+'</span>';
+}
+
+function showTab(id,btn){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+document.querySelectorAll(".menu button").forEach(b=>b.classList.remove("active"));
+if(btn)btn.classList.add("active");
+}
+
+function renderStats(){
+let todays=reservations.filter(r=>r.date===today() && r.status!=="İptal");
+let totalSlots=staff.reduce((a,b)=>a+b.capacity,0);
+let used=todays.length;
+document.getElementById("statToday").innerText=todays.length;
+document.getElementById("statOccupancy").innerText="%"+Math.round((used/totalSlots)*100);
+document.getElementById("statPending").innerText=reservations.filter(r=>r.status==="Bekliyor").length;
+document.getElementById("statRevenue").innerText=money(reservations.filter(r=>r.status!=="İptal").reduce((a,b)=>a+b.price,0));
+}
+
+function renderSelects(){
+let serviceOpts=services.map(s=>`<option value="${s.id}">${s.name} - ${money(s.price)}</option>`).join("");
+let staffOpts=staff.map(s=>`<option value="${s.id}">${s.name} / ${s.role}</option>`).join("");
+["serviceSelect","quickService"].forEach(id=>document.getElementById(id).innerHTML=serviceOpts);
+["staffSelect","quickStaff"].forEach(id=>document.getElementById(id).innerHTML=staffOpts);
+document.getElementById("reservationDate").value=today();
+document.getElementById("quickDate").value=today();
+}
+
+function renderToday(){
+let rows=reservations.filter(r=>r.date===today()).sort((a,b)=>a.time.localeCompare(b.time));
+document.getElementById("todayTable").innerHTML=rows.map(r=>`
+<tr>
+<td>${r.time}</td><td>${r.customer}</td><td>${r.service}</td><td>${r.staff}</td><td>${statusBadge(r.status)}</td>
+</tr>`).join("")||"<tr><td colspan='5'>Bugün randevu yok.</td></tr>";
+}
+
+function renderAlerts(){
+let pending=reservations.filter(r=>r.status==="Bekliyor").length;
+let cancelled=reservations.filter(r=>r.status==="İptal").length;
+let full=capacities.filter(c=>c.used/c.total>.75).length;
+document.getElementById("alerts").innerHTML=`
+<div class="log"><div><b>Onay Bekleyen</b><br><small>Operasyon onayı bekleyen randevular</small></div><span class="badge warn">${pending}</span></div>
+<div class="log"><div><b>Yüksek Doluluk</b><br><small>Kapasitesi %75 üzeri kaynaklar</small></div><span class="badge danger">${full}</span></div>
+<div class="log"><div><b>İptal Edilen</b><br><small>Takip edilmesi gereken iptaller</small></div><span class="badge blue">${cancelled}</span></div>`;
+}
+
+function renderStaffSummary(){
+document.getElementById("staffSummary").innerHTML=staff.map(s=>{
+let used=reservations.filter(r=>r.staff===s.name && r.date===today() && r.status!=="İptal").length;
+let pct=Math.round((used/s.capacity)*100);
+return `<div class="resource">
+<div><b>${s.name}</b><br><small>${s.role} • ${used}/${s.capacity} randevu</small><div class="progress"><div style="width:${pct}%"></div></div></div>
+<span class="badge ${pct>75?'danger':pct>45?'warn':'ok'}">%${pct}</span>
+</div>`;
+}).join("");
+}
+
+function renderCalendar(){
+let days=["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
+let dates=["2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-09","2026-05-10"];
+document.getElementById("calendarGrid").innerHTML=days.map((d,i)=>{
+let list=reservations.filter(r=>r.date===dates[i]);
+return `<div class="day"><b>${d}</b><small>${dates[i]}</small><br><br>
+${list.map(r=>`<div class="slot ${r.status==='İptal'?'full':'okay'}">${r.time} • ${r.customer}<br>${r.service}</div>`).join("")||'<div class="slot">Boş gün</div>'}
+</div>`;
+}).join("");
+}
+
+function renderReservations(){
+let q=(document.getElementById("searchReservation")?.value||"").toLowerCase();
+let st=document.getElementById("statusFilter")?.value||"";
+let list=reservations.filter(r=>{
+let search=r.customer.toLowerCase().includes(q)||r.phone.includes(q)||r.service.toLowerCase().includes(q);
+let status=!st||r.status===st;
+return search&&status;
+});
+document.getElementById("reservationTable").innerHTML=list.map(r=>`
+<tr>
+<td>${r.date}</td><td>${r.time}</td><td>${r.customer}<br><small>${r.phone}</small></td><td>${r.service}</td><td>${r.staff}</td><td>${r.count}</td><td>${money(r.price)}</td><td>${statusBadge(r.status)}</td>
+<td>
+<button class="btn greenbtn" onclick="approveReservation(${r.id})">Onayla</button>
+<button class="btn redbtn" onclick="cancelReservation(${r.id})">İptal</button>
+<button class="btn darkbtn" onclick="completeReservation(${r.id})">Tamamla</button>
+</td>
+</tr>`).join("");
+}
+
+function approveReservation(id){let r=reservations.find(x=>x.id===id);r.status="Onaylandı";notifications.unshift({time:new Date().toLocaleTimeString("tr-TR").slice(0,5),text:r.customer+" randevusu onaylandı ve bildirim gönderildi."});refresh();toast("Randevu onaylandı")}
+function cancelReservation(id){let r=reservations.find(x=>x.id===id);r.status="İptal";notifications.unshift({time:new Date().toLocaleTimeString("tr-TR").slice(0,5),text:r.customer+" randevusu iptal edildi."});refresh();toast("Randevu iptal edildi")}
+function completeReservation(id){let r=reservations.find(x=>x.id===id);r.status="Tamamlandı";refresh();toast("Randevu tamamlandı")}
+
+function openReservationModal(){document.getElementById("reservationModal").style.display="flex"}
+function closeReservationModal(){document.getElementById("reservationModal").style.display="none"}
+
+function saveReservation(){
+let service=services.find(s=>s.id==document.getElementById("serviceSelect").value);
+let person=staff.find(s=>s.id==document.getElementById("staffSelect").value);
+let name=document.getElementById("customerName").value.trim();
+let phone=document.getElementById("customerPhone").value.trim();
+let date=document.getElementById("reservationDate").value;
+let time=document.getElementById("reservationTime").value;
+let count=Number(document.getElementById("personCount").value);
+let note=document.getElementById("reservationNote").value;
+if(!name||!phone||!date||!time){toast("Eksik bilgi var");return}
+reservations.unshift({id:Date.now(),date,time,customer:name,phone,service:service.name,staff:person.name,count,price:service.price,status:"Bekliyor",note});
+notifications.unshift({time:new Date().toLocaleTimeString("tr-TR").slice(0,5),text:name+" için yeni rezervasyon oluşturuldu."});
+closeReservationModal();
+refresh();
+toast("Yeni rezervasyon oluşturuldu");
+}
+
+function saveQuickReservation(){
+let service=services.find(s=>s.id==document.getElementById("quickService").value);
+let person=staff.find(s=>s.id==document.getElementById("quickStaff").value);
+let name=document.getElementById("quickName").value.trim();
+let phone=document.getElementById("quickPhone").value.trim();
+let date=document.getElementById("quickDate").value;
+let time=document.getElementById("quickTime").value;
+let count=Number(document.getElementById("quickCount").value);
+if(!name||!phone){toast("Müşteri bilgisi eksik");return}
+reservations.unshift({id:Date.now(),date,time,customer:name,phone,service:service.name,staff:person.name,count,price:service.price,status:"Bekliyor",note:"Hızlı kayıt"});
+notifications.unshift({time:new Date().toLocaleTimeString("tr-TR").slice(0,5),text:name+" hızlı randevu formundan eklendi."});
+refresh();
+toast("Hızlı randevu kaydedildi");
+}
+
+function renderResources(){
+document.getElementById("resourceList").innerHTML=staff.map(s=>{
+let used=reservations.filter(r=>r.staff===s.name && r.status!=="İptal").length;
+return `<div class="resource"><div><b>${s.name}</b><br><small>${s.role} • Kapasite: ${s.capacity}</small></div><span class="badge blue">${used} kayıt</span></div>`;
+}).join("");
+
+document.getElementById("capacityList").innerHTML=capacities.map(c=>{
+let pct=Math.round((c.used/c.total)*100);
+return `<div class="resource"><div><b>${c.name}</b><br><small>${c.used}/${c.total} dolu</small><div class="progress"><div style="width:${pct}%"></div></div></div><span class="badge ${pct>75?'danger':pct>50?'warn':'ok'}">%${pct}</span></div>`;
+}).join("");
+}
+
+function renderCustomers(){
+let names=[...new Set(reservations.map(r=>r.customer))];
+document.getElementById("customerTable").innerHTML=names.map(n=>{
+let list=reservations.filter(r=>r.customer===n);
+let last=list[0];
+let total=list.reduce((a,b)=>a+b.price,0);
+return `<tr><td>${n}</td><td>${last.phone}</td><td>${list.length}</td><td>${last.service}</td><td>${money(total)}</td></tr>`;
+}).join("");
+}
+
+function renderNotifications(){
+document.getElementById("notificationLog").innerHTML=notifications.map(n=>`
+<div class="log"><div><b>${n.time}</b><br><small>${n.text}</small></div><span class="badge ok">Gönderildi</span></div>
+`).join("");
+}
+
+function simulateReminder(){
+let r=reservations.find(x=>x.status==="Onaylandı");
+if(!r){toast("Onaylı randevu yok");return}
+notifications.unshift({time:new Date().toLocaleTimeString("tr-TR").slice(0,5),text:r.customer+" için SMS/WhatsApp hatırlatma simüle edildi."});
+refresh();
+toast("Hatırlatma gönderildi");
+}
+
+function reportOccupancy(){
+let html=capacities.map(c=>{
+let pct=Math.round((c.used/c.total)*100);
+return `<div class="log"><b>${c.name}</b><span>%${pct} dolu</span></div>`;
+}).join("");
+document.getElementById("reportResult").innerHTML=html;
+}
+
+function reportCancel(){
+let list=reservations.filter(r=>r.status==="İptal");
+document.getElementById("reportResult").innerHTML=list.length?list.map(r=>`
+<div class="log"><b>${r.customer}</b><span>${r.date} ${r.time} • ${r.service}</span></div>
+`).join(""):"İptal edilen rezervasyon yok.";
+}
+
+function reportRevenue(){
+let names=[...new Set(services.map(s=>s.name))];
+document.getElementById("reportResult").innerHTML=names.map(n=>{
+let total=reservations.filter(r=>r.service===n && r.status!=="İptal").reduce((a,b)=>a+b.price,0);
+return `<div class="log"><b>${n}</b><span>${money(total)}</span></div>`;
+}).join("");
+}
+
+function exportCSV(){
+let csv="Tarih,Saat,Musteri,Telefon,Hizmet,Personel,Kisi,Tutar,Durum\n";
+reservations.forEach(r=>csv+=`${r.date},${r.time},${r.customer},${r.phone},${r.service},${r.staff},${r.count},${r.price},${r.status}\n`);
+let blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+let url=URL.createObjectURL(blob);
+let a=document.createElement("a");
+a.href=url;
+a.download="ermoneyt-rezervasyon-demo.csv";
+a.click();
+URL.revokeObjectURL(url);
+}
+
+function refresh(){
+renderStats();
+renderSelects();
+renderToday();
+renderAlerts();
+renderStaffSummary();
+renderCalendar();
+renderReservations();
+renderResources();
+renderCustomers();
+renderNotifications();
+}
+refresh();
+</script>
+
+</body>
+</html>
