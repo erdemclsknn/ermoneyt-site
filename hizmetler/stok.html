@@ -12,7 +12,12 @@
 <header class="site-header">
   <div class="container nav">
     <a class="brand" href="../index.html"><img src="../logo.png" alt="Ermoneyt Logo"><span>ERMONEYT</span></a>
-    <nav><a href="../index.html">Ana Sayfa</a><a href="../index.html#hizmetler">Hizmetler</a><a href="#fonksiyonlar">Fonksiyonlar</a><a href="#iletisim">İletişim</a></nav>
+    <nav>
+      <a href="../index.html">Ana Sayfa</a>
+      <a href="../index.html#hizmetler">Hizmetler</a>
+      <a href="#fonksiyonlar">Fonksiyonlar</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
   </div>
 </header>
 
@@ -22,33 +27,155 @@
       <div class="badge">Stok • Depo • Barkod • Sevkiyat</div>
       <h1>Depolar için <span>barkodlu stok yönetim sistemi</span>.</h1>
       <p>Ürün giriş-çıkış, depo transferi, barkod okutma, sayım, minimum stok uyarısı, fire takibi ve raporlamayı tek panelde topluyoruz.</p>
-      <div class="hero-actions"><a class="btn primary" href="https://wa.me/905511620693" target="_blank">Teklif Al</a><a class="btn secondary" href="#fonksiyonlar">Detayları Gör</a></div>
-      <div class="stats"><div><b>5+</b><span>Depo</span></div><div><b>Barcode</b><span>Takip</span></div><div><b>Canlı</b><span>Stok</span></div></div>
+
+      <div class="hero-actions">
+        <a class="btn primary" href="https://wa.me/905511620693" target="_blank">Teklif Al</a>
+
+        <!-- DEMO BUTONU -->
+        <a class="btn secondary" href="/demo/stok/index.html" target="_blank">Demo İncele</a>
+
+        <a class="btn secondary" href="#fonksiyonlar">Detayları Gör</a>
+      </div>
+
+      <div class="stats">
+        <div><b>5+</b><span>Depo</span></div>
+        <div><b>Barcode</b><span>Takip</span></div>
+        <div><b>Canlı</b><span>Stok</span></div>
+      </div>
     </div>
+
     <div class="hero-visual">
-      <div class="dashboard-card"><img src="../img/admin-panel.png" alt="Stok Depo Paneli" style="width:100%;border-radius:24px;"></div>
+      <div class="dashboard-card">
+        <img src="../img/admin-panel.png" alt="Stok Depo Paneli" style="width:100%;border-radius:24px;">
+      </div>
     </div>
   </div>
 </section>
 
 <section id="fonksiyonlar" class="section">
   <div class="container">
-    <div class="section-head"><span>Stok Depo Sistemi</span><h2>Ürün hareketlerini kontrol altına alan sistem.</h2><p>Depodaki her ürünün nerede olduğunu, ne kadar kaldığını ve nasıl hareket ettiğini anlık takip edin.</p></div>
+    <div class="section-head">
+      <span>Stok Depo Sistemi</span>
+      <h2>Ürün hareketlerini kontrol altına alan sistem.</h2>
+      <p>Depodaki her ürünün nerede olduğunu, ne kadar kaldığını ve nasıl hareket ettiğini anlık takip edin.</p>
+    </div>
+
     <div class="service-grid">
-      <div class="service-card"><div class="icon">🏷️</div><h3>Barkod Okutma</h3><p>Ürün giriş, çıkış ve sayım işlemlerini barkodla hızlandırır.</p><ul><li>Barkod tanımı</li><li>Mobil okutma</li><li>Hızlı ürün bulma</li><li>Hata azaltma</li></ul></div>
-      <div class="service-card"><div class="icon">📦</div><h3>Stok Giriş / Çıkış</h3><p>Alım, satış, sarf, fire ve iade hareketlerini kaydeder.</p><ul><li>Giriş fişi</li><li>Çıkış fişi</li><li>İade işlemi</li><li>Fire takibi</li></ul></div>
-      <div class="service-card"><div class="icon">🔁</div><h3>Depo Transferi</h3><p>Depolar arasında ürün transferi ve onay akışı.</p><ul><li>Kaynak depo</li><li>Hedef depo</li><li>Transfer onayı</li><li>Hareket geçmişi</li></ul></div>
-      <div class="service-card"><div class="icon">⚠️</div><h3>Minimum Stok</h3><p>Kritik seviyeye düşen ürünler için uyarı sistemi.</p><ul><li>Alt limit</li><li>Stok uyarısı</li><li>Tedarik listesi</li><li>Eksik ürün raporu</li></ul></div>
-      <div class="service-card"><div class="icon">📋</div><h3>Sayım</h3><p>Dönemsel depo sayımı ve fark raporu.</p><ul><li>Sayım listesi</li><li>Fark analizi</li><li>Onaylı düzeltme</li><li>Excel çıktı</li></ul></div>
-      <div class="service-card"><div class="icon">📊</div><h3>Raporlama</h3><p>Ürün, depo, tarih ve hareket bazlı detaylı raporlar.</p><ul><li>Stok raporu</li><li>Hareket raporu</li><li>Fire raporu</li><li>PDF/Excel</li></ul></div>
+      <div class="service-card">
+        <div class="icon">🏷️</div>
+        <h3>Barkod Okutma</h3>
+        <p>Ürün giriş, çıkış ve sayım işlemlerini barkodla hızlandırır.</p>
+        <ul>
+          <li>Barkod tanımı</li>
+          <li>Mobil okutma</li>
+          <li>Hızlı ürün bulma</li>
+          <li>Hata azaltma</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="icon">📦</div>
+        <h3>Stok Giriş / Çıkış</h3>
+        <p>Alım, satış, sarf, fire ve iade hareketlerini kaydeder.</p>
+        <ul>
+          <li>Giriş fişi</li>
+          <li>Çıkış fişi</li>
+          <li>İade işlemi</li>
+          <li>Fire takibi</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="icon">🔁</div>
+        <h3>Depo Transferi</h3>
+        <p>Depolar arasında ürün transferi ve onay akışı.</p>
+        <ul>
+          <li>Kaynak depo</li>
+          <li>Hedef depo</li>
+          <li>Transfer onayı</li>
+          <li>Hareket geçmişi</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="icon">⚠️</div>
+        <h3>Minimum Stok</h3>
+        <p>Kritik seviyeye düşen ürünler için uyarı sistemi.</p>
+        <ul>
+          <li>Alt limit</li>
+          <li>Stok uyarısı</li>
+          <li>Tedarik listesi</li>
+          <li>Eksik ürün raporu</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="icon">📋</div>
+        <h3>Sayım</h3>
+        <p>Dönemsel depo sayımı ve fark raporu.</p>
+        <ul>
+          <li>Sayım listesi</li>
+          <li>Fark analizi</li>
+          <li>Onaylı düzeltme</li>
+          <li>Excel çıktı</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="icon">📊</div>
+        <h3>Raporlama</h3>
+        <p>Ürün, depo, tarih ve hareket bazlı detaylı raporlar.</p>
+        <ul>
+          <li>Stok raporu</li>
+          <li>Hareket raporu</li>
+          <li>Fire raporu</li>
+          <li>PDF/Excel</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section dark"><div class="container"><div class="section-head light"><span>Kullanım Alanları</span><h2>Depo, lojistik, üretim ve saha stok operasyonları için.</h2></div><div class="solution-grid"><div class="solution"><b>01</b><h3>Depo</h3><p>Ürün giriş-çıkış ve anlık stok takibi.</p></div><div class="solution"><b>02</b><h3>Üretim</h3><p>Hammadde, yarı mamul ve mamul hareketleri.</p></div><div class="solution"><b>03</b><h3>Lojistik</h3><p>Sevkiyat, transfer ve teslimat kontrolü.</p></div></div></div></section>
+<section class="section dark">
+  <div class="container">
+    <div class="section-head light">
+      <span>Kullanım Alanları</span>
+      <h2>Depo, lojistik, üretim ve saha stok operasyonları için.</h2>
+    </div>
 
-<section id="iletisim" class="section"><div class="container"><div class="cta"><div><span>Stok sistemini kuralım</span><h2>Depodaki kaybı azaltıp operasyonu hızlandıralım.</h2><p>Barkodlu, raporlu ve yönetilebilir stok sistemi hazırlayalım.</p></div><a class="btn primary" href="https://wa.me/905000000000" target="_blank">WhatsApp ile Yaz</a></div></div></section>
+    <div class="solution-grid">
+      <div class="solution"><b>01</b><h3>Depo</h3><p>Ürün giriş-çıkış ve anlık stok takibi.</p></div>
+      <div class="solution"><b>02</b><h3>Üretim</h3><p>Hammadde, yarı mamul ve mamul hareketleri.</p></div>
+      <div class="solution"><b>03</b><h3>Lojistik</h3><p>Sevkiyat, transfer ve teslimat kontrolü.</p></div>
+    </div>
+  </div>
+</section>
 
-<footer><div class="container footer-grid"><div><strong>ERMONEYT</strong><p>Web, mobil, ERP, cloud ve dijital sistem çözümleri.</p></div><div><a href="../index.html">Ana Sayfa</a><a href="../index.html#hizmetler">Hizmetler</a></div></div></footer>
+<section id="iletisim" class="section">
+  <div class="container">
+    <div class="cta">
+      <div>
+        <span>Stok sistemini kuralım</span>
+        <h2>Depodaki kaybı azaltıp operasyonu hızlandıralım.</h2>
+        <p>Barkodlu, raporlu ve yönetilebilir stok sistemi hazırlayalım.</p>
+      </div>
+      <a class="btn primary" href="https://wa.me/905511620693" target="_blank">WhatsApp ile Yaz</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <strong>ERMONEYT</strong>
+      <p>Web, mobil, ERP, cloud ve dijital sistem çözümleri.</p>
+    </div>
+    <div>
+      <a href="../index.html">Ana Sayfa</a>
+      <a href="../index.html#hizmetler">Hizmetler</a>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
